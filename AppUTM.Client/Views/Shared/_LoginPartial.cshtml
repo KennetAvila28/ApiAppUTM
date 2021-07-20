@@ -1,13 +1,15 @@
 ﻿@using Microsoft.Identity.Web
 @using System.Security.Claims
+@using Microsoft.Graph
 @{
     var identity = User.Identity as ClaimsIdentity;
+    
 }
 @if (User.Identity.IsAuthenticated)
 {
     <ul class="nav navbar-nav navbar-right">
         <li class="navbar-text">Hello @User.GetDisplayName()!</li>
-        
+        <li class="navbar-text"> <img id="photo" src=""/> </li>
         <li><a asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a></li>
     </ul>
 }

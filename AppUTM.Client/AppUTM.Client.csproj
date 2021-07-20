@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>8a88f328-316c-4750-923f-3bc44ce8fd75</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="5.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="5.0.8" />
+    <PackageReference Include="Microsoft.Azure.ActiveDirectory.GraphClient" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Graph" Version="3.35.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.14.1" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.14.1" />
   </ItemGroup>

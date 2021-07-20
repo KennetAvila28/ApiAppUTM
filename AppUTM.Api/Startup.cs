@@ -23,6 +23,15 @@ namespace AppUTM.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(setupAction =>
+            {
+                setupAction.AddPolicy("default", p =>
+                {
+                    p.WithOrigins("http://localhost:44345")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
