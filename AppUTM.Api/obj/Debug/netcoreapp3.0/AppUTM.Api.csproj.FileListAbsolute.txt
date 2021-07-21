@@ -1,0 +1,7 @@
+C:\Users\edwin\Desktop\Doumentos Estadía\Proyecto Credencialización\Proyecto s\AppUTM\AppUTM.Api\bin\Debug\netcoreapp3.0\AppUTM.Core.dll
+C:\Users\edwin\Desktop\Doumentos Estadía\Proyecto Credencialización\Proyecto s\AppUTM\AppUTM.Api\bin\Debug\netcoreapp3.0\AppUTM.Data.dll
+C:\Users\edwin\Desktop\Doumentos Estadía\Proyecto Credencialización\Proyecto s\AppUTM\AppUTM.Api\bin\Debug\netcoreapp3.0\AppUTM.Services.dll
+C:\Users\edwin\Desktop\Doumentos Estadía\Proyecto Credencialización\Proyecto s\AppUTM\AppUTM.Api\obj\Debug\netcoreapp3.0\AppUTM.Api.csprojAssemblyReference.cache
+C:\Users\edwin\Desktop\Doumentos Estadía\Proyecto Credencialización\Proyecto s\AppUTM\AppUTM.Api\obj\Debug\netcoreapp3.0\AppUTM.Api.AssemblyInfoInputs.cache
+C:\Users\edwin\Desktop\Doumentos Estadía\Proyecto Credencialización\Proyecto s\AppUTM\AppUTM.Api\obj\Debug\netcoreapp3.0\AppUTM.Api.AssemblyInfo.cs
+C:\Users\edwin\Desktop\Doumentos Estadía\Proyecto Credencialización\Proyecto s\AppUTM\AppUTM.Api\obj\Debug\netcoreapp3.0\AppUTM.Api.RazorTargetAssemblyInfo.cache

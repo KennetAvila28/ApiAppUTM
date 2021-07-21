@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.14.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppUTM.Core\AppUTM.Core.csproj" />
+    <ProjectReference Include="..\AppUTM.Data\AppUTM.Data.csproj" />
+    <ProjectReference Include="..\AppUTM.Services\AppUTM.Services.csproj" />
+  </ItemGroup>
+
+</Project>

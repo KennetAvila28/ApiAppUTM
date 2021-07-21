@@ -1,6 +1,6 @@
 using System;
 
-namespace ApiAppUTM
+namespace AppUTM.Api
 {
     public class WeatherForecast
     {

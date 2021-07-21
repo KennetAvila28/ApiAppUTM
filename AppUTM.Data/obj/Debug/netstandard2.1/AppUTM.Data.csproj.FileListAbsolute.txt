@@ -1,0 +1,4 @@
+C:\Users\edwin\Desktop\Doumentos Estadía\Proyecto Credencialización\Proyecto s\AppUTM\AppUTM.Data\bin\Debug\netstandard2.1\AppUTM.Core.dll
+C:\Users\edwin\Desktop\Doumentos Estadía\Proyecto Credencialización\Proyecto s\AppUTM\AppUTM.Data\obj\Debug\netstandard2.1\AppUTM.Data.csprojAssemblyReference.cache
+C:\Users\edwin\Desktop\Doumentos Estadía\Proyecto Credencialización\Proyecto s\AppUTM\AppUTM.Data\obj\Debug\netstandard2.1\AppUTM.Data.AssemblyInfoInputs.cache
+C:\Users\edwin\Desktop\Doumentos Estadía\Proyecto Credencialización\Proyecto s\AppUTM\AppUTM.Data\obj\Debug\netstandard2.1\AppUTM.Data.AssemblyInfo.cs
