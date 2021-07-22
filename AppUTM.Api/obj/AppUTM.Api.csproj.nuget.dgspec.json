@@ -1,40 +1,41 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Api\\AppUTM.Api.csproj": {}
+    "D:\\Repos\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Api\\AppUTM.Api.csproj": {
+    "D:\\Repos\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Api\\AppUTM.Api.csproj",
+        "projectUniqueName": "D:\\Repos\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj",
         "projectName": "AppUTM.Api",
-        "projectPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Api\\AppUTM.Api.csproj",
-        "packagesPath": "C:\\Users\\edwin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Api\\obj\\",
+        "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj",
+        "packagesPath": "C:\\Users\\lokog\\.nuget\\packages\\",
+        "outputPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\edwin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\lokog\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.0"
+          "net5.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.0": {
+          "net5.0": {
+            "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
-                "projectPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
+              "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
+                "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
               },
-              "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Data\\AppUTM.Data.csproj": {
-                "projectPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Data\\AppUTM.Data.csproj"
+              "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj": {
+                "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj"
               },
-              "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Services\\AppUTM.Services.csproj": {
-                "projectPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Services\\AppUTM.Services.csproj"
+              "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj": {
+                "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj"
               }
             }
           }
@@ -46,11 +47,24 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.0": {
+        "net5.0": {
+          "targetAlias": "net5.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.1, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[10.3.0, )"
+            },
             "Microsoft.Identity.Web": {
               "target": "Package",
               "version": "[1.14.1, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.1.4, )"
             }
           },
           "imports": [
@@ -71,32 +85,33 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.411\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
+    "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Core\\AppUTM.Core.csproj",
+        "projectUniqueName": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj",
         "projectName": "AppUTM.Core",
-        "projectPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Core\\AppUTM.Core.csproj",
-        "packagesPath": "C:\\Users\\edwin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Core\\obj\\",
+        "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj",
+        "packagesPath": "C:\\Users\\lokog\\.nuget\\packages\\",
+        "outputPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\edwin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\lokog\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netstandard2.0"
+          "net5.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netstandard2.0": {
+          "net5.0": {
+            "targetAlias": "net5.0",
             "projectReferences": {}
           }
         },
@@ -107,68 +122,10 @@
         }
       },
       "frameworks": {
-        "netstandard2.0": {
+        "net5.0": {
+          "targetAlias": "net5.0",
           "dependencies": {
-            "NETStandard.Library": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[2.0.3, )",
-              "autoReferenced": true
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.411\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Data\\AppUTM.Data.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Data\\AppUTM.Data.csproj",
-        "projectName": "AppUTM.Data",
-        "projectPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Data\\AppUTM.Data.csproj",
-        "packagesPath": "C:\\Users\\edwin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Data\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\edwin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "netstandard2.1"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "netstandard2.1": {
-            "projectReferences": {
-              "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
-                "projectPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "netstandard2.1": {
-          "dependencies": {
-            "Microsoft.EntityFrameworkCore.SqlServer": {
+            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.8, )"
             }
@@ -184,39 +141,40 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "NETStandard.Library": {
+            "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.411\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Services\\AppUTM.Services.csproj": {
+    "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Services\\AppUTM.Services.csproj",
-        "projectName": "AppUTM.Services",
-        "projectPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Services\\AppUTM.Services.csproj",
-        "packagesPath": "C:\\Users\\edwin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Services\\obj\\",
+        "projectUniqueName": "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj",
+        "projectName": "AppUTM.Data",
+        "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj",
+        "packagesPath": "C:\\Users\\lokog\\.nuget\\packages\\",
+        "outputPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\edwin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\lokog\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netstandard2.0"
+          "net5.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netstandard2.0": {
+          "net5.0": {
+            "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
-                "projectPath": "C:\\Users\\edwin\\Desktop\\Doumentos Estadía\\Proyecto Credencialización\\Proyecto s\\AppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
+              "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
+                "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
               }
             }
           }
@@ -228,13 +186,20 @@
         }
       },
       "frameworks": {
-        "netstandard2.0": {
+        "net5.0": {
+          "targetAlias": "net5.0",
           "dependencies": {
-            "NETStandard.Library": {
-              "suppressParent": "All",
+            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[2.0.3, )",
-              "autoReferenced": true
+              "version": "[5.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer.Design": {
+              "target": "Package",
+              "version": "[1.1.6, )"
             }
           },
           "imports": [
@@ -247,7 +212,70 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.411\\RuntimeIdentifierGraph.json"
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj",
+        "projectName": "AppUTM.Services",
+        "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj",
+        "packagesPath": "C:\\Users\\lokog\\.nuget\\packages\\",
+        "outputPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\lokog\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
+                "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
