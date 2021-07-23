@@ -1,20 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Repos\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj": {}
+    "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj": {}
   },
   "projects": {
-    "D:\\Repos\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj": {
+    "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Repos\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj",
+        "projectUniqueName": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj",
         "projectName": "AppUTM.Api",
-        "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj",
-        "packagesPath": "C:\\Users\\lokog\\.nuget\\packages\\",
-        "outputPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Api\\obj\\",
+        "projectPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Api\\AppUTM.Api.csproj",
+        "packagesPath": "C:\\Users\\Javier Hernández\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Api\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\lokog\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Javier Hernández\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,14 +33,14 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
-                "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
+              "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
+                "projectPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
               },
-              "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj": {
-                "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj"
+              "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj": {
+                "projectPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj"
               },
-              "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj": {
-                "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj"
+              "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj": {
+                "projectPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj"
               }
             }
           }
@@ -57,6 +62,12 @@
             "FluentValidation": {
               "target": "Package",
               "version": "[10.3.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.8, )"
             },
             "Microsoft.Identity.Web": {
               "target": "Package",
@@ -85,21 +96,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
+    "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj",
+        "projectUniqueName": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj",
         "projectName": "AppUTM.Core",
-        "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj",
-        "packagesPath": "C:\\Users\\lokog\\.nuget\\packages\\",
-        "outputPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\obj\\",
+        "projectPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj",
+        "packagesPath": "C:\\Users\\Javier Hernández\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Core\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\lokog\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Javier Hernández\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -128,6 +144,10 @@
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.8, )"
             }
           },
           "imports": [
@@ -145,21 +165,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj": {
+    "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj",
+        "projectUniqueName": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj",
         "projectName": "AppUTM.Data",
-        "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj",
-        "packagesPath": "C:\\Users\\lokog\\.nuget\\packages\\",
-        "outputPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Data\\obj\\",
+        "projectPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Data\\AppUTM.Data.csproj",
+        "packagesPath": "C:\\Users\\Javier Hernández\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Data\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\lokog\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Javier Hernández\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -173,8 +198,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
-                "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
+              "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
+                "projectPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
               }
             }
           }
@@ -200,6 +225,12 @@
             "Microsoft.EntityFrameworkCore.SqlServer.Design": {
               "target": "Package",
               "version": "[1.1.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.8, )"
             }
           },
           "imports": [
@@ -217,21 +248,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj": {
+    "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj",
+        "projectUniqueName": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj",
         "projectName": "AppUTM.Services",
-        "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj",
-        "packagesPath": "C:\\Users\\lokog\\.nuget\\packages\\",
-        "outputPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Services\\obj\\",
+        "projectPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Services\\AppUTM.Services.csproj",
+        "packagesPath": "C:\\Users\\Javier Hernández\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Services\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\lokog\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Javier Hernández\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -245,8 +281,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
-                "projectPath": "D:\\Repos\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
+              "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj": {
+                "projectPath": "C:\\Users\\Javier Hernández\\Documents\\Universidad\\6° Cuatrimestre\\Software\\ApiAppUTM\\AppUTM.Core\\AppUTM.Core.csproj"
               }
             }
           }
@@ -275,7 +311,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

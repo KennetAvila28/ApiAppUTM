@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppUTM.Core;
 using AppUTM.Core.Repositories;
+using AppUTM.Data;
 using AppUTM.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,8 +40,9 @@ namespace AppUTM.Api
                 });
             });
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
+
             services.AddDbContext<DataContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("Default")));
+                options.UseSqlServer(Configuration["ConnectionStrings:Default"]));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddSwaggerGen(c =>
             {
