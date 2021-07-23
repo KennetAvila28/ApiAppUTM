@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AppUTM.Core.Interfaces;
 using AppUTM.Core.Repositories;
 using AppUTM.Data;
 using AppUTM.Data.Repositories;
+using AppUTM.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,10 +37,13 @@ namespace AppUTM.Api
                 });
             });
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
-
+            services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration["ConnectionStrings:Default"]));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IPermissionService, PermissionService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiAppUTM", Version = "v1" });

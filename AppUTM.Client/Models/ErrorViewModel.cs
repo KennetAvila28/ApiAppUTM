@@ -1,5 +1,3 @@
-using System;
-
 namespace AppUTM.Client.Models
 {
     public class ErrorViewModel
