@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Usuario</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js//filter.js"></script>
+</head>
+<body>
+
+
+    <div class="container">
+        <h4>Agregar usuario</h4>     
+        <select class="form-control mt-3" id="exampleFormControlSelect1">
+          <option selected>Seleccione...</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>                  
+    </div>
+
+    <form class="container">     
+        <div class="form-group">            
+            <input type="hidden" value="" form="numeroEmpleado" class="form-control">
+        </div>                  
+        <div class="form-group row mt-4">
+           <div class="form-group col-md-4">
+               <label>Nombre</label>
+               <input type="text" class="form-control" value="" disabled>
+           </div>
+           <div class="form-group col-md-4">
+               <label>Apellido Paterno</label>
+               <input type="text" class="form-control" value="" disabled>
+           </div>
+           <div class="form-group col-md-4">
+               <label>Apellido Materno</label>
+               <input type="text" class="form-control" value="" disabled>
+           </div>
+        </div>
+        <div class="form-group row mt-4">
+            <div class="form-group col-md-4">
+                <label>Correo Institucional</label>
+                <input type="text" class="form-control" value="" disabled>
+            </div>         
+            <div class="form-group col-md-4">
+                <label>División</label>
+                <input type="text" class="form-control" value="" disabled>
+            </div> 
+            <div class="form-group col-md-4">
+                <label for="">Rol</label>
+                <select class="form-control" id="exampleFormControlSelect1">
+                    <option selected>Seleccionar rol</option>
+                    <option>Admin</option>
+                    <option>Rol 2</option>
+                    <option>Rol 3</option>                 
+                  </select>  
+            </div>             
+         </div>         
+        <a class="btn btn-secondary mt-4" href="../Usuarios/usuarios.html">Cancelar</a>
+        <button type="submit" class="btn btn-primary mt-4">Registrar</button>
+    </form>          
+    
+</body>
+</html>

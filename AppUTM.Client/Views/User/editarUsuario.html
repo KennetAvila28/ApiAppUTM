@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js//filter.js"></script>
+</head>
+<body>
+
+
+    <form class="container"> 
+        <h4>Datos del usuario</h4>      
+        <div class="form-group">            
+            <input type="hidden" value="" form="numeroEmpleado" class="form-control">
+        </div>                  
+        <div class="form-group row mt-4">
+           <div class="form-group col-md-4">
+               <label>Nombre</label>
+               <input type="text" class="form-control" value="" disabled>
+           </div>
+           <div class="form-group col-md-4">
+               <label>Apellido Paterno</label>
+               <input type="text" class="form-control" value="" disabled>
+           </div>
+           <div class="form-group col-md-4">
+               <label>Apellido Materno</label>
+               <input type="text" class="form-control" value="" disabled>
+           </div>
+        </div>
+        <div class="form-group row mt-4">
+            <div class="form-group col-md-4">
+                <label>Correo Institucional</label>
+                <input type="text" class="form-control" value="" disabled>
+            </div>         
+            <div class="form-group col-md-4">
+                <label>División</label>
+                <input type="text" class="form-control" value="" disabled>
+            </div> 
+            <div class="form-group col-md-4">
+                <label for="">Rol</label>
+                <select class="form-control" id="exampleFormControlSelect1">
+                    <option selected>Seleccionar rol</option>
+                    <option>Admin</option>
+                    <option>Rol 2</option>
+                    <option>Rol 3</option>                 
+                  </select>  
+            </div>             
+         </div>         
+         <div class=" d-flex justify-content-between align-items-center">
+            <div>
+              <a class="btn btn-secondary mt-4" href="usuarios.html">Cancelar</a>            
+              <button type="submit" class="btn btn-primary mt-4 mx-3">Guardar</button>  
+            </div>
+
+            <button type="button" class="btn btn-danger mt-4" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Borrar</button>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 id="exampleModalCenterTitle">¿Eliminar el usuario?</h5>                      
+                  </div>
+                  <div class="modal-body mx-auto">
+                    <button type="button" class="btn btn-danger">Eliminar</button>                    
+                  </div>                    
+                </div>
+              </div>
+            </div>
+          </div>  
+    </form>          
+    
+</body>
+</html>
