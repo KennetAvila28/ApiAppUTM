@@ -44,6 +44,10 @@ namespace AppUTM.Api
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IPermissionService, PermissionService>();
+            services.AddTransient<IEmpresaServices, EmpresaService>();
+            services.AddTransient<ICuponGenericoServices, CuponGenericoService>();
+            services.AddTransient<ICuponImagenServices, CuponImagenService>();
+            services.AddTransient<IAlmacenarImagen, AlmacenarImagen>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiAppUTM", Version = "v1" });

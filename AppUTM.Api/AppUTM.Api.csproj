@@ -27,4 +27,9 @@
     <ProjectReference Include="..\AppUTM.Services\AppUTM.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Cupones\" />
+    <Folder Include="wwwroot\Empresas\" />
+  </ItemGroup>
+
 </Project>
