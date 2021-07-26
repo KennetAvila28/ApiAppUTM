@@ -2,12 +2,9 @@
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppUTM.Api.Controllers
@@ -43,9 +40,9 @@ namespace AppUTM.Api.Controllers
             var empresaDto = _mapper.Map<Empresa, EmpresaReturn>(empresa);
             return Ok(empresaDto);
         }
-    
+
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm]EmpresaCreate empresaDto)
+        public async Task<ActionResult> Post([FromForm] EmpresaCreate empresaDto)
         {
             var empresa = _mapper.Map<EmpresaCreate, Empresa>(empresaDto);
             if (empresaDto.Foto != null)
@@ -59,11 +56,11 @@ namespace AppUTM.Api.Controllers
             }
             await _service.AddEmpresa(empresa);
             var empresaResponseDto = _mapper.Map<Empresa, EmpresaReturn>(empresa);
-            return Ok(empresaResponseDto);          
+            return Ok(empresaResponseDto);
         }
- 
+
         [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromForm]EmpresaCreate empresaDto)
+        public async Task<ActionResult> Put(int id, [FromForm] EmpresaCreate empresaDto)
         {
             var empresaData = await _service.GetEmpresa(id);
             if (empresaData == null) return NotFound();

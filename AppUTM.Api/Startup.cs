@@ -48,6 +48,7 @@ namespace AppUTM.Api
             services.AddTransient<ICuponGenericoServices, CuponGenericoService>();
             services.AddTransient<ICuponImagenServices, CuponImagenService>();
             services.AddTransient<IAlmacenarImagen, AlmacenarImagen>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiAppUTM", Version = "v1" });
@@ -65,7 +66,6 @@ namespace AppUTM.Api
             }
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

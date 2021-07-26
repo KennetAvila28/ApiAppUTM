@@ -3,35 +3,47 @@ using AppUTM.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AppUTM.Core.Repositories;
 
 namespace AppUTM.Services
 {
     public class PermissionService : IPermissionService
     {
-        //todo:Implement unitofwork
-        public Task<IEnumerable<Permission>> GetAllPermissions()
+        private readonly IUnitOfWork _unitOfWork;
+
+        public PermissionService(IUnitOfWork unitOfWork)
         {
-            throw new NotImplementedException();
+            _unitOfWork = unitOfWork;
         }
 
-        public Task<Permission> GetPermissionById(int id)
+        public async Task<IEnumerable<Permission>> GetAllPermissions()
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.Permissions.GetAll();
         }
 
-        public Task<Permission> CreatePermission(Permission newPermission)
+        public async Task<Permission> GetPermissionById(int id)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.Permissions.GetById(id);
         }
 
-        public Task UpdatePermission(Permission PermissionToBeUpdated, Permission Permission)
+        public async Task<Permission> CreatePermission(Permission newPermission)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.Permissions.Add(newPermission);
+            await _unitOfWork.CommitAsync();
+            return newPermission;
         }
 
-        public Task DeletePermission(Permission Permission)
+        public async Task UpdatePermission(Permission PermissionToBeUpdated, Permission Permission)
         {
-            throw new NotImplementedException();
+            PermissionToBeUpdated.Module = Permission.Module;
+            PermissionToBeUpdated.UpdateAt = DateTime.Now;
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task DeletePermission(Permission Permission)
+        {
+            _unitOfWork.Permissions.Remove(Permission);
+            await _unitOfWork.CommitAsync();
         }
     }
 }

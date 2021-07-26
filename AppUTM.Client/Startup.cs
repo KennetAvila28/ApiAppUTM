@@ -25,7 +25,6 @@ namespace AppUTM.Client
             services.AddMicrosoftIdentityWebAppAuthentication(Configuration)
                 .EnableTokenAcquisitionToCallDownstreamApi(new string[] { Configuration["CouponAdmin:CouponAdminScope"] })
                 .AddInMemoryTokenCaches();
-
             services.AddControllersWithViews(options =>
             {
                 var policy = new AuthorizationPolicyBuilder()

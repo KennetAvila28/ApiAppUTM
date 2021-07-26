@@ -3,9 +3,7 @@ using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppUTM.Api.Controllers
@@ -72,7 +70,6 @@ namespace AppUTM.Api.Controllers
             if (cupon == null) return NotFound();
             await _service.DeleteCuponGenerico(cupon);
             return Ok(true);
-
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
+using AppUTM.Core.Repositories;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,30 +10,47 @@ namespace AppUTM.Services
 {
     public class UserService : IUserService
     {
-        //todo:Implement unitofwork
-        public Task<IEnumerable<User>> GetAllUsers()
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+
+        public UserService(IUnitOfWork unitOfWork)
         {
-            throw new NotImplementedException();
+            _unitOfWork = unitOfWork;
         }
 
-        public Task<User> GetUserById(int id)
+        public async Task<User> CreateUser(User newUser)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.Users.Add(newUser);
+            await _unitOfWork.CommitAsync();
+            return newUser;
         }
 
-        public Task<User> CreateUser(User newUser)
+        /// <summary>Return all users</summary>
+        /// <returns> <c>Array</c> of users</returns>
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.Users.GetAll();
         }
 
-        public Task UpdateUser(User UserToBeUpdated, User User)
+        public async Task<User> GetUserById(int id)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.Users.GetById(id);
         }
 
-        public Task DeleteUser(User User)
+        public async Task UpdateUser(User UserToBeUpdated, User User)
         {
-            throw new NotImplementedException();
+            UserToBeUpdated.ApellidoMaterno = User.ApellidoMaterno;
+            UserToBeUpdated.ApellidoPaterno = User.ApellidoPaterno;
+            UserToBeUpdated.ClaveEmpleado = User.ClaveEmpleado;
+            UserToBeUpdated.Nombres = User.Nombres;
+            UserToBeUpdated.UpdateAt = DateTime.Now;
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task DeleteUser(User User)
+        {
+            _unitOfWork.Users.Remove(User);
+            await _unitOfWork.CommitAsync();
         }
     }
 }

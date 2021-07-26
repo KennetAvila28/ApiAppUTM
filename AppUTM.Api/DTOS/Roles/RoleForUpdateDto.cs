@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AppUTM.Core.Models;
 
 namespace AppUTM.Api.DTOS.Roles
 {
-    public class RolesCreate
+    public class RoleForUpdateDto
     {
         public string Nombre { get; set; }
         public ICollection<RolePermission> RolePermissions { get; set; }

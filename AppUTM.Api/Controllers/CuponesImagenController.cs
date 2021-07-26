@@ -3,10 +3,8 @@ using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppUTM.Api.Controllers
@@ -52,7 +50,7 @@ namespace AppUTM.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm]CuponImagenCreate cuponDto)
+        public async Task<ActionResult> Post([FromForm] CuponImagenCreate cuponDto)
         {
             var cupon = _mapper.Map<CuponImagenCreate, CuponImagen>(cuponDto);
             if (cuponDto.Foto != null)
@@ -60,7 +58,7 @@ namespace AppUTM.Api.Controllers
                 using (var memoryStream = new MemoryStream())
                 {
                     await cuponDto.Foto.CopyToAsync(memoryStream);
-                    var contenido = memoryStream.ToArray();        
+                    var contenido = memoryStream.ToArray();
                     cupon.Imagen = await _almacenarImagen.GuardarArchivo(contenido, contenedor, cuponDto.Foto.FileName);
                 }
             }
@@ -70,19 +68,19 @@ namespace AppUTM.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromForm]CuponImagenCreate cuponDto)
+        public async Task<ActionResult> Put(int id, [FromForm] CuponImagenCreate cuponDto)
         {
             var cuponData = await _service.GetCuponImagen(id);
             if (cuponData == null) return NotFound();
             if (cuponData.Imagen != null)
                 await _almacenarImagen.BorraArchivo(cuponData.Imagen, contenedor);
             var cupon = _mapper.Map(cuponDto, cuponData);
-            if(cuponDto.Foto != null)
+            if (cuponDto.Foto != null)
             {
                 using (var memoryStream = new MemoryStream())
                 {
                     await cuponDto.Foto.CopyToAsync(memoryStream);
-                    var contenido = memoryStream.ToArray();                   
+                    var contenido = memoryStream.ToArray();
                     cuponData.Imagen = await _almacenarImagen.EditarArchivo(contenido, contenedor, cuponData.Imagen);
                 }
             }
@@ -98,10 +96,9 @@ namespace AppUTM.Api.Controllers
 
             if (cuponData.Imagen != null)
                 await _almacenarImagen.BorraArchivo(cuponData.Imagen, contenedor);
- 
+
             await _service.DeleteCuponImagen(cuponData);
             return NoContent();
-
         }
     }
 }

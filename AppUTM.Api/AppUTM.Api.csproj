@@ -16,7 +16,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Identity.Web" Version="1.14.1" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.15.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
   </ItemGroup>
@@ -31,5 +31,4 @@
     <Folder Include="wwwroot\Cupones\" />
     <Folder Include="wwwroot\Empresas\" />
   </ItemGroup>
-
 </Project>
