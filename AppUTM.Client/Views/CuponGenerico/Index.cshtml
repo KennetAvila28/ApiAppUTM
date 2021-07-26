@@ -1,0 +1,77 @@
+﻿@model IEnumerable<AppUTM.Client.Models.CuponGenerico>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CuponGeneridoId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaExpiracion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CuponesUsados)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CuponesVisitados)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PorcentajeDescuento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroPorPersona)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmpresaId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CuponGeneridoId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaExpiracion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CuponesUsados)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CuponesVisitados)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PorcentajeDescuento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroPorPersona)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmpresaId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
