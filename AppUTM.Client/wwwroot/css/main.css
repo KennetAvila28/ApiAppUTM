@@ -157,6 +157,14 @@ a:hover{
     font-size: 14px;
     text-align: center;
   }
+  
+  @media (min-width: 600px){
+      .user-name{
+          position: absolute;
+          top: 4px;
+          right: 92px;
+      }
+  }
 
 
 

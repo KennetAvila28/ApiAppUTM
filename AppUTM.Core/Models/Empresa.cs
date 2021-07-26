@@ -17,5 +17,5 @@ namespace AppUTM.Core.Models
         public bool Activa { get; set; }
         public string Telefono { get; set; }
         public string ImagenEmpresa { get; set; }
-    }
+    }    
 }

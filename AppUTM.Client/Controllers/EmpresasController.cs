@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace AppUTM.Client.Controllers
@@ -13,6 +14,8 @@ namespace AppUTM.Client.Controllers
     {
         public EmpresasController()
         { }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             HttpClient httpClient = new HttpClient();
@@ -20,10 +23,31 @@ namespace AppUTM.Client.Controllers
             //http://api.utmetropolitana.edu.mx/api/Empresas/Get
             //http://localhost:59131/api/Empresas
             var jsonEmpresas = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas");
-            var listEmpresas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
-            int numeroempresas = listEmpresas.Count();
-
+            var listEmpresas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);         
             return View(listEmpresas);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            HttpClient httpClient = new HttpClient();
+            var json = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas/" + id);
+            var empresa = JsonConvert.DeserializeObject<Empresa>(json);
+            return View(empresa);
+        }
+
+        [HttpPut]
+        public IActionResult Update(Empresa empresa)
+        {
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("https://localhost:59131/api/Empresas/");
+            var putTask = httpClient.PutAsJsonAsync<Empresa>("?id=" + empresa.EmpresaId, empresa);
+            putTask.Wait();
+            var result = putTask.Result;
+            if (result.IsSuccessStatusCode)
+                return RedirectToAction("Index");
+            else
+                return this.BadRequest();
         }
     }
 }

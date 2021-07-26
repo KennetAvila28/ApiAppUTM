@@ -1,77 +1,77 @@
 ﻿@model IEnumerable<AppUTM.Client.Models.Empresa>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Empresas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<script src="~/js/filter.js"></script>
+<h4>Empresas con descuento</h4>
+<div class="container mt-3">
+    <div class="mb-4 d-flex">
+        <input class="form-control me-3" type="search" id="inputTable" onkeyup="searchInTable()" aria-label="Search" placeholder="Buscar empresa...">
+        <button class="btn btn-outline-dark btn-add" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Agregar</button>
+        <!-- Modal agregar empresa  -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Seleccione una empresa para registrar cupón</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RFC)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Alias)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tipo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Direccion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Activa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefono)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagenEmpresa)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RFC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Alias)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tipo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Activa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImagenEmpresa)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                        <!--    Agregar el consumo de la api externa integrada con la nuestra   -->
+
+                        <input class="form-control me-3 mb-3" type="search" id="inputModalTable" onkeyup="searchInModalTable()" aria-label="Search" placeholder="Buscar empresa...">
+                        <table class="table table-bordered modal-table">
+                            <tbody id="myModalTable">
+                                <tr>
+                                    <td>La Coronela Mérida</td>
+                                    <td><a class="button-a">Registrar</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Empresa 2</td>
+                                    <td><a class="button-a">Registrar</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Empresa 3</td>
+                                    <td><a class="button-a">Registrar</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-bordered main-table">
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td><a href="#">Cupones</a></td>
+                    <td><a asp-action="Update" asp-route-Id="@item.EmpresaId">Detalles</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>   
+</div>
+
+<!-- Método auxiliar del filtro-->
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>

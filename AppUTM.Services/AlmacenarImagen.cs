@@ -12,8 +12,7 @@ namespace AppUTM.Services
 {
     public class AlmacenarImagen : IAlmacenarImagen
     {
-        private readonly IHostingEnvironment _env; 
-        public IHttpContextAccessor HttpContextAccessor;
+        private readonly IHostingEnvironment _env;        
 
         public AlmacenarImagen(IHostingEnvironment environment)
         {
@@ -39,7 +38,7 @@ namespace AppUTM.Services
 
         public async Task<string> GuardarArchivo(byte[] contenido, string contenedor, string nombre)
         {
-            var nombreArchivo = $"{Guid.NewGuid()} - {nombre}";
+            var nombreArchivo = $"{Guid.NewGuid()}-{nombre}";
             string folder = Path.Combine(_env.WebRootPath, contenedor);
             string ruta = Path.Combine(folder, nombreArchivo);
             await File.WriteAllBytesAsync(ruta, contenido);

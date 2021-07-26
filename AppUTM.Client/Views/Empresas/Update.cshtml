@@ -1,0 +1,84 @@
+﻿@model AppUTM.Client.Models.Empresa
+@{
+    ViewData["Title"] = "Actualizar datos de empresa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h4>Datos de "Nombre de la empresa"</h4>
+<form>
+    <div class="form-group row mt-4">
+        <input type="hidden" asp-for="EmpresaId" value="@Model.EmpresaId">
+        <div class="form-group col-md-4">
+            <label>RFC</label>
+            <input type="text" class="form-control" asp-for="RFC" value="@Model.RFC" disabled>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Nombre</label>
+            <input type="text" class="form-control" asp-for="Nombre" value="@Model.Nombre" disabled>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Alias</label>
+            <input type="text" class="form-control" asp-for="Alias" value="@Model.Alias">
+        </div>
+    </div>
+    <div class="form-group row mt-4">
+        <div class="form-group col-md-4">
+            <label>Tipo</label>
+            <input type="text" class="form-control" asp-for="Tipo" value="@Model.Tipo">
+        </div>
+        @if (Model.Activa == true)
+        {
+            <div class="form-group col-md-4">
+                <label>Estado</label>
+                <label class="form-control">Activa</label>
+                <input type="hidden" class="form-control" value="True">
+            </div>
+        }
+        else
+        {
+            <div class="form-group col-md-4">
+                <label>Estado</label>
+                <label class="form-control">Inactiva</label>
+                <input type="hidden" class="form-control" value="False">
+            </div>
+        }
+        <div class="form-group col-md-4">
+            <label>Teléfono</label>
+            <input type="text" class="form-control" asp-for="Telefono" value="@Model.Telefono" disabled>
+        </div>
+    </div>
+    <div class="form-group mt-3">
+        <label>Dirección</label>
+        <input type="text" class="form-control" asp-for="Direccion" value="@Model.Direccion" disabled>
+    </div>
+    <div class="d-flex">
+        <div class="mt-5">
+            <label for="">Cambiar imagen</label>
+            <input class="form-control" type="file">
+            <input type="hidden" asp-for="ImagenEmpresa" value="@Model.ImagenEmpresa" />
+        </div>
+        <img class="mx-2" id="company" src="http://localhost:59131/api/Empresas/image?nombreArchivo=@Model.ImagenEmpresa" alt="">
+
+    </div>
+    <div class=" d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <a class="btn btn-secondary mt-4" href="roles.html">Cancelar</a>
+            <button type="submit" class="btn btn-primary mt-4 mx-3">Guardar</button>
+        </div>
+
+        <button type="button" class="btn btn-danger mt-4" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Desactivar</button>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="exampleModalCenterTitle">Desea desactivar la empresa? Esta acción eliminará los cupones ligados</h5>
+                    </div>
+                    <div class="modal-body mx-auto">
+                        <button type="button" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

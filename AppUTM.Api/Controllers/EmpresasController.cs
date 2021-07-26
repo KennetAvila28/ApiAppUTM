@@ -2,6 +2,7 @@
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
@@ -17,12 +18,14 @@ namespace AppUTM.Api.Controllers
         private readonly IMapper _mapper;
         public readonly IAlmacenarImagen _almacenarImagen;
         private readonly string contenedor = "Empresas";
+        private readonly IWebHostEnvironment _env;
 
-        public EmpresasController(IEmpresaServices services, IMapper mapper, IAlmacenarImagen almacenarImagen)
+        public EmpresasController(IEmpresaServices services, IMapper mapper, IAlmacenarImagen almacenarImagen, IWebHostEnvironment env)
         {
             this._service = services;
             this._mapper = mapper;
             this._almacenarImagen = almacenarImagen;
+            this._env = env;
         }
 
         [HttpGet]
@@ -63,12 +66,11 @@ namespace AppUTM.Api.Controllers
         public async Task<ActionResult> Put(int id, [FromForm] EmpresaCreate empresaDto)
         {
             var empresaData = await _service.GetEmpresa(id);
-            if (empresaData == null) return NotFound();
-            if (empresaData.ImagenEmpresa != null)
-                await _almacenarImagen.BorraArchivo(empresaData.ImagenEmpresa, contenedor);
+            if (empresaData == null) return NotFound();                          
             var empresa = _mapper.Map(empresaDto, empresaData);
             if (empresaDto.Foto != null)
             {
+                await _almacenarImagen.BorraArchivo(empresaData.ImagenEmpresa, contenedor);
                 using (var memoryStream = new MemoryStream())
                 {
                     await empresaDto.Foto.CopyToAsync(memoryStream);
@@ -79,5 +81,21 @@ namespace AppUTM.Api.Controllers
             await _service.UpdateEmpresa(empresa);
             return Ok(empresa);
         }
-    }
+
+        [HttpGet]
+        [Route("image")]
+        public IActionResult ReturnImage([FromQuery] string nombreArchivo)
+        {
+            try
+            {
+                var image = System.IO.File.OpenRead(_env.WebRootPath + "/" + contenedor + "/"  + nombreArchivo);
+                return File(image, "image/jpeg");
+            }
+            catch
+            {
+                var image = System.IO.File.OpenRead(_env.WebRootPath + "/" + "not-available.jpg");
+                return File(image, "image/jpeg");
+            }
+        }
+    }   
 }
