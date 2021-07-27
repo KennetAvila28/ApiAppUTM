@@ -49,6 +49,27 @@ namespace AppUTM.Api.Controllers
             return Ok(cuponDto);
         }
 
+        [HttpGet("apply/{id:int}")]
+        public async Task<ActionResult<CuponImagen>> VerCupon(int id)
+        {
+            var cupon = await _service.GetCuponImagen(id);
+            if (cupon == null) return NotFound();
+            cupon.CuponesVisitados++;
+            await _service.UpdateCuponImagen(cupon);
+            var cuponDto = _mapper.Map<CuponImagen, CuponImagenReturn>(cupon);
+            return Ok(cuponDto);
+        }
+
+        [HttpPut("apply")]
+        public async Task<ActionResult> AplicarCupon(int id, CuponImagen cupon)
+        {
+            var cuponData = await _service.GetCuponImagen(id);
+            if (cuponData == null) return NotFound();
+            cuponData.CuponesUsados++;
+            await _service.UpdateCuponImagen(cuponData);
+            return Ok(cuponData);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post([FromForm] CuponImagenCreate cuponDto)
         {

@@ -1,4 +1,5 @@
 ﻿using AppUTM.Client.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace AppUTM.Client.Controllers
 {
@@ -35,12 +37,12 @@ namespace AppUTM.Client.Controllers
             var empresa = JsonConvert.DeserializeObject<Empresa>(json);
             return View(empresa);
         }
-
-        [HttpPut]
+  
+        [HttpPost]
         public IActionResult Update(Empresa empresa)
         {
             HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("https://localhost:59131/api/Empresas/");
+            
             var putTask = httpClient.PutAsJsonAsync<Empresa>("?id=" + empresa.EmpresaId, empresa);
             putTask.Wait();
             var result = putTask.Result;
@@ -48,6 +50,7 @@ namespace AppUTM.Client.Controllers
                 return RedirectToAction("Index");
             else
                 return this.BadRequest();
-        }
+        }        
+               
     }
 }

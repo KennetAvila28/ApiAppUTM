@@ -18,7 +18,7 @@ namespace AppUTM.Api.Controllers
         public CuponesGenericosController(ICuponGenericoServices services, IMapper mapper)
         {
             this._service = services;
-            this._mapper = mapper;
+            this._mapper = mapper;  
         }
 
         [HttpGet]
@@ -43,6 +43,27 @@ namespace AppUTM.Api.Controllers
             var cupon = await _service.GetCuponGenerico(id);
             var cuponDto = _mapper.Map<CuponGenerico, CuponGenericoReturn>(cupon);
             return Ok(cuponDto);
+        }
+
+        [HttpGet("apply/{id:int}")]
+        public async Task<ActionResult<CuponGenerico>> VerCupon(int id)
+        {
+            var cupon = await _service.GetCuponGenerico(id);
+            if (cupon == null) return NotFound();
+            cupon.CuponesVisitados++;
+            await _service.UpdateCuponGenerico(cupon);
+            var cuponDto = _mapper.Map<CuponGenerico, CuponGenericoReturn>(cupon);
+            return Ok(cuponDto);
+        }
+
+        [HttpPut("apply")]
+        public async Task<ActionResult> AplicarCupon(int id, CuponGenerico cupon)
+        {
+            var cuponData = await _service.GetCuponGenerico(id);
+            if (cuponData == null) return NotFound();
+            cuponData.CuponesUsados++;
+            await _service.UpdateCuponGenerico(cuponData);
+            return Ok(cuponData);
         }
 
         [HttpPost]
