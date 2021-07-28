@@ -26,7 +26,7 @@ namespace AppUTM.Client.Controllers
             var jsonCuponesImagen = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesImagen/empresa/" + id);
             var listCuponesImagen = JsonConvert.DeserializeObject<IEnumerable<CuponImagen>>(jsonCuponesImagen);
             cupones.cuponesImagen = listCuponesImagen;
-            return View(cupones);            
+            return View(listCupones);            
         }
 
         [HttpGet]

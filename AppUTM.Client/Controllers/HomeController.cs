@@ -4,6 +4,9 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Identity.Web;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace AppUTM.Client.Controllers
 {
@@ -16,10 +19,18 @@ namespace AppUTM.Client.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            HttpClient httpClient = new HttpClient();
+
+            var jsonEmpresas = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas");
+            var jsonResult = JsonConvert.DeserializeObject(jsonEmpresas).ToString();
+            var result = JsonConvert.DeserializeObject<List<Empresa>>(jsonResult);
+
+            return View(result);
         }
+
+
 
         public IActionResult Privacy()
         {
