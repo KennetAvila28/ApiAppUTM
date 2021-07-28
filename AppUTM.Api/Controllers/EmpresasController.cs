@@ -66,7 +66,7 @@ namespace AppUTM.Api.Controllers
         public async Task<ActionResult> Put(int id, [FromForm] EmpresaCreate empresaDto)
         {
             var empresaData = await _service.GetEmpresa(id);
-            if (empresaData == null) return NotFound();                          
+            if (empresaData == null) return NotFound();
             var empresa = _mapper.Map(empresaDto, empresaData);
             if (empresaDto.Foto != null)
             {
@@ -88,7 +88,7 @@ namespace AppUTM.Api.Controllers
         {
             try
             {
-                var image = System.IO.File.OpenRead(_env.WebRootPath + "/" + contenedor + "/"  + nombreArchivo);
+                var image = System.IO.File.OpenRead(_env.WebRootPath + "/" + contenedor + "/" + nombreArchivo);
                 return File(image, "image/jpeg");
             }
             catch
@@ -97,5 +97,5 @@ namespace AppUTM.Api.Controllers
                 return File(image, "image/jpeg");
             }
         }
-    }   
+    }
 }

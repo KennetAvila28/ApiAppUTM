@@ -1,3 +1,6 @@
+using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Repositories;
 using AppUTM.Data;
@@ -11,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 namespace AppUTM.Api
 {
@@ -26,7 +30,7 @@ namespace AppUTM.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            //services.AddControllers();
             services.AddCors(setupAction =>
             {
                 setupAction.AddPolicy("default", p =>
@@ -36,10 +40,11 @@ namespace AppUTM.Api
                         .AllowAnyHeader();
                 });
             });
-            services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
             services.AddAutoMapper(typeof(Startup));
+            services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
+            //services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<DataContext>(options =>
-                options.UseSqlServer(Configuration["ConnectionStrings:Default"]));
+                options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
@@ -48,6 +53,10 @@ namespace AppUTM.Api
             services.AddTransient<ICuponGenericoServices, CuponGenericoService>();
             services.AddTransient<ICuponImagenServices, CuponImagenService>();
             services.AddTransient<IAlmacenarImagen, AlmacenarImagen>();
+            services.AddControllers().AddNewtonsoftJson(opt =>
+            {
+                opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
 
             services.AddSwaggerGen(c =>
             {

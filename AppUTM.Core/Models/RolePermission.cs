@@ -2,7 +2,7 @@
 
 namespace AppUTM.Core.Models
 {
-    public class RolePermission : BaseEntity
+    public class RolePermission
     {
         [ForeignKey("Permissions")]
         public int PermissionId { get; set; }

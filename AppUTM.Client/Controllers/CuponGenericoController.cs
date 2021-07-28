@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Web;
 
 namespace AppUTM.Client.Controllers
 {
@@ -26,7 +28,7 @@ namespace AppUTM.Client.Controllers
             var jsonCuponesImagen = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesImagen/empresa/" + id);
             var listCuponesImagen = JsonConvert.DeserializeObject<IEnumerable<CuponImagen>>(jsonCuponesImagen);
             cupones.cuponesImagen = listCuponesImagen;
-            return View(listCupones);            
+            return View(cupones);            
         }
 
         [HttpGet]
@@ -36,6 +38,7 @@ namespace AppUTM.Client.Controllers
             var cupon = JsonConvert.DeserializeObject<CuponGenerico>(jsonCupon);
             return View(cupon);
         }
+
         [HttpGet]
         public async Task<ActionResult> Imagen(int id)
         {

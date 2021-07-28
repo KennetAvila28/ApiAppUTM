@@ -6,6 +6,6 @@ namespace AppUTM.Core.Models
     {
         public string Module { get; set; }
 
-        public ICollection<RolePermission> RolePermissions { get; set; }
+        public List<RolePermission> RolePermissions { get; set; }
     }
 }

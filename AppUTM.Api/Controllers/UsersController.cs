@@ -1,4 +1,5 @@
-﻿using AppUTM.Core.Models;
+﻿using System;
+using AppUTM.Core.Models;
 using AppUTM.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ using AppUTM.Api.DTOS.Users;
 using AppUTM.Api.Responses;
 using AppUTM.Core.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace AppUTM.Api.Controllers
 {
@@ -32,53 +35,89 @@ namespace AppUTM.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserReturn>>> Get()
         {
-            var User = await _Userervice.GetAllUsers();
-            var UserList = _mapper.Map<IEnumerable<User>, IEnumerable<UserReturn>>(User);
-            var response = new ApiResponse<IEnumerable<UserReturn>>(UserList);
-            return Ok(response);
+            try
+            {
+                var User = await _Userervice.GetAllUsers();
+                var UserList = _mapper.Map<IEnumerable<User>, IEnumerable<UserReturn>>(User);
+                var response = new ApiResponse<IEnumerable<UserReturn>>(UserList);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(int id)
         {
-            var user = await _Userervice.GetUserById(id);
-            var Userdto = _mapper.Map<User, UserReturn>(user);
-            var response = new ApiResponse<UserReturn>(Userdto);
-            return Ok(response);
+            try
+            {
+                var user = await _Userervice.GetUserById(id);
+                var Userdto = _mapper.Map<User, UserReturn>(user);
+                var response = new ApiResponse<UserReturn>(Userdto);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
+        [AllowAnonymous]
         [HttpGet("empleado/{correo}")]
         public async Task<ActionResult> Get(string correo)
         {
-            var Url = "http://api.utmetropolitana.edu.mx/api/Empleados/Get?correoinstitucional=";
-            var Client = new HttpClient();
-            var json = await Client.GetStringAsync(Url + correo);
-            return Ok(json);
+            try
+            {
+                var Url = "http://api.utmetropolitana.edu.mx/api/Empleados/Get?correoinstitucional=";
+                var Client = new HttpClient();
+                var json = await Client.GetStringAsync(Url + correo);
+                return Ok(json);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // POST api/<UserController>
         [HttpPost]
         public async Task<ActionResult> Post(UserCreate userCreate)
         {
-            var user = _mapper.Map<UserCreate, User>(userCreate);
-            await _Userervice.CreateUser(user);
-            var userReturn = _mapper.Map<User, UserReturn>(user);
-            var response = new ApiResponse<UserReturn>(userReturn);
-            return Ok(response);
+            try
+            {
+                var user = _mapper.Map<UserCreate, User>(userCreate);
+                await _Userervice.CreateUser(user);
+                var userReturn = _mapper.Map<User, UserReturn>(user);
+                var response = new ApiResponse<UserReturn>(userReturn);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         //// PUT api/<UserController>/5
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, UserForUpdateDto userForUpdateDto)
         {
-            var userToBeUpdate = await _Userervice.GetUserById(id);
-            var userForUpdate = _mapper.Map<User>(userForUpdateDto);
-            if (userToBeUpdate == null)
-                return NotFound();
-            await _Userervice.UpdateUser(userToBeUpdate, userForUpdate);
-            var result = new ApiResponse<bool>(true);
-            return Ok(result);
+            try
+            {
+                var userToBeUpdate = await _Userervice.GetUserById(id);
+                var userForUpdate = _mapper.Map<UserForUpdateDto, User>(userForUpdateDto);
+                if (userToBeUpdate == null)
+                    return NotFound();
+                await _Userervice.UpdateUser(userToBeUpdate, userForUpdate);
+                var result = new ApiResponse<bool>(true);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

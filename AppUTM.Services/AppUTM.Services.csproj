@@ -10,5 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppUTM.Core\AppUTM.Core.csproj" />
+    <ProjectReference Include="..\AppUTM.Data\AppUTM.Data.csproj" />
   </ItemGroup>
 </Project>

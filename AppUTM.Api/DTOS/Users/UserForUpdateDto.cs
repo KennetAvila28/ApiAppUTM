@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppUTM.Core.Models;
 
 namespace AppUTM.Api.DTOS.Users
 {
@@ -13,7 +14,8 @@ namespace AppUTM.Api.DTOS.Users
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
         public string Correo { get; set; }
-        public string[] RoleNames { get; set; }
+        public IList<UserRole> UserRoles { get; set; }
+        public int[] RolesToBeDelete { get; set; }
         public int Status { get; set; }
     }
 }

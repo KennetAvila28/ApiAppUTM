@@ -6,10 +6,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @*<title>@ViewData["Title"] - AppUTM.Client</title>*@
+    <title>@ViewData["Title"] - AppUTM.Client</title>
     <link rel="stylesheet" href="~/css/bootstrap.css">
     <link rel="stylesheet" href="~/css/main.css">
-    <script src="~/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/avatar.css" />
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -22,41 +22,53 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="me-auto"></div>
-
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="me-auto"></div>
+                    <ul class="navbar-nav mb-2 mb-lg-2 fw-bold d-flex">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="Index">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="Empresas/Index">Empresas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="Reporte/Reporte">Reportes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/User/agregar.html">Usuarios</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="me-auto"></div>
                 <ul class="navbar-nav mb-2 mb-lg-2 fw-bold d-flex">
-                    <li class="nav-item mx-auto user-name">
-                        <a class="nav-link active">@User.Claims.FirstOrDefault(x => x.Type == "name")?.Value</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="Index">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" asp-controller="Empresas" asp-action="Index">Empresas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page"  asp-controller="Reporte" asp-action="Reporte">Reportes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="Usuarios/usuarios.html">Usuarios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-area="MicrosoftIdentity" class="nav-link active" asp-controller="Account" asp-action="SignOut">Cerrar Sesión</a>
+                    <li class="nav-link dropdown active">
+                        <p class="nav-item"></p>
+                        <a class="nav-item pe-0" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="avatar avatar-48">
+                                <img class="rounded-circle" src="data:image/png;base64,@ViewBag.image" alt="">
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
+                            <div class="bg-white dark__bg-1000 rounded-2 py-2">
+                                <a asp-area="MicrosoftIdentity" class="nav-link active" asp-controller="Account" asp-action="SignOut" aria-current="page">Cerrar Sesión</a>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-
-    <!--footer-->
-    <!--/footer-->
-    <div>
-        <main role="main" class="mt-3 container">           
+    <div class="container">
+        <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

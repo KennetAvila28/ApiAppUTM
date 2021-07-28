@@ -9,13 +9,22 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.IO;
+using AppUTM.Client.Responses;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Web;
 
 namespace AppUTM.Client.Controllers
 {
     public class EmpresasController : Controller
     {
-        public EmpresasController()
-        { }
+        private readonly IConfiguration _configuration;
+        private readonly ITokenAcquisition _tokenAcquisition;
+
+        public EmpresasController(IConfiguration configuration, ITokenAcquisition tokenAcquisition)
+        {
+            _configuration = configuration;
+            _tokenAcquisition = tokenAcquisition;
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -24,8 +33,8 @@ namespace AppUTM.Client.Controllers
 
             //http://api.utmetropolitana.edu.mx/api/Empresas/Get
             //http://localhost:59131/api/Empresas
-            var jsonEmpresas = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas");
-            var listEmpresas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);         
+            var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas");
+            var listEmpresas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
             return View(listEmpresas);
         }
 
@@ -37,12 +46,12 @@ namespace AppUTM.Client.Controllers
             var empresa = JsonConvert.DeserializeObject<Empresa>(json);
             return View(empresa);
         }
-  
+
         [HttpPost]
         public IActionResult Update(Empresa empresa)
         {
             HttpClient httpClient = new HttpClient();
-            
+
             var putTask = httpClient.PutAsJsonAsync<Empresa>("?id=" + empresa.EmpresaId, empresa);
             putTask.Wait();
             var result = putTask.Result;
@@ -50,7 +59,6 @@ namespace AppUTM.Client.Controllers
                 return RedirectToAction("Index");
             else
                 return this.BadRequest();
-        }        
-               
+        }
     }
 }
