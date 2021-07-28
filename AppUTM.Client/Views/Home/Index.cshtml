@@ -7,7 +7,7 @@
 <div class="container-fluid p-3">
     <section>
         <div class="col-xl-3 col-sm-6 col-6 mb-4">
-
+            @*Contador de empresas*@
             <div class="card">
                 <div class="card-body">
                     <h3 class="text-danger">@Html.EditorFor(model => model.Count, new { HtmlAttributes = new { @class = "form-control", @placeholder="Count", @autofocus_autocomplete ="off", disabled = true} })</h3>
