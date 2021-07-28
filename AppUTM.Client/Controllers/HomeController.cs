@@ -44,6 +44,10 @@ namespace AppUTM.Client.Controllers
             var jsonResult = JsonConvert.DeserializeObject(jsonEmpresas).ToString();
             var result = JsonConvert.DeserializeObject<List<Empresa>>(jsonResult);
 
+            //var jsonEmpresas = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas");
+            //var jsonResult = JsonConvert.DeserializeObject(jsonEmpresas).ToString();
+            //var result = JsonConvert.DeserializeObject<List<Empresa>>(jsonResult);
+
             return View(result);
         }
 
