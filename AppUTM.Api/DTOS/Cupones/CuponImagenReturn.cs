@@ -12,6 +12,7 @@ namespace AppUTM.Api.DTOS.Cupones
         public string Descripcion { get; set; }
         public string Imagen { get; set; }
         public int EmpresaId { get; set; }
+        public string Domain { get; set; }
     }
 
     public class CuponImagenCreate
@@ -22,6 +23,5 @@ namespace AppUTM.Api.DTOS.Cupones
         public string Descripcion { get; set; }
         public string Imagen { get; set; }
         public int EmpresaId { get; set; }
-        public IFormFile Foto { get; set; }
     }
 }

@@ -43,8 +43,38 @@ namespace AppUTM.Api.Controllers
             var cupon = await _service.GetCuponGenerico(id);
             var cuponDto = _mapper.Map<CuponGenerico, CuponGenericoReturn>(cupon);
             return Ok(cuponDto);
+        }      
+
+        [HttpPost]
+        public async Task<ActionResult> Post(CuponGenericoCreate cuponDto)
+        {
+            var cupon = _mapper.Map<CuponGenericoCreate, CuponGenerico>(cuponDto);
+            await _service.AddCuponGenerico(cupon);
+            var cuponResponseDto = _mapper.Map<CuponGenerico, CuponGenericoReturn>(cupon);
+            return Ok(cuponResponseDto);
+        }
+     
+        [HttpPut]
+        public async Task<ActionResult> Put(int id, CuponGenericoCreate cuponGenerico)
+        {
+            var cuponData = await _service.GetCuponGenerico(id);
+            if (cuponData == null) return NotFound();
+            var cupon = _mapper.Map(cuponGenerico, cuponData);
+            await _service.UpdateCuponGenerico(cupon);
+            return Ok(cupon);
         }
 
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var cupon = await _service.GetCuponGenerico(id);
+            if (cupon == null) return NotFound();
+            await _service.DeleteCuponGenerico(cupon);
+            return Ok(true);
+        }
+
+        //Métodos para la aplicación móvil
         [HttpGet("apply/{id:int}")]
         public async Task<ActionResult<CuponGenerico>> VerCupon(int id)
         {
@@ -64,33 +94,6 @@ namespace AppUTM.Api.Controllers
             cuponData.CuponesUsados++;
             await _service.UpdateCuponGenerico(cuponData);
             return Ok(cuponData);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Post(CuponGenericoCreate cuponDto)
-        {
-            var cupon = _mapper.Map<CuponGenericoCreate, CuponGenerico>(cuponDto);
-            await _service.AddCuponGenerico(cupon);
-            var cuponResponseDto = _mapper.Map<CuponGenerico, CuponGenericoReturn>(cupon);
-            return Ok(cuponResponseDto);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Put(int id, CuponGenerico cupon)
-        {
-            var cuponData = await _service.GetCuponGenerico(id);
-            if (cuponData == null) return NotFound();
-            await _service.UpdateCuponGenerico(cupon);
-            return Ok(cupon);
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            var cupon = await _service.GetCuponGenerico(id);
-            if (cupon == null) return NotFound();
-            await _service.DeleteCuponGenerico(cupon);
-            return Ok(true);
         }
     }
 }

@@ -1,0 +1,52 @@
+﻿@model AppUTM.Client.Models.CuponImagen
+@{
+    ViewData["Title"] = "Agregar cupón con imagen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Datos del cupón @Model.CuponImagenId</h4>
+<form asp-action="UpdateCuponImagen" method="post" enctype="multipart/form-data">
+    <img class="qr-full" src="http://localhost:59131/api/CuponesImagen/image?nombreArchivo=@Model.Imagen" alt="@Model.CuponImagenId">
+    <div class="mt-1">
+        <label for="">Cambiar imagen</label>
+        <input class="form-control" type="file" asp-for="Foto">
+        <input type="hidden" asp-for="Imagen" value="@Model.Imagen" />
+    </div>
+    <script src="./js/dropImage.js"></script>
+
+    <div class="form-group mt-4">
+        <label for="">Fecha de expiración</label>
+        <input type="datetime" class="form-control" asp-for="FechaExpiracion" value="@Model.FechaExpiracion" required>
+    </div>
+    <div class="form-group mt-4">
+        <label for="">Descripción</label>
+        <input type="text" class="form-control" asp-for="Descripcion" value="@Model.Descripcion">
+    </div>
+
+    <input type="hidden" asp-for="CuponesVisitados" value="@Model.CuponesVisitados" />
+    <input type="hidden" asp-for="CuponesUsados" value="@Model.CuponesUsados" />
+    <input type="hidden" asp-for="EmpresaId" value="@Model.EmpresaId" />
+    <input type="hidden" asp-for="CuponImagenId" value="@Model.CuponImagenId" />
+    <input type="hidden" asp-for="Domain" value="@Model.Domain" />
+
+    <div class=" d-flex justify-content-between align-items-center">
+        <div>
+            <a class="btn btn-secondary mt-4" asp-route-Id="@Model.EmpresaId" asp-action="Index">Regresar/Cancelar</a>
+            <input type="submit" class="btn btn-primary mt-4 mx-3" value="Actualizar Datos" />
+        </div>
+
+        <button type="button" class="btn btn-danger mt-4" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Borrar</button>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="exampleModalCenterTitle">¿Eliminar el cupón?</h5>
+                    </div>
+                    <div class="modal-body mx-auto">
+                        <a asp-route-EmpresaId="@Model.EmpresaId" asp-route-Id="@Model.CuponImagenId" asp-action="DeleteCuponImagen" class="btn btn-danger">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>        

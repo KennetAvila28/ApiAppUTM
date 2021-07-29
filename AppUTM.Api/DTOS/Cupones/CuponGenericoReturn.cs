@@ -16,6 +16,7 @@ namespace AppUTM.Api.DTOS.Cupones
 
     public class CuponGenericoCreate
     {
+        public int CuponGeneridoId { get; set; }
         public DateTime FechaExpiracion { get; set; }
         public int CuponesUsados { get; set; }
         public int CuponesVisitados { get; set; }

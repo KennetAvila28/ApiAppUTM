@@ -65,6 +65,7 @@ namespace AppUTM.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiAppUTM v1"));
             }
 
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
 

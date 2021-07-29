@@ -1,0 +1,54 @@
+﻿@model AppUTM.Client.Models.CuponGenerico
+@{
+    ViewData["Title"] = "Actualizar cupón genérico";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Datos del cupón @Model.CuponGeneridoId</h4>
+<form asp-action="UpdateGenerico" method="post">
+    <div class="form-group row mt-4">
+        <div class="form-group col-md-4">
+            <label>Fecha de vencimiento</label>
+            <input type="datetime" class="form-control" asp-for="FechaExpiracion" value="@Model.FechaExpiracion" required>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Porcentaje</label>
+            <input type="number" class="form-control" asp-for="PorcentajeDescuento" value="@Model.PorcentajeDescuento" required>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Veces por persona</label>
+            <input type="number" class="form-control" asp-for="NumeroPorPersona" value="@Model.NumeroPorPersona">
+        </div>
+    </div>
+    <div class="form-group mt-4">
+        <label for="">Descripción</label>
+        <input type="text" class="form-control" asp-for="Descripcion" value="@Model.Descripcion">
+    </div>
+    <input type="hidden" asp-for="CuponGeneridoId" value="@Model.CuponGeneridoId" />
+    <input type="hidden" asp-for="CuponesUsados" value="@Model.CuponesUsados" />
+    <input type="hidden" asp-for="CuponesVisitados" value="@Model.CuponesVisitados" />
+    <input type="hidden" asp-for="EmpresaId" value="@Model.EmpresaId" />
+
+    <div class=" d-flex justify-content-between align-items-center">
+        <div>
+            <a class="btn btn-secondary mt-4" asp-route-Id="@Model.EmpresaId" asp-action="Index">Regresar/Cancelar</a>
+            <input type="submit" class="btn btn-primary mt-4 mx-3" value="Guardar Datos" />
+        </div>
+
+
+
+        <button type="button" class="btn btn-danger mt-4" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Borrar</button>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="exampleModalCenterTitle">¿Eliminar el cupón?</h5>
+                    </div>
+                    <div class="modal-body mx-auto">
+                        <a asp-route-EmpresaId="@Model.EmpresaId" asp-route-Id="@Model.CuponGeneridoId" asp-action="DeleteGenerico" class="btn btn-danger">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>       

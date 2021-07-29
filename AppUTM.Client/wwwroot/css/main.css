@@ -26,9 +26,15 @@
     height: auto;
 }
 
+.myButton{
+    width: 100px;
+    height: 42px;
+    margin-top: 5px;
+}
+
 #company{
     width: 250px;
-    height: auto;
+    height: auto;   
 }
 
 .qr-full{

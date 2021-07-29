@@ -1,4 +1,6 @@
-﻿namespace AppUTM.Api.DTOS.Empresas
+﻿using Microsoft.AspNetCore.Http;
+
+namespace AppUTM.Api.DTOS.Empresas
 {
     public class EmpresaReturn
     {
@@ -11,6 +13,7 @@
         public string Direccion { get; set; }
         public bool Activa { get; set; }
         public string Telefono { get; set; }
-        public string ImagenEmpresa { get; set; }
+        public string ImagenEmpresa { get; set; }    
+        public string Domain { get; set; }
     }
 }

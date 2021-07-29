@@ -5,17 +5,20 @@
 }
 
 
-<h4>Datos de "Nombre de la empresa"</h4>
-<form asp-action="Update">
+<h4>Datos de @Model.Nombre</h4>
+<form asp-action="Update" enctype="multipart/form-data">
     <div class="form-group row mt-4">
         <input type="hidden" asp-for="EmpresaId" value="@Model.EmpresaId">
+        <input type="hidden" asp-for="Domain" value="@Model.Domain" />
         <div class="form-group col-md-4">
             <label>RFC</label>
-            <input type="text" class="form-control" asp-for="RFC" value="@Model.RFC" disabled>
+            <label class="form-control">@Model.RFC</label>
+            <input type="hidden" class="form-control" asp-for="RFC" value="@Model.RFC">
         </div>
         <div class="form-group col-md-4">
             <label>Nombre</label>
-            <input type="text" class="form-control" asp-for="Nombre" value="@Model.Nombre" disabled>
+            <label class="form-control">@Model.Nombre</label>
+            <input type="hidden" class="form-control" asp-for="Nombre" value="@Model.Nombre">
         </div>
         <div class="form-group col-md-4">
             <label>Alias</label>
@@ -26,44 +29,35 @@
         <div class="form-group col-md-4">
             <label>Tipo</label>
             <input type="text" class="form-control" asp-for="Tipo" value="@Model.Tipo">
-        </div>
-        @if (Model.Activa == true)
-        {
+        </div>     
             <div class="form-group col-md-4">
                 <label>Estado</label>
-                <label class="form-control">Activa</label>
-                <input type="hidden" class="form-control" value="True">
-            </div>
-        }
-        else
-        {
+                <label class="form-control">@Model.Activa</label>
+                <input type="hidden" class="form-control" asp-for="Activa" value="@Model.Activa">
+             </div>
             <div class="form-group col-md-4">
-                <label>Estado</label>
-                <label class="form-control">Inactiva</label>
-                <input type="hidden" class="form-control" value="False">
-            </div>
-        }
-        <div class="form-group col-md-4">
-            <label>Teléfono</label>
-            <input type="text" class="form-control" asp-for="Telefono" value="@Model.Telefono" disabled>
-        </div>
+                <label>Teléfono</label>
+                <label class="form-control">@Model.Telefono</label>
+                <input type="hidden" class="form-control" asp-for="Telefono" value="@Model.Telefono">
+            </div>        
     </div>
     <div class="form-group mt-3">
         <label>Dirección</label>
-        <input type="text" class="form-control" asp-for="Direccion" value="@Model.Direccion" disabled>
+        <label class="form-control">@Model.Direccion</label>
+        <input type="hidden" class="form-control" name="Direccion" asp-for="@Model.Direccion">
     </div>
     <div class="d-flex">
         <div class="mt-5">
             <label for="">Cambiar imagen</label>
-            <input class="form-control" type="file">
-            <input type="hidden" asp-for="ImagenEmpresa" value="@Model.ImagenEmpresa" />
+            <input class="form-control" type="file" name="Foto">
+            <input type="hidden" name="ImagenEmpresa" asp-for="@Model.ImagenEmpresa" />
         </div>
-        <img class="mx-2" id="company" src="http://localhost:59131/api/Empresas/image?nombreArchivo=@Model.ImagenEmpresa" alt=""> <!-- http://api.utmetropolitana.edu.mx/api/Empresas/image?nombreArchivo= -->
+        <img class="mx-2 mt-3" id="company" src="http://localhost:59131/api/Empresas/image?nombreArchivo=@Model.ImagenEmpresa" alt="@Model.ImagenEmpresa"> <!-- http://api.utmetropolitana.edu.mx/api/Empresas/image?nombreArchivo= -->       
 
     </div>
     <div class=" d-flex justify-content-between align-items-center mb-5">
         <div>
-            <a class="btn btn-secondary mt-4" href="roles.html">Cancelar</a>
+            <a class="btn btn-secondary mt-4" asp-action="Index">Cancelar/Regresar</a>
             <input type="submit" class="btn btn-primary mt-4 mx-3" value="Guardar Datos" />
         </div>
 

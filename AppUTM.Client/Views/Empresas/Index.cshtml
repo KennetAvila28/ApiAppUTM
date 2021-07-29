@@ -29,7 +29,7 @@
                             <tbody id="myModalTable">
                                 <tr>
                                     <td>La Coronela Mérida</td>
-                                    <td><a class="button-a">Registrar</a></td>
+                                    <td><a class="button-a" asp-controller="Empresas" asp-action="PostImage">Registrar</a></td>
                                 </tr>
                                 <tr>
                                     <td>Empresa 2</td>
@@ -56,7 +56,7 @@
             {
                 <tr>
                     <td>@item.Nombre</td>
-                    <td><a href="#">Cupones</a></td>
+                    <td><a asp-controller="Cupones" asp-action="Index" asp-route-Id="@item.EmpresaId">Cupones</a></td>
                     <td><a asp-action="Update" asp-route-Id="@item.EmpresaId">Detalles</a></td>
                 </tr>
             }

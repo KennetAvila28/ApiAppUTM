@@ -12,6 +12,5 @@ namespace AppUTM.Api.DTOS.Empresas
         public bool Activa { get; set; }
         public string Telefono { get; set; }
         public string ImagenEmpresa { get; set; }
-        public IFormFile Foto { get; set; }
     }
 }

@@ -1,0 +1,31 @@
+﻿@model AppUTM.Client.Models.CuponImagen
+@{
+    ViewData["Title"] = "Agregar cupón con imagen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-3">
+    <h4>Agregar cupón con imagen para @Model.NombreEmpresa </h4>    
+    <form method="post" asp-action="CreateCuponImagen" enctype="multipart/form-data">
+        <div class="drop-zone mt-4">
+            <span class="drop-zone__prompt">Arrastre y suelte la imagen o seleccione</span>
+            <input type="file" class="drop-zone__input" asp-for="Foto" required>
+        </div>
+        <div class="form-group mt-4">
+            <label for="">Fecha de expiración</label>
+            <input type="date" class="form-control" asp-for="FechaExpiracion" value="2022-01-01" required>
+        </div>
+        <div class="form-group mt-4">
+            <label for="">Descripción</label>
+            <input type="text" class="form-control" asp-for="Descripcion" required>
+        </div>
+        <input type="hidden" asp-for="CuponesUsados" value="0" />
+        <input type="hidden" asp-for="CuponesVisitados" value="0" />
+        <input type="hidden" asp-for="EmpresaId" value="@Model.EmpresaId" />
+        <input type="hidden" asp-for="Domain" value="@Model.Domain" />
+
+        <script src="~/js/dropImage.js"></script>
+        <a class="btn btn-secondary mt-4" asp-route-Id="@Model.EmpresaId" asp-action="Index">Regresar/Cancelar</a>
+        <button type="submit" class="btn btn-primary mt-4">Registrar</button>
+    </form>
+</div>   

@@ -3,9 +3,12 @@ using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace AppUTM.Api.Controllers
@@ -39,56 +42,44 @@ namespace AppUTM.Api.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Empresa>> Details(int id)
         {
-            var empresa = await _service.GetEmpresa(id);
+            string startupPath = Environment.CurrentDirectory;
+            var empresa = await _service.GetEmpresa(id);            
             var empresaDto = _mapper.Map<Empresa, EmpresaReturn>(empresa);
+            if (empresa != null) empresaDto.Domain = startupPath;
             return Ok(empresaDto);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm] EmpresaCreate empresaDto)
+        public async Task<ActionResult> Post(EmpresaCreate empresaDto)
         {
-            var empresa = _mapper.Map<EmpresaCreate, Empresa>(empresaDto);
-            if (empresaDto.Foto != null)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await empresaDto.Foto.CopyToAsync(memoryStream);
-                    var contenido = memoryStream.ToArray();
-                    empresa.ImagenEmpresa = await _almacenarImagen.GuardarArchivo(contenido, contenedor, empresaDto.Foto.FileName);
-                }
-            }
+            var empresa = _mapper.Map<EmpresaCreate, Empresa>(empresaDto);      
             await _service.AddEmpresa(empresa);
             var empresaResponseDto = _mapper.Map<Empresa, EmpresaReturn>(empresa);
             return Ok(empresaResponseDto);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromForm] EmpresaCreate empresaDto)
-        {
+        public async Task<ActionResult> Put(int id, EmpresaCreate empresaDto)
+        {            
             var empresaData = await _service.GetEmpresa(id);
-            if (empresaData == null) return NotFound();                          
-            var empresa = _mapper.Map(empresaDto, empresaData);
-            if (empresaDto.Foto != null)
-            {
-                await _almacenarImagen.BorraArchivo(empresaData.ImagenEmpresa, contenedor);
-                using (var memoryStream = new MemoryStream())
-                {
-                    await empresaDto.Foto.CopyToAsync(memoryStream);
-                    var contenido = memoryStream.ToArray();
-                    empresaData.ImagenEmpresa = await _almacenarImagen.EditarArchivo(contenido, contenedor, empresaData.ImagenEmpresa);
-                }
-            }
+            if (empresaData == null) return NotFound();
+
+            if (empresaData.ImagenEmpresa != empresaDto.ImagenEmpresa)
+                await _almacenarImagen.BorraArchivo(empresaData.ImagenEmpresa, contenedor);            
+            
+            var empresa = _mapper.Map(empresaDto, empresaData);           
             await _service.UpdateEmpresa(empresa);
             return Ok(empresa);
         }
-
+                    
+        //Regresa la imagen de la empresa
         [HttpGet]
         [Route("image")]
         public IActionResult ReturnImage([FromQuery] string nombreArchivo)
         {
             try
             {
-                var image = System.IO.File.OpenRead(_env.WebRootPath + "/" + contenedor + "/"  + nombreArchivo);
+                var image = System.IO.File.OpenRead(_env.WebRootPath + "/" + contenedor + "/" + nombreArchivo);
                 return File(image, "image/jpeg");
             }
             catch
@@ -97,5 +88,25 @@ namespace AppUTM.Api.Controllers
                 return File(image, "image/jpeg");
             }
         }
-    }   
+
+        //No aplica
+        /*
+        [HttpPost("agregarFoto")]
+        public async Task<ActionResult> PostImage([FromForm] IFormFile imagen)
+        {
+            if (imagen != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await imagen.CopyToAsync(memoryStream);
+                    var contenido = memoryStream.ToArray();
+                    await _almacenarImagen.EditarArchivo(contenido, contenedor, imagen.FileName);
+                }
+            }
+            return Ok(true);
+        }
+
+        */
+
+    }    
 }

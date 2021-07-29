@@ -2,7 +2,9 @@
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -17,12 +19,14 @@ namespace AppUTM.Api.Controllers
         private readonly IMapper _mapper;
         public readonly IAlmacenarImagen _almacenarImagen;
         private readonly string contenedor = "Cupones";
+        private readonly IWebHostEnvironment _env;
 
-        public CuponesImagenController(ICuponImagenServices services, IMapper mapper, IAlmacenarImagen almacenarImagen)
+        public CuponesImagenController(ICuponImagenServices services, IMapper mapper, IAlmacenarImagen almacenarImagen, IWebHostEnvironment environment)
         {
             this._service = services;
             this._mapper = mapper;
             this._almacenarImagen = almacenarImagen;
+            this._env = environment;
         }
 
         [HttpGet]
@@ -44,8 +48,10 @@ namespace AppUTM.Api.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<CuponImagen>> Details(int id)
         {
+            string startupPath = Environment.CurrentDirectory;
             var cupon = await _service.GetCuponImagen(id);
             var cuponDto = _mapper.Map<CuponImagen, CuponImagenReturn>(cupon);
+            if (cupon != null) cuponDto.Domain = startupPath;
             return Ok(cuponDto);
         }
 
@@ -71,40 +77,24 @@ namespace AppUTM.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm] CuponImagenCreate cuponDto)
+        public async Task<ActionResult> Post (CuponImagenCreate cuponDto)
         {
-            var cupon = _mapper.Map<CuponImagenCreate, CuponImagen>(cuponDto);
-            if (cuponDto.Foto != null)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await cuponDto.Foto.CopyToAsync(memoryStream);
-                    var contenido = memoryStream.ToArray();
-                    cupon.Imagen = await _almacenarImagen.GuardarArchivo(contenido, contenedor, cuponDto.Foto.FileName);
-                }
-            }
+            var cupon = _mapper.Map<CuponImagenCreate, CuponImagen>(cuponDto);           
             await _service.AddCuponImagen(cupon);
             var cuponResponseDto = _mapper.Map<CuponImagen, CuponImagenReturn>(cupon);
             return Ok(cuponResponseDto);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromForm] CuponImagenCreate cuponDto)
+        public async Task<ActionResult> Put(int id, CuponImagenCreate cuponDto)
         {
             var cuponData = await _service.GetCuponImagen(id);
             if (cuponData == null) return NotFound();
-            if (cuponData.Imagen != null)
+
+            if (cuponData.Imagen != cuponDto.Imagen)
                 await _almacenarImagen.BorraArchivo(cuponData.Imagen, contenedor);
-            var cupon = _mapper.Map(cuponDto, cuponData);
-            if (cuponDto.Foto != null)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await cuponDto.Foto.CopyToAsync(memoryStream);
-                    var contenido = memoryStream.ToArray();
-                    cuponData.Imagen = await _almacenarImagen.EditarArchivo(contenido, contenedor, cuponData.Imagen);
-                }
-            }
+
+            var cupon = _mapper.Map(cuponDto, cuponData);   
             await _service.UpdateCuponImagen(cupon);
             return Ok(cupon);
         }
@@ -120,6 +110,22 @@ namespace AppUTM.Api.Controllers
 
             await _service.DeleteCuponImagen(cuponData);
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("image")]
+        public IActionResult ReturnImage([FromQuery] string nombreArchivo)
+        {
+            try
+            {
+                var image = System.IO.File.OpenRead(_env.WebRootPath + "/" + contenedor + "/" + nombreArchivo);
+                return File(image, "image/jpeg");
+            }
+            catch
+            {
+                var image = System.IO.File.OpenRead(_env.WebRootPath + "/" + "not-available.jpg");
+                return File(image, "image/jpeg");
+            }
         }
     }
 }

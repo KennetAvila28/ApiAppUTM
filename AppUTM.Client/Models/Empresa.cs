@@ -14,5 +14,6 @@ namespace AppUTM.Client.Models
         public string Telefono { get; set; }
         public string ImagenEmpresa { get; set; }
         public IFormFile Foto { get; set; }
+        public string Domain { get; set; }
     }
 }
