@@ -1,20 +1,22 @@
-﻿using System;
+﻿using AppUTM.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using AppUTM.Core.Repositories;
-using Microsoft.EntityFrameworkCore;
 
-namespace AppUTM.Api.AppUTM.DATA.Repositories
+namespace AppUTM.Data.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DbContext Context;
+
         public Repository(DbContext context)
         {
             Context = context;
         }
+
         public async ValueTask<TEntity> GetById(int id)
         {
             return await Context.Set<TEntity>().FindAsync(id);
@@ -53,7 +55,11 @@ namespace AppUTM.Api.AppUTM.DATA.Repositories
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
             Context.Set<TEntity>().RemoveRange(entities);
+        }
 
+        public void Update(TEntity entity)
+        {
+            Context.Set<TEntity>().Update(entity);
         }
     }
 }

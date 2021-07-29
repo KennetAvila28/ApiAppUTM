@@ -2,7 +2,7 @@
 
 namespace AppUTM.Core.Interfaces
 {
-    public interface IEntity
+    internal interface IEntity
     {
         public int Id { get; set; }
         public bool Status { get; set; }

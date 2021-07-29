@@ -1,6 +1,8 @@
-using AppUTM.Api.AppUTM.DATA.Repositories;
+using AppUTM.Core.Interfaces;
 using AppUTM.Core.Repositories;
 using AppUTM.Data;
+using AppUTM.Data.Repositories;
+using AppUTM.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Microsoft.Identity.Web;
+using Newtonsoft.Json;
+
 namespace AppUTM.Api
 {
     public class Startup
@@ -32,11 +35,17 @@ namespace AppUTM.Api
                         .AllowAnyHeader();
                 });
             });
-            services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
+            services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddControllers();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IPermissionService, PermissionService>();
+            services.AddControllers().AddNewtonsoftJson(opt =>
+            {
+                opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiAppUTM", Version = "v1" });
