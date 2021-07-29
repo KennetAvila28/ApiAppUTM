@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppUTM.Core.Models
 {
@@ -9,6 +10,9 @@ namespace AppUTM.Core.Models
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
         public string Correo { get; set; }
-        public ICollection<UserRole> UserRoles { get; set; }
+        public List<UserRole> UserRoles { get; set; }
+
+        [NotMapped]
+        public int[] RolesToBeDelete { get; set; }
     }
 }

@@ -1,13 +1,16 @@
-﻿@{
+﻿@model List<Empresa>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 <!-- Dashboard -->
 <div class="container-fluid p-3">
     <section>
         <div class="col-xl-3 col-sm-6 col-6 mb-4">
+            
             <div class="card">
                 <div class="card-body">
-                    <h3 class="text-danger">X</h3>
+                    <h3 class="text-danger">@Html.EditorFor(model => model.Count, new { HtmlAttributes = new { @class = "form-control", @placeholder="Count", @autofocus_autocomplete ="off", disabled = true} })</h3>
                     <p class="mb-0">Empresas vigentes</p>
                 </div>
             </div>

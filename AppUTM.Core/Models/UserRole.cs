@@ -2,7 +2,7 @@
 
 namespace AppUTM.Core.Models
 {
-    public class UserRole : BaseEntity
+    public class UserRole
     {
         [ForeignKey("Users")]
         public int UserId { get; set; }

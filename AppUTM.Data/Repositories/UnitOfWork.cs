@@ -13,6 +13,8 @@ namespace AppUTM.Data.Repositories
         private IRepository<Empresa> _empresaRepository;
         private IRepository<CuponGenerico> _cuponGenerico;
         private IRepository<CuponImagen> _cuponImagen;
+        private RolePermissionRepository _rolesPermissionRepository;
+        private UserRolesRepository _userRolesRepository;
 
         public UnitOfWork(DataContext context)
         {
@@ -25,6 +27,9 @@ namespace AppUTM.Data.Repositories
         public IRepository<Empresa> EmpresaRepository => _empresaRepository ?? new Repository<Empresa>(Context);
         public IRepository<CuponGenerico> CuponGenericoRepository => _cuponGenerico ?? new Repository<CuponGenerico>(Context);
         public IRepository<CuponImagen> CuponImagenRepository => _cuponImagen ?? new Repository<CuponImagen>(Context);
+
+        public IRolePermissionRepository RolePermission => _rolesPermissionRepository ??= new RolePermissionRepository(Context);
+        public IUserRolesRepository UserRoles => _userRolesRepository ??= new UserRolesRepository(Context);
 
         public void Dispose()
         {

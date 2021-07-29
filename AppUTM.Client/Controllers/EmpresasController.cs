@@ -9,18 +9,34 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.IO;
+<<<<<<< HEAD
 using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.AspNetCore.Hosting;
+=======
+using AppUTM.Client.Responses;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Web;
+>>>>>>> 88fd1b395181ddafd48280ab77966b1d2e74e99c
 
 namespace AppUTM.Client.Controllers
 {
     public class EmpresasController : Controller
     {
+<<<<<<< HEAD
         IWebHostEnvironment _env;
         public EmpresasController(IWebHostEnvironment environment)
         {
             this._env = environment;
+=======
+        private readonly IConfiguration _configuration;
+        private readonly ITokenAcquisition _tokenAcquisition;
+
+        public EmpresasController(IConfiguration configuration, ITokenAcquisition tokenAcquisition)
+        {
+            _configuration = configuration;
+            _tokenAcquisition = tokenAcquisition;
+>>>>>>> 88fd1b395181ddafd48280ab77966b1d2e74e99c
         }
 
         [HttpGet]
@@ -30,8 +46,8 @@ namespace AppUTM.Client.Controllers
 
             //http://api.utmetropolitana.edu.mx/api/Empresas/Get
             //http://localhost:59131/api/Empresas
-            var jsonEmpresas = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas");
-            var listEmpresas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);         
+            var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas");
+            var listEmpresas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
             return View(listEmpresas);
         }
        
@@ -47,6 +63,7 @@ namespace AppUTM.Client.Controllers
         public IActionResult Update(int id, Empresa empresa)
         {
             HttpClient httpClient = new HttpClient();
+<<<<<<< HEAD
             if (empresa.Foto != null)
             {
                 string imagen = UploadImage(empresa);
@@ -54,11 +71,16 @@ namespace AppUTM.Client.Controllers
             }
             httpClient.BaseAddress = new Uri("http://localhost:59131/api/Empresas/");
             var putTask = httpClient.PutAsJsonAsync<Empresa>("?id=" + id, empresa);
+=======
+
+            var putTask = httpClient.PutAsJsonAsync<Empresa>("?id=" + empresa.EmpresaId, empresa);
+>>>>>>> 88fd1b395181ddafd48280ab77966b1d2e74e99c
             putTask.Wait();
             var result = putTask.Result;
             if (result.IsSuccessStatusCode)
                 return View(empresa);
             else
+<<<<<<< HEAD
                 return RedirectToAction("Error", "Home");
         }
 
@@ -108,5 +130,9 @@ namespace AppUTM.Client.Controllers
         */
 
 
+=======
+                return this.BadRequest();
+        }
+>>>>>>> 88fd1b395181ddafd48280ab77966b1d2e74e99c
     }
 }

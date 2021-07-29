@@ -33,16 +33,17 @@ namespace AppUTM.Services
             return newPermission;
         }
 
-        public async Task UpdatePermission(Permission PermissionToBeUpdated, Permission Permission)
+        public async Task UpdatePermission(Permission permissionToBeUpdated, Permission permission)
         {
-            PermissionToBeUpdated.Module = Permission.Module;
-            PermissionToBeUpdated.UpdateAt = DateTime.Now;
+            permissionToBeUpdated.Module = permission.Module;
+            permissionToBeUpdated.UpdateAt = DateTime.Now;
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task DeletePermission(Permission Permission)
+        public async Task DeletePermission(Permission permission)
         {
-            _unitOfWork.Permissions.Remove(Permission);
+            _unitOfWork.RolePermission.RemoveRange(permission.RolePermissions);
+            _unitOfWork.Permissions.Remove(permission);
             await _unitOfWork.CommitAsync();
         }
     }

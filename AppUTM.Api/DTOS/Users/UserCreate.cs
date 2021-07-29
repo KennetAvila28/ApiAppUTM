@@ -13,6 +13,6 @@ namespace AppUTM.Api.DTOS.Users
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
         public string Correo { get; set; }
-        public ICollection<UserRole> UserRoles { get; set; }
+        public IList<UserRole> UserRoles { get; set; }
     }
 }
