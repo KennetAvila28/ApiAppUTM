@@ -9,6 +9,7 @@ using AppUTM.Api.Responses;
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppUTM.Api.Controllers
 {

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace AppUTM.Core.Models
 {
@@ -8,9 +9,13 @@ namespace AppUTM.Core.Models
         [ForeignKey("Events")]
         public int EventId { get; set; }
 
+        [JsonIgnore]
         public Event Event { get; set; }
 
         [ForeignKey("Favorites")]
-        public Favorites FavoriteId { get; set; }
+        public int FavoriteId { get; set; }
+
+        [JsonIgnore]
+        public Favorites Favorite { get; set; }
     }
 }

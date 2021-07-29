@@ -37,6 +37,7 @@ namespace AppUTM.Services
         {
             permissionToBeUpdated.Module = permission.Module;
             permissionToBeUpdated.UpdateAt = DateTime.Now;
+            _unitOfWork.Permissions.Update(permissionToBeUpdated);
             await _unitOfWork.CommitAsync();
         }
 

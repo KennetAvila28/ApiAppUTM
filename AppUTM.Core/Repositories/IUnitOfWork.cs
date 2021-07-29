@@ -11,6 +11,9 @@ namespace AppUTM.Core.Repositories
         IUserRepository Users { get; }
         IRolePermissionRepository RolePermission { get; }
         IUserRolesRepository UserRoles { get; }
+        IEventFavoriteRepository EventFavorite { get; }
+        IEventRepository Events { get; }
+        IFavoriteRepository Favorites { get; }
 
         Task<int> CommitAsync();
     }

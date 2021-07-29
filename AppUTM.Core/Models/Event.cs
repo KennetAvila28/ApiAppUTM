@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppUTM.Core.Models
 {
     [Table("Events")]
-    public class Event
+    public class Event : BaseEntity
     {
         public string Title { get; set; }
         public string Content { get; set; }
@@ -18,5 +19,6 @@ namespace AppUTM.Core.Models
         public bool IsActivity { get; set; }
         public bool IsSuggest { get; set; }
         public bool IsPublished { get; set; }
+        public IList<EventFavorite> EventFavorite { get; set; }
     }
 }

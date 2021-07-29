@@ -50,6 +50,7 @@ namespace AppUTM.Services
                     _unitOfWork.RolePermission.Remove(permission);
                 }
             }
+            _unitOfWork.Roles.Update(roleToBeUpdated);
             await _unitOfWork.CommitAsync();
         }
 

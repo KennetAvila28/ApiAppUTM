@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AppUTM.Core.Models
 {
     [Table("Favorites")]
-    public class Favorites
+    public class Favorites : BaseEntity
     {
         public string Matricula { get; set; }
 
-        public IEnumerable<EventFavorite> Events { get; set; }
+        public IList<EventFavorite> EventsfFavorites { get; set; }
     }
 }

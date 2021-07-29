@@ -46,6 +46,7 @@ namespace AppUTM.Services
             userToBeUpdated.Nombres = user.Nombres;
             userToBeUpdated.UpdateAt = DateTime.Now;
             userToBeUpdated.Status = user.Status;
+
             foreach (var item in user.RolesToBeDelete)
             {
                 foreach (var role in userToBeUpdated.UserRoles.Where(role => role.RoleId == item))
@@ -53,6 +54,7 @@ namespace AppUTM.Services
                     _unitOfWork.UserRoles.Remove(role);
                 }
             }
+            _unitOfWork.Users.Update(userToBeUpdated);
             await _unitOfWork.CommitAsync();
         }
 
