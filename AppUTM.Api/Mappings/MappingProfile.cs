@@ -4,6 +4,7 @@ using AppUTM.Api.DTOS.Users;
 using AppUTM.Core.Models;
 using AutoMapper;
 using System;
+using AppUTM.Api.DTOS.Events;
 
 namespace AppUTM.Api.Mappings
 {
@@ -46,6 +47,17 @@ namespace AppUTM.Api.Mappings
                     destination.Status = true;
                 }));
             CreateMap<PermissionReturn, Permission>();
+            //Events
+            CreateMap<Event, EventCreate>().ReverseMap();
+            CreateMap<Event, EventReturn>().ReverseMap();
+            CreateMap<Event, EventForUpdateDto>().ReverseMap();
+            CreateMap<EventCreate, Event>().AfterMap(
+                ((source, destination) =>
+                {
+                    destination.CreateAt = DateTime.Now;
+                    destination.Status = true;
+                }));
+            CreateMap<EventReturn, Event>();
         }
     }
 }

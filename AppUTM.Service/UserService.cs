@@ -16,12 +16,16 @@ namespace AppUTM.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly DataContext _context;
 
+        //Todo: create summary documentation for the all methods
         public UserService(IUnitOfWork unitOfWork, DataContext context)
         {
             _unitOfWork = unitOfWork;
             _context = context;
         }
 
+        /// <summary>Return all users with their roles</summary>
+        /// <param name="newUser"></param>
+        /// <returns>Array of users</returns>
         public async Task<User> CreateUser(User newUser)
         {
             await _unitOfWork.Users.Add(newUser);
@@ -30,10 +34,13 @@ namespace AppUTM.Services
             return newUser;
         }
 
-        /// <summary>Return all users</summary>
-        /// <returns> <c>Array</c> of users</returns>
+        /// <summary>Return all users with their roles</summary>
+        /// <returns>Array of users</returns>
         public async Task<IEnumerable<User>> GetAllUsers() => await _context.Users.Include(x => x.UserRoles).ToListAsync();
 
+        /// <summary>Get a user with his roles</summary>
+        /// <param name="id"></param>
+        /// <returns>A user</returns>
         public async Task<User> GetUserById(int id) =>
             await _context.Users.Include(x => x.UserRoles).ThenInclude(y => y.Role)
                 .SingleOrDefaultAsync(z => z.Id == id);
