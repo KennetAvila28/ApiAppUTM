@@ -63,25 +63,9 @@ namespace AppUTM.Api.Controllers
         {            
             var empresaData = await _service.GetEmpresa(id);
             if (empresaData == null) return NotFound();
-<<<<<<< HEAD
-
             if (empresaData.ImagenEmpresa != empresaDto.ImagenEmpresa)
-                await _almacenarImagen.BorraArchivo(empresaData.ImagenEmpresa, contenedor);            
-            
-            var empresa = _mapper.Map(empresaDto, empresaData);           
-=======
+                await _almacenarImagen.BorraArchivo(empresaData.ImagenEmpresa, contenedor);                        
             var empresa = _mapper.Map(empresaDto, empresaData);
-            if (empresaDto.Foto != null)
-            {
-                await _almacenarImagen.BorraArchivo(empresaData.ImagenEmpresa, contenedor);
-                using (var memoryStream = new MemoryStream())
-                {
-                    await empresaDto.Foto.CopyToAsync(memoryStream);
-                    var contenido = memoryStream.ToArray();
-                    empresaData.ImagenEmpresa = await _almacenarImagen.EditarArchivo(contenido, contenedor, empresaData.ImagenEmpresa);
-                }
-            }
->>>>>>> 88fd1b395181ddafd48280ab77966b1d2e74e99c
             await _service.UpdateEmpresa(empresa);
             return Ok(empresa);
         }
@@ -102,7 +86,6 @@ namespace AppUTM.Api.Controllers
                 return File(image, "image/jpeg");
             }
         }
-<<<<<<< HEAD
 
         //No aplica
         /*
@@ -122,9 +105,7 @@ namespace AppUTM.Api.Controllers
         }
 
         */
-
-    }    
-=======
+    
     }
->>>>>>> 88fd1b395181ddafd48280ab77966b1d2e74e99c
+
 }
