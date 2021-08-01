@@ -1,0 +1,28 @@
+@page "/Users/Create"
+@using AppUTM.Extensions
+@using System.Text.Json;
+@inject HttpClient Http
+
+<h1>Create User</h1>
+<EditForm Model="@searchWorker">
+<div class="form-group">
+    <label>Correo Institucional</label>
+    <InputText class="form-control col-md-5" @bind-Value="searchWorker.Email"></InputText>
+    <button @onclick="_searchWorker" class="btn btn-primary mt-3" role="button">Buscar</button>
+</div>
+</EditForm>
+@code {
+    private JsonElement _normalizedUser;
+    SearchWorker searchWorker = new SearchWorker();
+    UserCreate oUserCreate = new UserCreate();
+
+    private async Task _searchWorker()
+    {
+        var worker = await Http.GetFromJsonAsync<string>("Users/empleado/" + searchWorker.Email);
+        _normalizedUser = StringToJsonElement.Convert(worker);
+        Console.WriteLine(_normalizedUser.ToString());
+
+    }
+    
+
+}

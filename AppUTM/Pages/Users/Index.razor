@@ -1,0 +1,66 @@
+﻿@page "/Users"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject HttpClient _http
+
+<div class="container mt-3">
+    <div class="d-flex">
+        <h4>Lista de usuarios</h4>
+        <a class="btn btn-primary text-white mx-4 mb-3" href="/Users/Create">Agregar</a>
+    </div>
+    @if (_users != null)
+    {
+        <table class="table">
+            <thead class="bg-light">
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Admin</th>
+                    <th scope="col">Editor</th>
+                    <th scope="col">Publicador</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @foreach (var user in _users)
+                    {
+                        <td>@user.Nombres @user.ApellidoPaterno @user.ApellidoMaterno</td>
+                        <td>@user.Correo</td>
+                        foreach (var role in _roles)
+                        {
+                            if (user.UserRoles.Any(r => r.RoleId == role.Id))
+                            {
+                                <td><input class="form-check-input" type="checkbox" checked="checked" onclick="javascript: return false;" /></td>
+
+                            }
+                            else
+                            {
+                                <td><input class="form-check-input" type="checkbox" onclick="javascript: return false;" /></td>
+                            }
+
+                        }
+                        <td><a class="btn btn-primary text-white">Editar</a></td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Sin registros...</p>
+    }
+</div>
+
+@code
+{
+    private IList<UserReturn> _users;
+    private IList<RoleReturn> _roles;
+    protected override async Task OnInitializedAsync()
+    {
+        var usersData = await _http.GetFromJsonAsync<ApiResponse<IList<UserReturn>>>("Users");
+        _users = usersData?.Data;
+        var rolesData = await _http.GetFromJsonAsync<ApiResponse<IList<RoleReturn>>>("Roles");
+        _roles = rolesData?.Data;
+    }
+}

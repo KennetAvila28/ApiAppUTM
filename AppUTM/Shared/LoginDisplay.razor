@@ -6,11 +6,11 @@
 
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity.Name!
-        <button class="nav-link btn btn-link" @onclick="BeginLogout">Log out</button>
+        Hola, @context.User.Identity?.Name
+        <button class="nav-link btn btn-outline-light ml-2" @onclick="BeginLogout"> Log out</button>
     </Authorized>
     <NotAuthorized>
-        <a href="authentication/login">Log in</a>
+        <a class="btn btn-outline-light" href="authentication/login">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
 

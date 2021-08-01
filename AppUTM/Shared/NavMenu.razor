@@ -18,28 +18,48 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" @onclick="()=>Security=!Security">
+            <NavLink class="nav-link" @onclick="()=>_security=!_security">
                 <span class="oi oi-lock-locked" aria-hidden="true"></span> Seguridad
             </NavLink>
         </li>
-        @if (Security)
+        @if (_security)
         {
-            <li class="nav-item px-4" >
-                <NavLink class="nav-link" href="Usuarios">
-                    <span class="oi oi-people" aria-hidden="true"></span> Users
+            <li class="nav-item px-4">
+                <NavLink class="nav-link" href="Users">
+                    <span class="oi oi-people" aria-hidden="true"></span> Usuarios
                 </NavLink>
             </li>
+            <li class="nav-item px-4">
+                <NavLink class="nav-link" href="Roles">
+                    <span class="oi oi-shield" aria-hidden="true"></span> Roles
+                </NavLink>
+            </li>
+            <li class="nav-item px-4">
+                <NavLink class="nav-link" href="Permissions">
+                    <span class="oi oi-lock-unlocked" aria-hidden="true"></span> Permisos
+                </NavLink>
+            </li>
+        }
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="()=>_activities=!_activities">
+                <span class="oi oi-task" aria-hidden="true"></span> Eventos-Actividades
+            </NavLink>
+        </li>
+        @if (_activities)
+        {
         }
     </ul>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
-    private bool Security;
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private bool _collapseNavMenu = true;
+    private bool _security;
+    private bool _activities;
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 }
