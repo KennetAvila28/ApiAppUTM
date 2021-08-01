@@ -9,9 +9,6 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Web;
-
-using System.Net.Http;
-
 using Newtonsoft.Json;
 using System.Collections.Generic;
 

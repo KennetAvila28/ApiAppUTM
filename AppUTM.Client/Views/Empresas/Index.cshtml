@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppUTM.Client.Models.Empresa>
+﻿@model AppUTM.Client.Models.ListEmpresas;
 @{
     ViewData["Title"] = "Empresas";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -52,7 +52,7 @@
 
     <table class="table table-bordered main-table">
         <tbody id="myTable">
-            @foreach (var item in Model)
+            @foreach (var item in Model.empresasRegistradas)
             {
                 <tr>
                     <td>@item.Nombre</td>

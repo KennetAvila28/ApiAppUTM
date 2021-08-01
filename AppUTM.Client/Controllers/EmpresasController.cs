@@ -1,59 +1,48 @@
 ﻿using AppUTM.Client.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Web;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using System.IO;
-using System.Net.Http.Headers;
-using System.Text;
-using Microsoft.AspNetCore.Hosting;
-using AppUTM.Client.Responses;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Identity.Web;
-
 
 namespace AppUTM.Client.Controllers
 {
+    [Authorize]
     public class EmpresasController : Controller
-    {
-
-        IWebHostEnvironment _env;
-        public EmpresasController(IWebHostEnvironment environment)
-        {
-            this._env = environment;
-        }
-
+    {   
         private readonly IConfiguration _configuration;
         private readonly ITokenAcquisition _tokenAcquisition;
 
         public EmpresasController(IConfiguration configuration, ITokenAcquisition tokenAcquisition)
         {
             _configuration = configuration;
-            _tokenAcquisition = tokenAcquisition;
-
+            _tokenAcquisition = tokenAcquisition;        
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             HttpClient httpClient = new HttpClient();
-
             //http://api.utmetropolitana.edu.mx/api/Empresas/Get
             //http://localhost:59131/api/Empresas
+            ListEmpresas listEmpresas = new ListEmpresas();
             var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas");
-            var listEmpresas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
+            listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
+            var jsonEmpresasUTM = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/empresasUTM");
+            listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<EmpresasUTM>>(jsonEmpresasUTM);
             return View(listEmpresas);
         }
        
         public async Task<IActionResult> Update(int id)
         {
             HttpClient httpClient = new HttpClient();
-            var json = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas/" + id);
+            var json = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/" + id);
             var empresa = JsonConvert.DeserializeObject<Empresa>(json);
             return View(empresa);
         }
@@ -68,7 +57,7 @@ namespace AppUTM.Client.Controllers
                 string imagen = UploadImage(empresa);
                 empresa.ImagenEmpresa = imagen;
             }
-            httpClient.BaseAddress = new Uri("http://localhost:59131/api/Empresas/");
+            httpClient.BaseAddress = new Uri(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/");
             var putTask = httpClient.PutAsJsonAsync<Empresa>("?id=" + id, empresa);
             putTask.Wait();
             var result = putTask.Result;
@@ -103,7 +92,7 @@ namespace AppUTM.Client.Controllers
             HttpClient httpClient = new HttpClient();
             var fileName = imagen.FileName;
             var nombreArchivo = $"{Guid.NewGuid()}-{fileName}";
-            string url = "http://localhost:59131/api/Empresas/agregarFoto";
+            string url =  _configuration["CouponAdmin:CouponAdminBaseAddress"]  + "Empresas/agregarFoto";
             using (var memoryStream = new MemoryStream())
             {
                 var path = Path.GetTempPath();           
@@ -121,6 +110,6 @@ namespace AppUTM.Client.Controllers
             return fileName;
         }
 
-        */        
+        */
     }
 }

@@ -1,34 +1,43 @@
 ﻿using AppUTM.Client.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Web;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace AppUTM.Client.Controllers
 {
+    [Authorize]
     public class CuponesController : Controller
     {
+        private readonly IConfiguration _configuration;
+        private readonly ITokenAcquisition _tokenAcquisition;
+
         HttpClient httpClient = new HttpClient();
 
-        public CuponesController()
-        { }
+        public CuponesController (IConfiguration configuration, ITokenAcquisition tokenAcquisition)
+        {
+            _configuration = configuration;
+            _tokenAcquisition = tokenAcquisition;
+        }
 
         [HttpGet]
-        public async Task<IActionResult> Index (int id)
+        public async Task<IActionResult> Index(int id)
         {
             Cupones cupones = new Cupones();
-            var jsonEmpresa = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas/" + id);
+            var jsonEmpresa = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/" + id);
             var empresa = JsonConvert.DeserializeObject<Empresa>(jsonEmpresa);
             cupones.Empresa = empresa;
-            var jsonCuponesGenerico = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesGenericos/empresa/" + id);
+            var jsonCuponesGenerico = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/empresa/" + id);
             var listCupones = JsonConvert.DeserializeObject<IEnumerable<CuponGenerico>>(jsonCuponesGenerico);            
             cupones.cuponesGenericos = listCupones;
-            var jsonCuponesImagen = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesImagen/empresa/" + id);
+            var jsonCuponesImagen = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/empresa/" + id);
             var listCuponesImagen = JsonConvert.DeserializeObject<IEnumerable<CuponImagen>>(jsonCuponesImagen);           
             cupones.cuponesImagen = listCuponesImagen;          
             return View(cupones);
@@ -38,7 +47,7 @@ namespace AppUTM.Client.Controllers
         [HttpGet]
         public async Task<ActionResult> Generico (int id)
         {
-            var jsonCupon = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesGenericos/" + id);
+            var jsonCupon = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/" + id);
             var cupon = JsonConvert.DeserializeObject<CuponGenerico>(jsonCupon);
             return View(cupon);
         }
@@ -46,7 +55,7 @@ namespace AppUTM.Client.Controllers
         public async Task<IActionResult> CreateGenerico(int id)
         {
             CuponGenerico cupon = new CuponGenerico();
-            var jsonEmpresa = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas/" + id);
+            var jsonEmpresa = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/" + id);
             var empresa = JsonConvert.DeserializeObject<Empresa>(jsonEmpresa);
             cupon.EmpresaId = empresa.EmpresaId;
             cupon.NombreEmpresa = empresa.Nombre;
@@ -56,7 +65,7 @@ namespace AppUTM.Client.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateGenerico (CuponGenerico cupon)
         {
-            var json = await httpClient.PostAsJsonAsync("http://localhost:59131/api/CuponesGenericos/", cupon);
+            var json = await httpClient.PostAsJsonAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/", cupon);
             if (json.IsSuccessStatusCode)
                 return RedirectToAction ("Index", new { id = cupon.EmpresaId });
             else
@@ -65,7 +74,7 @@ namespace AppUTM.Client.Controllers
 
         public async Task<IActionResult> UpdateGenerico (int id)
         {
-            var json = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesGenericos/ " + id);
+            var json = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/ " + id);
             var cupon = JsonConvert.DeserializeObject<CuponGenerico>(json);           
             return View(cupon);
         }
@@ -73,7 +82,7 @@ namespace AppUTM.Client.Controllers
         [HttpPost]
         public IActionResult UpdateGenerico(int id, CuponGenerico cupon)
         {
-            httpClient.BaseAddress = new Uri("http://localhost:59131/api/CuponesGenericos/");
+            httpClient.BaseAddress = new Uri(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/");
             var putTask = httpClient.PutAsJsonAsync<CuponGenerico>("?id=" + id, cupon);
             putTask.Wait();
             var result = putTask.Result;
@@ -85,7 +94,7 @@ namespace AppUTM.Client.Controllers
 
         public IActionResult DeleteGenerico (int empresaId, int id)
         {
-            var deleteTask = httpClient.DeleteAsync("http://localhost:59131/api/CuponesGenericos/" + id);
+            var deleteTask = httpClient.DeleteAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/" + id);
             deleteTask.Wait();
             if (deleteTask.Result.IsSuccessStatusCode)
                 return RedirectToAction("Index", new { id = empresaId });
@@ -100,7 +109,7 @@ namespace AppUTM.Client.Controllers
         [HttpGet]
         public async Task<ActionResult> CuponImagen(int id)
         {
-            var jsonCupon = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesImagen/" + id);
+            var jsonCupon = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/" + id);
             var cupon = JsonConvert.DeserializeObject<CuponImagen>(jsonCupon);
             return View(cupon);
         }
@@ -109,7 +118,7 @@ namespace AppUTM.Client.Controllers
         public async Task<IActionResult> CreateCuponImagen(int id)
         {
             CuponImagen cupon = new CuponImagen();
-            var jsonEmpresa = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas/" + id);
+            var jsonEmpresa = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/" + id);
             var empresa = JsonConvert.DeserializeObject<Empresa>(jsonEmpresa);
             cupon.EmpresaId = empresa.EmpresaId;
             cupon.NombreEmpresa = empresa.Nombre;
@@ -121,7 +130,7 @@ namespace AppUTM.Client.Controllers
         public async Task<IActionResult> CreateCuponImagen(CuponImagen cupon)
         {
             cupon.Imagen = UploadImage(cupon);
-            var json = await httpClient.PostAsJsonAsync("http://localhost:59131/api/CuponesImagen/", cupon);
+            var json = await httpClient.PostAsJsonAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/", cupon);
             if (json.IsSuccessStatusCode)
                 return RedirectToAction("Index", new { id = cupon.EmpresaId });
             else
@@ -131,7 +140,7 @@ namespace AppUTM.Client.Controllers
 
         public async Task<IActionResult> UpdateCuponImagen(int id)
         {            
-            var json = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesImagen/ " + id);
+            var json = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/ " + id);
             var cupon = JsonConvert.DeserializeObject<CuponImagen>(json);
             return View(cupon);
         } 
@@ -141,7 +150,7 @@ namespace AppUTM.Client.Controllers
         {
             if (cupon.Foto != null)
                 cupon.Imagen = UploadImage(cupon);
-            httpClient.BaseAddress = new Uri("http://localhost:59131/api/CuponesImagen/");
+            httpClient.BaseAddress = new Uri(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/");
             var putTask = httpClient.PutAsJsonAsync<CuponImagen>("?id=" + id, cupon);
             putTask.Wait();
             if (putTask.Result.IsSuccessStatusCode)
@@ -152,7 +161,7 @@ namespace AppUTM.Client.Controllers
 
         public IActionResult DeleteCuponImagen(int empresaId, int id)
         {
-            var deleteTask = httpClient.DeleteAsync("http://localhost:59131/api/CuponesImagen/" + id);
+            var deleteTask = httpClient.DeleteAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/" + id);
             deleteTask.Wait();
             if (deleteTask.Result.IsSuccessStatusCode)
                 return RedirectToAction("Index", new { id = empresaId });
