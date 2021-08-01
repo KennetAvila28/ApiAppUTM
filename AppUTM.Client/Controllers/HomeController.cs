@@ -37,15 +37,31 @@ namespace AppUTM.Client.Controllers
             string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
             ViewBag.image = await GetPhoto(_httpClient);
             HttpClient httpClient = new HttpClient();
+            Dashboard listempresa = new Dashboard();
+            //Para empresas
             var jsonEmpresas = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas");
             var jsonResult = JsonConvert.DeserializeObject(jsonEmpresas).ToString();
             var result = JsonConvert.DeserializeObject<List<Empresa>>(jsonResult);
+            listempresa.Empresas = result;
+            //Para cupones genericos
+            var jsonCuponGene = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesGenericos");
+            var jsonResult1 = JsonConvert.DeserializeObject(jsonCuponGene).ToString();
+            var result1 = JsonConvert.DeserializeObject<List<CuponGenerico>>(jsonResult1);
+            listempresa.CuponesGenericos = result1;
+            //Para cupones de imagen
+            var jsonCuponImag = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesImagen");
+            var jsonResult3 = JsonConvert.DeserializeObject(jsonCuponImag).ToString();
+            var result3 = JsonConvert.DeserializeObject<List<CuponImagen>>(jsonResult3);
+            listempresa.CuponesImagenes = result3;
+            //Para cupones totales
+
+
+            return View(listempresa);
 
             //var jsonEmpresas = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas");
             //var jsonResult = JsonConvert.DeserializeObject(jsonEmpresas).ToString();
             //var result = JsonConvert.DeserializeObject<List<Empresa>>(jsonResult);
 
-            return View(result);
         }
 
         public IActionResult Privacy()

@@ -1,16 +1,15 @@
-﻿@model List<Empresa>
+﻿@model Dashboard
 
-@{
-    ViewData["Title"] = "Home Page";
-}
+@{ ViewData["Title"] = "Home Page"; }
 <!-- Dashboard -->
 <div class="container-fluid p-3">
     <section>
         <div class="col-xl-3 col-sm-6 col-6 mb-4">
-            
+
             <div class="card">
                 <div class="card-body">
-                    <h3 class="text-danger">@Html.EditorFor(model => model.Count, new { HtmlAttributes = new { @class = "form-control", @placeholder="Count", @autofocus_autocomplete ="off", disabled = true} })</h3>
+
+                    <h3 class="text-danger">@Html.EditorFor(model => model.Empresas.Count, new { HtmlAttributes = new { @class = "form-control", @placeholder = "Count", @autofocus_autocomplete = "off", disabled = true } })</h3>
                     <p class="mb-0">Empresas vigentes</p>
                 </div>
             </div>
@@ -18,8 +17,8 @@
         <div class="col-xl-3 col-sm-6 col-6 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="text-success">X</h3>
-                    <p class="mb-0">Cupones totales</p>
+                    <h3 class="text-success">@Html.EditorFor(model => model.CuponesGenericos.Count, new { HtmlAttributes = new { @class = "form-control", @placeholder = "Count", @autofocus_autocomplete = "off", disabled = true } })</h3>
+                    <p class="mb-0">Cupones genéricos totales</p>
                 </div>
             </div>
         </div>
@@ -27,8 +26,8 @@
         <div class="col-xl-3 col-sm-6 col-6 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="text-info">X</h3>
-                    <p class="mb-0">Cupones disponibles</p>
+                    <h3 class="text-info">@Html.EditorFor(model => model.CuponesImagenes.Count, new { HtmlAttributes = new { @class = "form-control", @placeholder = "Count", @autofocus_autocomplete = "off", disabled = true } })</h3>
+                    <p class="mb-0">Cupones de imagen totales</p>
                 </div>
             </div>
         </div>
@@ -36,7 +35,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="text-warning">X</h3>
-                    <p class="mb-0">Cupones usados</p>
+                    <p class="mb-0">Cupones Totales</p>
                 </div>
             </div>
         </div>
