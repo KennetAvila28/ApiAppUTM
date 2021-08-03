@@ -52,9 +52,7 @@ namespace AppUTM.Client.Controllers
             var jsonCuponImag = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesImagen");
             var jsonResult3 = JsonConvert.DeserializeObject(jsonCuponImag).ToString();
             var result3 = JsonConvert.DeserializeObject<List<CuponImagen>>(jsonResult3);
-            listempresa.CuponesImagenes = result3;
-            //Para cupones totales
-
+            listempresa.CuponesImagenes = result3;           
 
             return View(listempresa);
 

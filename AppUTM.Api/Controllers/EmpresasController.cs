@@ -98,12 +98,12 @@ namespace AppUTM.Api.Controllers
         public async Task<ActionResult> GetEmpresasUTM()
         {
             HttpClient client = new HttpClient();
-            var jsonEmpresas = await client.GetStringAsync("https://api.utmetropolitana.edu.mx/api/Empresas/Get");
+            var jsonEmpresas = await client.GetStringAsync("https://api.utmetropolitana.edu.mx/api/Empresas/Get");            
             var empresas = Regex.Replace(jsonEmpresas, @"\s{2,}|//", " ").Substring(1); //Elimina caracteres // y []
             //Elimina las comillas dobles en los campos.            
             empresas = empresas.Remove(empresas.Length - 1).Replace(@"\", "").Replace("\u0022", "");
             var empresasUTM = empresas.Replace("IdEmpresa:", "\u0022IdEmpresa\u0022:\u0022").Replace(",NombreEmpresa:", "\u0022,\u0022NombreEmpresa\u0022:\u0022").Replace(",Direccion:", "\u0022,\u0022Direccion\u0022:\u0022").Replace(",Telefono:", "\u0022,\u0022Telefono\u0022:\u0022")
-                .Replace(",Celular:", "\u0022,\u0022Celular\u0022:\u0022").Replace(",CorreoEmpresa:", "\u0022,\u0022CorreoEmpresa\u0022:\u0022").Replace(",RFC:", "\u0022,\u0022RFC\u0022:\u0022").Replace(",PersonaResponsable:", "\u0022,\u0022PersonaResponsable\u0022:\u0022").Replace("}", "\u0022}");
+                .Replace(",Celular:", "\u0022,\u0022Celular\u0022:\u0022").Replace(",CorreoEmpresa:", "\u0022,\u0022CorreoEmpresa\u0022:\u0022").Replace(",RFC:", "\u0022,\u0022RFC\u0022:\u0022").Replace(",PersonaResponsable:", "\u0022,\u0022PersonaResponsable\u0022:\u0022").Replace("}", "\u0022}");                       
             return Ok(empresasUTM);         
         }
 
