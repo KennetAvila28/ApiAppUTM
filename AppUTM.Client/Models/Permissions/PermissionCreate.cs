@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace AppUTM.Api.DTOS.Permissions
 {
-    public class PermissionForUpdateDto
+    public class PermissionCreate
     {
-        public int Id { get; set; }
         public string Module { get; set; }
     }
 }

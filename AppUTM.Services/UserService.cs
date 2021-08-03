@@ -46,6 +46,14 @@ namespace AppUTM.Services
             userToBeUpdated.Nombres = user.Nombres;
             userToBeUpdated.UpdateAt = DateTime.Now;
             userToBeUpdated.Status = user.Status;
+            foreach (var u in user.UserRoles)
+            {
+                if (!userToBeUpdated.UserRoles.Any(us => us.RoleId == u.RoleId))
+                {
+                    u.UserId = userToBeUpdated.Id;
+                    await _unitOfWork.UserRoles.Add(u);
+                }
+            }
             foreach (var item in user.RolesToBeDelete)
             {
                 foreach (var role in userToBeUpdated.UserRoles.Where(role => role.RoleId == item))

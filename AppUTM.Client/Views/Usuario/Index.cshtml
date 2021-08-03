@@ -1,0 +1,85 @@
+﻿@using AppUTM.Client.Models.Roles;
+@using AppUTM.Client.Models.Users;
+@model IEnumerable<AppUTM.Client.Models.Users.UserReturn>
+
+@{
+    List<RoleReturn> roles = ViewBag.Roles;
+    List<UserReturn> user = new List<UserReturn>();
+    List<RoleReturn> role = new List<RoleReturn>();
+    ViewData["Title"] = "Index";
+}
+
+<h1>Usuarios</h1>
+
+<p>
+    <a class="btn btn-primary btn-sm" asp-action="Create">Crear usuario</a>
+    <a class="btn btn-success btn-sm" asp-controller="Roles" asp-action="Index">Roles</a>
+    <a class="btn btn-dark btn-sm" asp-controller="Permissions" asp-action="Index">Permisos</a>
+</p>
+<table class="table" style="margin:0;">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClaveEmpleado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApellidoPaterno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApellidoMaterno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Correo)
+            </th>
+            <th>Roles</th>
+            <th>Acciones</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClaveEmpleado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApellidoPaterno)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApellidoMaterno)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correo)
+            </td>
+            <td>
+                @*@foreach (var u in item.UserRoles)
+            {
+                <input type="checkbox" name="roleDelete[]" value="@u.RoleId" /><label>@u.Role.Nombre</label>
+
+            }*@
+                @foreach (var rol in item.UserRoles)
+                {
+                    <p>@rol.RoleId</p>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id })
+                @Html.ActionLink("Detalles", "Detalles", new { id = item.Id })
+                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

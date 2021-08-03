@@ -1,0 +1,44 @@
+﻿@model IEnumerable<AppUTM.Client.Models.Roles.RoleReturn>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Roles</h1>
+
+<p>
+    <a class="btn btn-primary btn-sm" asp-action="Create">Crear Rol</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>Permisos</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @foreach (var rol in item.RolePermissions)
+                {
+                    <p>@rol.PermissionId</p>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id })
+                @Html.ActionLink("Detalle", "Details", new { id = item.Id })
+                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
