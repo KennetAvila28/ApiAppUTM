@@ -14,23 +14,23 @@
             </div>
             <div class="form-group col-md-4">
                 <label>Porcentaje</label>
-                <input type="number" class="form-control" asp-for="PorcentajeDescuento" required>
+                <input type="number" class="form-control" asp-for="PorcentajeDescuento" value="5" required>
             </div>
             <div class="form-group col-md-4">
-                <label>Veces por persona</label>
-                <input type="number" class="form-control" asp-for="NumeroPorPersona" value="0">
+                <label>Cantidad de cupones</label>
+                <input type="number" class="form-control" asp-for="NumeroPorPersona" value="10">
             </div>
         </div>
         <div class="form-group mt-4">
             <label for="">Descripción</label>
-            <input type="text" class="form-control" asp-for="Descripcion">
+            <input type="text" class="form-control" asp-for="Descripcion" required>
         </div>
         <input type="hidden" asp-for="CuponesUsados" value="0" />
         <input type="hidden" asp-for="CuponesVisitados" value="0" />
-        <input type="hidden" asp-for="EmpresaId" value="@Model.EmpresaId" />    
+        <input type="hidden" asp-for="EmpresaId" value="@Model.EmpresaId" />
 
+        <button type="submit" class="btn btn-green mt-4">Registrar Cupón</button>
         <a class="btn btn-secondary mt-4" asp-route-Id="@Model.EmpresaId" asp-action="Index">Regrear/Cancelar</a>
-        <button type="submit" class="btn btn-primary mt-4">Registrar</button>
     </form>
 </div>
 

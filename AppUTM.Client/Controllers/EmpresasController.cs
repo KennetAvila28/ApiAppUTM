@@ -49,6 +49,9 @@ namespace AppUTM.Client.Controllers
             HttpClient httpClient = new HttpClient();
             var json = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/" + id);
             var empresa = JsonConvert.DeserializeObject<Empresa>(json);
+            var jsonCuponesGenericos = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/empresa/" + id);
+            var jsonCuponesImagen = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/empresa/" + id);
+            if (jsonCuponesGenericos != null || jsonCuponesImagen != null) empresa.Cupones = true;
             return View(empresa);
         }
 

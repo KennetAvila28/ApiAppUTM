@@ -29,24 +29,20 @@
     <input type="hidden" asp-for="CuponImagenId" value="@Model.CuponImagenId" />
     <input type="hidden" asp-for="Domain" value="@Model.Domain" />
 
-    <div class=" d-flex justify-content-between align-items-center">
-        <div>
-            <a class="btn btn-secondary mt-4" asp-route-Id="@Model.EmpresaId" asp-action="Index">Regresar/Cancelar</a>
-            <input type="submit" class="btn btn-primary mt-4 mx-3" value="Actualizar Datos" />
-        </div>
-
-        <button type="button" class="btn btn-danger mt-4" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Borrar</button>
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 id="exampleModalCenterTitle">¿Eliminar el cupón?</h5>
-                    </div>
-                    <div class="modal-body mx-auto">
-                        <a asp-route-EmpresaId="@Model.EmpresaId" asp-route-Id="@Model.CuponImagenId" asp-action="DeleteCuponImagen" class="btn btn-danger">Eliminar</a>
-                    </div>
+    <input type="submit" class="btn btn-green mt-4 mx-3" value="Actualizar Datos" />
+    <button type="button" class="btn btn-danger mt-4" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Eliminar Cupón</button>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p id="exampleModalCenterTitle" class="w-100 text-center">¿Desea eliminar este cupón?</p>
+                </div>
+                <div class="modal-body mx-auto">
+                    <a asp-route-EmpresaId="@Model.EmpresaId" asp-route-Id="@Model.CuponImagenId" asp-action="DeleteCuponImagen" class="btn btn-danger">Eliminar Cupón</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
     </div>
+    <a class="btn btn-secondary mt-4" asp-route-Id="@Model.EmpresaId" asp-action="Index">Regresar/Cancelar</a>
 </form>        

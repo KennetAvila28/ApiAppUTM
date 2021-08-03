@@ -29,17 +29,17 @@
         <div class="form-group col-md-4">
             <label>Tipo</label>
             <input type="text" class="form-control" asp-for="Tipo" value="@Model.Tipo">
-        </div>     
-            <div class="form-group col-md-4">
-                <label>Estado</label>
-                <label class="form-control">@Model.Activa</label>
-                <input type="hidden" class="form-control" asp-for="Activa" value="@Model.Activa">
-             </div>
-            <div class="form-group col-md-4">
-                <label>Teléfono</label>
-                <label class="form-control">@Model.Telefono</label>
-                <input type="hidden" class="form-control" asp-for="Telefono" value="@Model.Telefono">
-            </div>        
+        </div>
+        <div class="form-group col-md-4">
+            <label>Estado</label>
+            <label class="form-control">@Model.Activa</label>
+            <input type="hidden" class="form-control" asp-for="Activa" value="@Model.Activa">
+        </div>
+        <div class="form-group col-md-4">
+            <label>Teléfono</label>
+            <label class="form-control">@Model.Telefono</label>
+            <input type="hidden" class="form-control" asp-for="Telefono" value="@Model.Telefono">
+        </div>
     </div>
     <div class="form-group mt-3">
         <label>Dirección</label>
@@ -52,27 +52,46 @@
             <input class="form-control" type="file" name="Foto">
             <input type="hidden" name="ImagenEmpresa" asp-for="@Model.ImagenEmpresa" />
         </div>
-        <img class="mx-2 mt-3" id="company" src="http://localhost:59131/api/Empresas/image?nombreArchivo=@Model.ImagenEmpresa" alt="@Model.ImagenEmpresa"> <!-- http://api.utmetropolitana.edu.mx/api/Empresas/image?nombreArchivo= -->       
+        <img class="mx-2 mt-3" id="company" src="http://localhost:59131/api/Empresas/image?nombreArchivo=@Model.ImagenEmpresa" alt="@Model.ImagenEmpresa"> <!-- http://api.utmetropolitana.edu.mx/api/Empresas/image?nombreArchivo= -->
 
     </div>
-    <div class=" d-flex justify-content-between align-items-center mb-5">
-        <div>
-            <a class="btn btn-secondary mt-4" asp-action="Index">Cancelar/Regresar</a>
-            <input type="submit" class="btn btn-primary mt-4 mx-3" value="Guardar Datos" />
-        </div>
-
-        <button type="button" class="btn btn-danger mt-4" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Desactivar</button>
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 id="exampleModalCenterTitle">Desea desactivar la empresa? Esta acción eliminará los cupones ligados</h5>
-                    </div>
-                    <div class="modal-body mx-auto">
-                        <a asp-route-EmpresaId="@Model.EmpresaId" asp-route-Id="@Model.EmpresaId"  asp-action="DeleteEmpresas" class="btn btn-danger">Eliminar</a>
+    <div>
+        <input type="submit" class="btn btn-green mt-4" value="Guardar Datos" />
+        @if (Model.Cupones)
+        {
+            <button type="button" class="btn btn-danger mt-4 mx-3" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Desactivar Empresa</button>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p id="exampleModalCenterTitle" class="w-100 text-center">¿Desea desactivar esta empresa?</p>
+                        </div>
+                        <div class="modal-body mx-auto">
+                            <a asp-route-EmpresaId="@Model.EmpresaId" asp-route-Id="@Model.EmpresaId" asp-action="DeleteEmpresas" class="btn btn-danger">Desactivar Empresa</a>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+
+        }
+        else
+        {
+            <button type="button" class="btn btn-danger mt-4 mx-3" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Eliminar Empresa</button>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p id="exampleModalCenterTitle" class="w-100 text-center">Esta empresa no tiene cupones ligados, ¿Desea eliminarla?</p>
+                        </div>
+                        <div class="modal-body mx-auto">
+                            <a asp-route-EmpresaId="@Model.EmpresaId" asp-route-Id="@Model.EmpresaId" asp-action="DeleteEmpresas" class="btn btn-danger">Desactivar Empresa</a>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <a class="btn btn-secondary mt-4" asp-action="Index">Cancelar/Regresar</a>
+    </div>  
 </form>
