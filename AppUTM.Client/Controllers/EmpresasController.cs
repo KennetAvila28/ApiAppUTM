@@ -19,6 +19,7 @@ namespace AppUTM.Client.Controllers
         private readonly IConfiguration _configuration;
         private readonly ITokenAcquisition _tokenAcquisition;
 
+
         public EmpresasController(IConfiguration configuration, ITokenAcquisition tokenAcquisition)
         {
             _configuration = configuration;
@@ -31,13 +32,17 @@ namespace AppUTM.Client.Controllers
             HttpClient httpClient = new HttpClient();
             //http://api.utmetropolitana.edu.mx/api/Empresas/Get
             //http://localhost:59131/api/Empresas
+            //Muestra las empresas registradas
             ListEmpresas listEmpresas = new ListEmpresas();
             var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas");
             listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
+            //Muestra las empresas que proporciona la API de la UTM
             var jsonEmpresasUTM = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/empresasUTM");
             listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<EmpresasUTM>>(jsonEmpresasUTM);
             return View(listEmpresas);
         }
+
+
        
         public async Task<IActionResult> Update(int id)
         {
@@ -81,6 +86,18 @@ namespace AppUTM.Client.Controllers
                 }
             }
             return fileName;
+        }
+
+        public IActionResult DeleteEmpresas(int empresaId, int id)
+        {
+            HttpClient httpClient = new HttpClient();
+
+            var deleteTask = httpClient.DeleteAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/" + id);
+            deleteTask.Wait();
+            if (deleteTask.Result.IsSuccessStatusCode)
+                return RedirectToAction("Index", new { id = empresaId });
+            else
+                return RedirectToAction("Error", "Home");
         }
 
 

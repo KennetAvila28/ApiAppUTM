@@ -15,5 +15,5 @@ namespace AppUTM.Core.Interfaces
         public Task AddCuponImagen(CuponImagen cuponImagen);
         public Task UpdateCuponImagen(CuponImagen cuponImagen);
         public Task DeleteCuponImagen(CuponImagen cuponImagen);
-    }
+    }   
 }
