@@ -31,6 +31,16 @@ namespace AppUTM.Api.Controllers
             this._env = env;
         }
 
+        //EliminarEmpresa
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var empresa = await _service.GetEmpresa(id);
+            if (empresa == null) return NotFound();
+            await _service.DeleteEmpresa(empresa);
+            return Ok(true);
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmpresaReturn>>> Get()
         {

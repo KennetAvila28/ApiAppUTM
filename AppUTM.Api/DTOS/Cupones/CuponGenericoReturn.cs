@@ -24,5 +24,7 @@ namespace AppUTM.Api.DTOS.Cupones
         public int NumeroPorPersona { get; set; }
         public string Descripcion { get; set; }
         public int EmpresaId { get; set; }
+
+
     }
 }

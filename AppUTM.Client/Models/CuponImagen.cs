@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace AppUTM.Client.Models
     public class CuponImagen
     {
         public int CuponImagenId { get; set; }
+        [DataType(DataType.Date)]
         public DateTime FechaExpiracion { get; set; }
         public int CuponesUsados { get; set; }
         public int CuponesVisitados { get; set; }

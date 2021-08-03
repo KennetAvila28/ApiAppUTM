@@ -27,18 +27,13 @@
                         <input class="form-control me-3 mb-3" type="search" id="inputModalTable" onkeyup="searchInModalTable()" aria-label="Search" placeholder="Buscar empresa...">
                         <table class="table table-bordered modal-table">
                             <tbody id="myModalTable">
-                                <tr>
-                                    <td>La Coronela Mérida</td>
-                                    <td><a class="button-a" asp-controller="Empresas" asp-action="PostImage">Registrar</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Empresa 2</td>
-                                    <td><a class="button-a">Registrar</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Empresa 3</td>
-                                    <td><a class="button-a">Registrar</a></td>
-                                </tr>
+                                @foreach (var item in Model.empresasUTM)
+                                {
+                                    <tr>
+                                        <td>@item.NombreEmpresa</td>
+                                        <td><a class="button-a" asp-controller="Empresas" asp-action="PostImage">Registrar</a></td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
