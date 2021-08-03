@@ -1,0 +1,106 @@
+﻿@model AppUTM.Client.Models.ListEmpresas
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/collapse.js"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h3>Reportes</h3>
+        <Select class="custom-select form-control" id="hide-items">
+            <option selected>Seleccione el reporte que desea...</option>
+            <option value="first">Empresas que ofrecen cupones</option>
+            <option value="second">Cupones usados/visitados por empresa</option>
+        </Select>
+
+        <div id="first" class="items" style="display:none">
+            <table class="table mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col">RFC</th>
+                        <th scope="col">Empresa</th>
+                        <th scope="col">Cupones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RFC Empresa</td>
+                        <td>Nombre de la empresa</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>RFC Empresa</td>
+                        <td>Nombre de la empresa</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="second" class="items" style="display:none">
+            <table class="table mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col">RFC</th>
+                        <th scope="col">Empresa</th>
+                        <th scope="col">ID Cupón</th>
+                        <th scope="col">No de vistas</th>
+                        <th scope="col">Veces aplicadas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RFC empresa</td>
+                        <td>Burger King</td>
+                        <td>1004</td>
+                        <td>34</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <td>RFC Empresa</td>
+                        <td>Nombre de la empresa</td>
+                        <td>#</td>
+                        <td>x</td>
+                        <td>x</td>
+                    </tr>
+                    <tr>
+                        <td>RFC Empresa</td>
+                        <td>Nombre de la empresa</td>
+                        <td>#</td>
+                        <td>x</td>
+                        <td>x</td>
+                    </tr>
+                    <tr>
+                        <td>RFC Empresa</td>
+                        <td>Nombre de la empresa</td>
+                        <td>#</td>
+                        <td>x</td>
+                        <td>x</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+
+
+<script>
+
+    $(function () {
+        $('#hide-items').change(function () {
+            $('.items').hide();
+            $('#' + $(this).val()).show();
+        });
+    });
+</script>
