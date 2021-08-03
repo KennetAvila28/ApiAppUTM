@@ -16,4 +16,8 @@
     <Folder Include="Views\Discounts\" />
     <Folder Include="Views\Reports\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppUTM.Core\AppUTM.Core.csproj" />
+  </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppUTM.Core.Models;
 
-namespace AppUTM.Api.DTOS.Roles
+namespace AppUTM.Client.Models.Roles
 {
     public class RoleForUpdateDto
     {

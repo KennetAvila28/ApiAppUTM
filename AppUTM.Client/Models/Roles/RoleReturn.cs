@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using AppUTM.Core.Models;
 
-namespace AppUTM.Api.DTOS.Roles
+namespace AppUTM.Client.Models.Roles
 {
     public class RoleReturn
     {
