@@ -15,7 +15,7 @@ namespace AppUTM.Core.Interfaces
 
         Task<Favorites> CreateFavorite(Favorites newFavorite);
 
-        Task UpdateFavorite(Favorites favoriteToBeUpdated, Favorites favorite);
+        Task UpdateFavorite(Favorites favoriteToBeUpdated);
 
         Task DeleteFavorite(Favorites favorite);
     }

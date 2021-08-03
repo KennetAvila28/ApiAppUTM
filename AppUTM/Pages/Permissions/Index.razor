@@ -1,3 +1,49 @@
 ﻿@page "/Permissions"
+@using Microsoft.AspNetCore.Authorization
+@using AppUTM.Models.Permissions
+@attribute [Authorize]
+@inject HttpClient _http
+@inject NotificationService NotificationService
 
-<h1>Hello, world!</h1>
+<div class="container mt-3">
+    <div class="d-flex">
+        <h4>Lista de permisos</h4>
+        <a class="btn btn-primary text-white mx-4 mb-3" href="/Permissions/Create">Agregar</a>
+    </div>
+    @if (_permissions != null)
+    {
+        <table class="table">
+            <thead class="bg-light text-center">
+                <tr>
+                    <th scope="col">Modulo</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @foreach (var permission in _permissions)
+                {
+                    <tr>
+                        <td>@permission.Module</td>
+                        <td><a class="btn btn-primary text-white" href="/Permissions/Edit/@permission.Id">Editar</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Cargando permisos...", Duration = 1000 });
+    }
+</div>
+
+@code
+{
+    private IList<PermissionReturn> _permissions;
+    private IList<RoleReturn> _roles;
+    protected override async Task OnInitializedAsync()
+    {
+        _permissions = await GetExtensions.GetAllPermissions(_http);
+        _roles = await GetExtensions.GetAllRoles(_http);
+        await Task.Delay(1000);
+    }
+}

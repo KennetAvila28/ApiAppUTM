@@ -39,17 +39,13 @@ namespace AppUTM.Services
             await _context.Roles.Include(x => x.RolePermissions).ThenInclude(y => y.Permission)
                 .SingleOrDefaultAsync(z => z.Id == id);
 
-        public async Task UpdateRole(Role roleToBeUpdated, Role role)
+        public async Task UpdateRole(Role roleToBeUpdated)
         {
-            roleToBeUpdated.Nombre = role.Nombre;
+           
             roleToBeUpdated.UpdateAt = DateTime.Now;
-            foreach (var item in role.PermissionsToBeDelete)
-            {
-                foreach (var permission in roleToBeUpdated.RolePermissions.Where(permission => permission.PermissionId == item))
-                {
-                    _unitOfWork.RolePermission.Remove(permission);
-                }
-            }
+            var rolePermissionRemove = await _context.RolePermissions.Where(x => x.RoleId == roleToBeUpdated.Id).ToListAsync();
+            _unitOfWork.RolePermission.RemoveRange(rolePermissionRemove);
+            await _unitOfWork.RolePermission.AddRange(roleToBeUpdated.RolePermissions);
             _unitOfWork.Roles.Update(roleToBeUpdated);
             await _unitOfWork.CommitAsync();
         }

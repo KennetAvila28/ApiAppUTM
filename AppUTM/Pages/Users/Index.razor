@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
 @inject HttpClient _http
+@inject NotificationService NotificationService
 
 <div class="container mt-3">
     <div class="d-flex">
@@ -11,7 +12,7 @@
     @if (_users != null)
     {
         <table class="table">
-            <thead class="bg-light">
+            <thead class="bg-light text-center">
                 <tr>
                     <th scope="col">Nombre</th>
                     <th scope="col">Correo</th>
@@ -21,13 +22,13 @@
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    @foreach (var user in _users)
-                    {
+            <tbody class="text-center">
+                @foreach (var user in _users)
+                {
+                    <tr>
                         <td>@user.Nombres @user.ApellidoPaterno @user.ApellidoMaterno</td>
                         <td>@user.Correo</td>
-                        foreach (var role in _roles)
+                        @foreach (var role in _roles)
                         {
                             if (user.UserRoles.Any(r => r.RoleId == role.Id))
                             {
@@ -40,15 +41,15 @@
                             }
 
                         }
-                        <td><a class="btn btn-primary text-white">Editar</a></td>
-                    }
-                </tr>
+                        <td><a class="btn btn-primary text-white" href="/Users/Edit/@user.Id">Editar</a></td>
+                    </tr>
+                }
             </tbody>
         </table>
     }
     else
     {
-        <p>Sin registros...</p>
+        NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Cargando Usuarios...", Duration = 1000 });
     }
 </div>
 
@@ -58,9 +59,8 @@
     private IList<RoleReturn> _roles;
     protected override async Task OnInitializedAsync()
     {
-        var usersData = await _http.GetFromJsonAsync<ApiResponse<IList<UserReturn>>>("Users");
-        _users = usersData?.Data;
-        var rolesData = await _http.GetFromJsonAsync<ApiResponse<IList<RoleReturn>>>("Roles");
-        _roles = rolesData?.Data;
+        _users = await GetExtensions.GetAllUsers(_http);
+        _roles = await GetExtensions.GetAllRoles(_http);
+        await Task.Delay(1000);
     }
 }

@@ -33,9 +33,8 @@ namespace AppUTM.Services
             return newPermission;
         }
 
-        public async Task UpdatePermission(Permission permissionToBeUpdated, Permission permission)
+        public async Task UpdatePermission(Permission permissionToBeUpdated)
         {
-            permissionToBeUpdated.Module = permission.Module;
             permissionToBeUpdated.UpdateAt = DateTime.Now;
             _unitOfWork.Permissions.Update(permissionToBeUpdated);
             await _unitOfWork.CommitAsync();

@@ -15,7 +15,7 @@ namespace AppUTM.Core.Interfaces
 
         Task<Event> CreateEvent(Event newEvent);
 
-        Task UpdateEvent(Event eventToBeUpdated, Event @event);
+        Task UpdateEvent(Event eventToBeUpdated);
 
         Task DeleteEvent(Event @event);
     }

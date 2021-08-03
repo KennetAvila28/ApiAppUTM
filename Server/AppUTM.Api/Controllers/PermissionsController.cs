@@ -58,11 +58,9 @@ namespace AppUTM.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, PermissionForUpdateDto PermissionForUpdateDto)
         {
-            var PermissionToBeUpdate = await _Permissionervice.GetPermissionById(id);
             var PermissionForUpdate = _mapper.Map<Permission>(PermissionForUpdateDto);
-            if (PermissionToBeUpdate == null)
-                return NotFound();
-            await _Permissionervice.UpdatePermission(PermissionToBeUpdate, PermissionForUpdate);
+            PermissionForUpdate.Id = id;
+            await _Permissionervice.UpdatePermission(PermissionForUpdate);
             var result = new ApiResponse<bool>(true);
             return Ok(result);
         }

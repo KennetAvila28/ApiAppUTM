@@ -12,7 +12,7 @@ namespace AppUTM.Core.Interfaces
 
         Task<Permission> CreatePermission(Permission newPermission);
 
-        Task UpdatePermission(Permission permissionToBeUpdated, Permission permission);
+        Task UpdatePermission(Permission permissionToBeUpdated);
 
         Task DeletePermission(Permission permission);
     }

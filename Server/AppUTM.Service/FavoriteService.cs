@@ -35,7 +35,7 @@ namespace AppUTM.Services
             return newFavorite;
         }
 
-        public Task UpdateFavorite(Favorites favoriteToBeUpdated, Favorites favorite)
+        public Task UpdateFavorite(Favorites favoriteToBeUpdated)
         {
             throw new NotImplementedException();
         }

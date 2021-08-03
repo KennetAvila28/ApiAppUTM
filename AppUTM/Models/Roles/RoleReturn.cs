@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AppUTM.Client.Models.Roles
+namespace AppUTM.Models.Roles
 {
     public class RoleReturn
     {

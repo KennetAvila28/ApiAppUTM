@@ -101,11 +101,27 @@ namespace AppUTM.Api.Controllers
         {
             try
             {
-                var userToBeUpdate = await _Userervice.GetUserById(id);
-                var userForUpdate = _mapper.Map<UserForUpdateDto, User>(userForUpdateDto);
-                if (userToBeUpdate == null)
+                var userForUpdate = _mapper.Map<User>(userForUpdateDto);
+                userForUpdate.Id = id;
+                if (userForUpdate == null)
                     return NotFound();
-                await _Userervice.UpdateUser(userToBeUpdate, userForUpdate);
+                await _Userervice.UpdateUser(userForUpdate);
+                var result = new ApiResponse<bool>(true);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        // DELETE api/<UserController>/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+
+                await _Userervice.DeleteUser(await _Userervice.GetUserById(id));
                 var result = new ApiResponse<bool>(true);
                 return Ok(result);
             }

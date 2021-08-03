@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace AppUTM.Client.Models.Users
+namespace AppUTM.Models.Users
 {
     public class UserForUpdateDto
     {
@@ -14,7 +11,6 @@ namespace AppUTM.Client.Models.Users
         public string ApellidoMaterno { get; set; }
         public string Correo { get; set; }
         public IList<UserRole> UserRoles { get; set; }
-        public int[] RolesToBeDelete { get; set; }
         public int Status { get; set; }
     }
 }

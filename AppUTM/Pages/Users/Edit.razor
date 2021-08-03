@@ -1,0 +1,98 @@
+@page "/Users/Edit/{Id:int}"
+@using AppUTM.Models.Users
+@inject NavigationManager navigation
+@inject HttpClient Http
+@inject NotificationService NotificationService
+<h1>Editar un Usuario</h1>
+@if (_oUserForUpdateDto != null)
+{
+    <div class="container-fluid">
+        <EditForm Model="@_oUserForUpdateDto">
+            <div class="form-group">
+                <RadzenLabel Text="Clave de empleado:"></RadzenLabel>
+                <RadzenNumeric ShowUpDown="false" TValue="int" @bind-Value="@_oUserForUpdateDto.ClaveEmpleado" Style="width: auto;"></RadzenNumeric>
+            </div>
+            <div class="form-group">
+                <RadzenLabel Text="Nombres:"></RadzenLabel>
+                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.Nombres" Style="width: auto;"></RadzenTextBox>
+            </div>
+
+            <div class="form-group">
+                <RadzenLabel Text="Apellido Paterno:"></RadzenLabel>
+                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.ApellidoPaterno" Style="width: auto;"></RadzenTextBox>
+            </div>
+            <div class="form-group">
+                <RadzenLabel Text="Apellido Materno:"></RadzenLabel>
+                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.ApellidoMaterno" Style="width: auto;"></RadzenTextBox>
+            </div>
+            <div class="form-group">
+                <RadzenLabel Text="Correo Institucional:"></RadzenLabel>
+                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.Correo" Style="width: auto;"></RadzenTextBox>
+            </div>
+            <div class="form-group">
+                <RadzenDropDown Multiple="true" Placeholder="Selecciona un rol..." Data=@_roles TextProperty="@nameof(UserRole.Nombre)" TValue="IEnumerable<UserRole>" Change=@(_selectRol) Style="width: auto;" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary ml-2" @onclick="Post" role="button" type="submit">Crear</button>
+                <button class="btn btn-primary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+                <button class="btn btn-danger ml-2" @onclick="Delete" role="button">Eliminar</button>
+            </div>
+        </EditForm>
+    </div>
+}
+else
+{
+    NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Cargando usuario...", Duration = 1000 });
+}
+@code {
+    IList<UserRole> _roles;
+    IEnumerable<UserRole> userRole;
+    UserForUpdateDto _oUserForUpdateDto;
+    [Parameter]
+    public int Id { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _roles = await RolesToUserRoleExtension.Convert(Http);
+        _oUserForUpdateDto = await GetExtensions.GetUserById(Http, Id);
+
+    }
+
+    void _selectRol(object role)
+    {
+        userRole = (IEnumerable<UserRole>)role;
+    }
+
+    void Cancel()
+    {
+        navigation.NavigateTo("/Users");
+    }
+
+    async Task Delete()
+    {
+        var user = await Http.DeleteAsync("Users/" + Id);
+        NotificationExtensions.ShowNotification(NotificationService, user.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Usuario eliminado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo eliminar al usuario", Duration = 3000 });
+        navigation.NavigateTo("/Users");
+    }
+    public async Task Post()
+    {
+        if (_oUserForUpdateDto != null)
+        {
+            if (userRole != null)
+            {
+                var rolecast = new List<UserRole>();
+                foreach (var role in userRole)
+                {
+                    rolecast.Add(role);
+                }
+                _oUserForUpdateDto.UserRoles = rolecast;
+                var user = await Http.PutAsJsonAsync("Users/" + Id, _oUserForUpdateDto);
+                NotificationExtensions.ShowNotification(NotificationService, user.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Usuario Actualizado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear al usuario", Duration = 3000 });
+                navigation.NavigateTo("/Users");
+            }
+            else
+                NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Rol no seleccionado", Detail = "selecciona un rol", Duration = 3000 });
+        }
+        else
+            NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Usuario no seleccionado", Detail = "selecciona un usuario", Duration = 3000 });
+    }
+}

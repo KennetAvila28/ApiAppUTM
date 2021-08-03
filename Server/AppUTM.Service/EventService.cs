@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
@@ -31,9 +32,9 @@ namespace AppUTM.Services
             return newEvent;
         }
 
-        public async Task UpdateEvent(Event eventToBeUpdated, Event @event)
+        public async Task UpdateEvent(Event eventToBeUpdated)
         {
-            eventToBeUpdated = @event;
+            eventToBeUpdated.UpdateAt = DateTime.Now;
             _unitOfWork.Events.Update(eventToBeUpdated);
             await _unitOfWork.CommitAsync();
         }

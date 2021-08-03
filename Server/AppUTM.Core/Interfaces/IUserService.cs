@@ -12,7 +12,7 @@ namespace AppUTM.Core.Interfaces
 
         Task<User> CreateUser(User newUser);
 
-        Task UpdateUser(User userToBeUpdated, User user);
+        Task UpdateUser(User userToBeUpdated);
 
         Task DeleteUser(User user);
     }

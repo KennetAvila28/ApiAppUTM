@@ -1,3 +1,66 @@
 ﻿@page "/Roles"
+@using Microsoft.AspNetCore.Authorization
+@using AppUTM.Models.Permissions
+@attribute [Authorize]
+@inject HttpClient _http
+@inject NotificationService NotificationService
 
-<h1>Hello, world!</h1>
+<div class="container mt-3">
+    <div class="d-flex">
+        <h4>Lista de roles</h4>
+        <a class="btn btn-primary text-white mx-4 mb-3" href="/Roles/Create">Agregar</a>
+    </div>
+    @if (_roles != null)
+    {
+        <table class="table">
+            <thead class="bg-light text-center">
+                <tr>
+                    <th scope="col">Nombre</th>
+                    @foreach (var permission in _permissions)
+                    {
+                        <th scope="col">@permission.Module</th>
+                    }
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @foreach (var role in _roles)
+                {
+                    <tr>
+                        <td>@role.Nombre</td>
+                        @foreach (var permission in _permissions)
+                        {
+                            if (role.RolePermissions.Any(r => r.PermissionId == permission.Id))
+                            {
+                                <td><input class="form-check-input" type="checkbox" checked="checked" onclick="javascript: return false;" /></td>
+
+                            }
+                            else
+                            {
+                                <td><input class="form-check-input" type="checkbox" onclick="javascript: return false;" /></td>
+                            }
+
+                        }
+                        <td><a class="btn btn-primary text-white" href="/Roles/Edit/@role.Id">Editar</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Cargando roles...", Duration = 1000 });
+    }
+</div>
+
+@code
+{
+    private IList<PermissionReturn> _permissions;
+    private IList<RoleReturn> _roles;
+    protected override async Task OnInitializedAsync()
+    {
+        _permissions = await GetExtensions.GetAllPermissions(_http);
+        _roles = await GetExtensions.GetAllRoles(_http);
+        await Task.Delay(1000);
+    }
+}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -97,6 +98,14 @@ namespace AppUTM.Extensions
             {
                 return http.SendAsync(request, completionOption, cancellationToken);
             }
+        }
+
+        public static async Task<string> ImageToBase64(Stream image)
+        {
+            using var ms = new MemoryStream();
+            await image.CopyToAsync(ms);
+            var bytes = ms.ToArray();
+            return Convert.ToBase64String(bytes);
         }
     }
 }

@@ -45,22 +45,12 @@ namespace AppUTM.Services
             await _context.Users.Include(x => x.UserRoles).ThenInclude(y => y.Role)
                 .SingleOrDefaultAsync(z => z.Id == id);
 
-        public async Task UpdateUser(User userToBeUpdated, User user)
+        public async Task UpdateUser(User userToBeUpdated)
         {
-            userToBeUpdated.ApellidoMaterno = user.ApellidoMaterno;
-            userToBeUpdated.ApellidoPaterno = user.ApellidoPaterno;
-            userToBeUpdated.ClaveEmpleado = user.ClaveEmpleado;
-            userToBeUpdated.Nombres = user.Nombres;
+            var userRolesRemove = await _context.UserRoles.Where(x => x.User.Id == userToBeUpdated.Id).ToListAsync();
+            _unitOfWork.UserRoles.RemoveRange(userRolesRemove);
+            await _unitOfWork.UserRoles.AddRange(userToBeUpdated.UserRoles);
             userToBeUpdated.UpdateAt = DateTime.Now;
-            userToBeUpdated.Status = user.Status;
-
-            foreach (var item in user.RolesToBeDelete)
-            {
-                foreach (var role in userToBeUpdated.UserRoles.Where(role => role.RoleId == item))
-                {
-                    _unitOfWork.UserRoles.Remove(role);
-                }
-            }
             _unitOfWork.Users.Update(userToBeUpdated);
             await _unitOfWork.CommitAsync();
         }

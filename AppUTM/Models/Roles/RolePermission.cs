@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
-
-namespace AppUTM.Client.Models.Roles
+﻿namespace AppUTM.Models.Roles
 {
     public class RolePermission
     {
+        public string Module { get; set; }
         public int PermissionId { get; set; }
     }
 }

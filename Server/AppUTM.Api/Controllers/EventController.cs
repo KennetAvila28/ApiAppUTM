@@ -83,13 +83,13 @@ namespace AppUTM.Api.Controllers
         {
             try
             {
-                var eventToBeUpdate = await _eventService.GetEventById(id);
                 var eventForUpdate = _mapper.Map<EventForUpdateDto, Event>(eventForUpdateDto);
                 if (eventForUpdateDto.ImageFile != null)
                 {
                     eventForUpdate.Image = ImageHelper.ImageToBase64(eventForUpdateDto.ImageFile);
                 }
-                await _eventService.UpdateEvent(eventToBeUpdate, eventForUpdate);
+                eventForUpdate.Id = id;
+                await _eventService.UpdateEvent(eventForUpdate);
                 var eventResponse = _mapper.Map<Event, EventReturn>(eventForUpdate);
                 var response = new ApiResponse<EventReturn>(eventResponse);
                 return Ok(response);

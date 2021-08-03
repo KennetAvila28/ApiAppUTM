@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace AppUTM.Client.Models.Users
+namespace AppUTM.Models.Users
 {
     public class UserCreate
     {

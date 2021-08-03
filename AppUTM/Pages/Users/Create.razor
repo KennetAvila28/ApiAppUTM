@@ -1,28 +1,80 @@
 @page "/Users/Create"
-@using AppUTM.Extensions
-@using System.Text.Json;
+@using AppUTM.Models.Users
+@inject NavigationManager navigation
 @inject HttpClient Http
-
-<h1>Create User</h1>
+@inject NotificationService NotificationService
+<h1>Crear un Usuario</h1>
 <EditForm Model="@searchWorker">
-<div class="form-group">
-    <label>Correo Institucional</label>
-    <InputText class="form-control col-md-5" @bind-Value="searchWorker.Email"></InputText>
-    <button @onclick="_searchWorker" class="btn btn-primary mt-3" role="button">Buscar</button>
-</div>
+    <div class="form-group">
+        <label>Correo Institucional</label>
+        <InputText class="form-control col-md-5" @bind-Value="searchWorker.Email" required></InputText>
+        <button type="submit" @onclick="_searchWorker" class="btn btn-primary mt-3" role="button">Buscar</button>
+    </div>
 </EditForm>
+@if (_normalizedUser != null)
+{
+    <div class="row form-group">
+        <RadzenDropDown Change="@(_selectUser)" Data="@_normalizedUser" Placeholder="Selecciona un empleado" Style="width: auto;" TextProperty="@nameof(UserCreate.Correo)" TValue="@UserCreate" />
+        <RadzenDropDown Multiple="true" Placeholder="Selecciona un rol..." Data=@_roles TextProperty="@nameof(UserRole.Nombre)" TValue="IEnumerable<UserRole>" Change=@(_selectRol) Style="width:auto;" />
+        <button type="submit" @onclick="Post" class="btn btn-primary ml-2" role="button">Crear</button>
+    </div>
+}
+
 @code {
-    private JsonElement _normalizedUser;
-    SearchWorker searchWorker = new SearchWorker();
-    UserCreate oUserCreate = new UserCreate();
+    IList<UserCreate> _normalizedUser;
+    IList<UserRole> _roles;
+    IEnumerable<UserRole> userRole;
+    SearchWorker searchWorker = new();
+    UserCreate _oUserCreate;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _roles = await RolesToUserRoleExtension.Convert(Http);
+    }
 
     private async Task _searchWorker()
     {
-        var worker = await Http.GetFromJsonAsync<string>("Users/empleado/" + searchWorker.Email);
-        _normalizedUser = StringToJsonElement.Convert(worker);
-        Console.WriteLine(_normalizedUser.ToString());
-
+        if (!string.IsNullOrEmpty(searchWorker.Email))
+        {
+            var workers = await GetExtensions.GetWorkers(Http, searchWorker.Email);
+            if (workers != null)
+            {
+                NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Exito", Duration = 3000 });
+                _normalizedUser = await StringToListWorker.Convert(Http, workers);
+            }
+            else
+                NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error al buscar", Detail = "Empleado no encontrado", Duration = 3000 });
+        }
+        else
+            NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Correo vacio", Detail = "Ingresa un correo o nombre", Duration = 3000 });
     }
-    
 
+    void _selectUser(object user)
+    {
+        _oUserCreate = (UserCreate)user;
+    }
+
+    void _selectRol(object role)
+    {
+        userRole = (IEnumerable<UserRole>)role;
+        Console.WriteLine(userRole);
+    }
+
+    public async Task Post()
+    {
+        if (_oUserCreate != null)
+        {
+            var rolecast = new List<UserRole>();
+            foreach (var role in userRole)
+            {
+                rolecast.Add(role);
+            }
+            _oUserCreate.UserRoles = rolecast;
+            var user = await Http.PostAsJsonAsync<UserCreate>("Users", _oUserCreate);
+            NotificationExtensions.ShowNotification(NotificationService, user.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Usuario creado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear al usuario", Duration = 3000 });
+            navigation.NavigateTo("/Users");
+        }
+        else
+            NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Usuario no seleccionado", Detail = "selecciona un usuario", Duration = 3000 });
+    }
 }

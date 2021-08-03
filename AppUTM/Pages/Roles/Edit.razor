@@ -1,0 +1,64 @@
+@page "/Roles/Edit/{Id:int}"
+@inject NavigationManager navigation
+@inject HttpClient Http
+@inject NotificationService NotificationService
+<h1>Editar un Rol</h1>
+<div class="container-fluid">
+    <div class="form-group">
+        <RadzenLabel Text="Nombre:"></RadzenLabel>
+        <RadzenTextBox ShowUpDown="false" TValue="int" @bind-Value="@_oRoleForUpdateDto.Nombre" Style="width: auto;"></RadzenTextBox>
+    </div>
+    <div class="form-group">
+        <RadzenDropDown Multiple="true" Placeholder="Selecciona un permiso..." Data=@_permissions TextProperty="@nameof(RolePermission.Module)" TValue="IEnumerable<RolePermission>" Change=@(_selectPermission) Style="width:auto;" />
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary ml-2" @onclick="Post" role="button" type="submit">Crear</button>
+        <button class="btn btn-primary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+        <button class="btn btn-danger ml-2" @onclick="Delete" role="button">Eliminar</button>
+    </div>
+</div>
+
+@code {
+    IList<RolePermission> _permissions;
+    IEnumerable<RolePermission> rolePermissions;
+    RoleForUpdateDto _oRoleForUpdateDto = new();
+    [Parameter]
+    public int Id { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _permissions = await PermissionsToRolePermissionExtensions.Convert(Http);
+        _oRoleForUpdateDto = await GetExtensions.GetRoleById(Http, Id);
+    }
+
+    void _selectPermission(object permission)
+    {
+        rolePermissions = (IEnumerable<RolePermission>)permission;
+    }
+    async Task Delete()
+    {
+        var user = await Http.DeleteAsync("Roles/" + Id);
+        NotificationExtensions.ShowNotification(NotificationService, user.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Rol eliminado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo eliminar el rol", Duration = 3000 });
+        navigation.NavigateTo("/roles");
+    }
+    public async Task Post()
+    {
+        if (_oRoleForUpdateDto != null)
+        {
+            var rolePermissionscast = new List<RolePermission>();
+            foreach (var permission in rolePermissions)
+            {
+                rolePermissionscast.Add(permission);
+            }
+            _oRoleForUpdateDto.RolePermissions = rolePermissionscast;
+            var role = await Http.PutAsJsonAsync("Roles/" + Id, _oRoleForUpdateDto);
+            NotificationExtensions.ShowNotification(NotificationService, role.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Rol Actualizado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo actualizar el rol", Duration = 3000 });
+            navigation.NavigateTo("/Roles");
+        }
+        else
+            NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "permiso no seleccionado", Detail = "selecciona un permiso", Duration = 3000 });
+    }
+    void Cancel()
+    {
+        navigation.NavigateTo("/Roles");
+    }
+}

@@ -12,7 +12,7 @@ namespace AppUTM.Core.Interfaces
 
         Task<Role> CreateRole(Role newRole);
 
-        Task UpdateRole(Role RoleToBeUpdated, Role Role);
+        Task UpdateRole(Role RoleToBeUpdated);
 
         Task DeleteRole(Role Role);
     }

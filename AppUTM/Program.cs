@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using AppUTM.Extensions;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-
+using Radzen;
 namespace AppUTM
 {
     public class Program
@@ -26,6 +26,10 @@ namespace AppUTM
                     options.ProviderOptions.DefaultAccessTokenScopes
                     .Add("https://graph.microsoft.com/User.Read");
             });
+            builder.Services.AddScoped<DialogService>();
+            builder.Services.AddScoped<NotificationService>();
+            builder.Services.AddScoped<TooltipService>();
+            builder.Services.AddScoped<ContextMenuService>();
             builder.Services.AddGraphClient("https://graph.microsoft.com/User.Read");
             await builder.Build().RunAsync();
         }

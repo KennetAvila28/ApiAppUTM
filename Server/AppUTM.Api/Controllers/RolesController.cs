@@ -5,6 +5,7 @@ using AppUTM.Core.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -61,19 +62,28 @@ namespace AppUTM.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, RoleForUpdateDto roleForUpdateDto)
         {
-            var roleToBeUpdate = await _roleService.GetRoleById(id);
             var roleForUpdate = _mapper.Map<Role>(roleForUpdateDto);
-            if (roleToBeUpdate == null)
-                return NotFound();
-            await _roleService.UpdateRole(roleToBeUpdate, roleForUpdate);
+            roleForUpdate.Id = id;
+            await _roleService.UpdateRole(roleForUpdate);
             var result = new ApiResponse<bool>(true);
             return Ok(result);
         }
 
-        //// DELETE api/<RolesController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        // DELETE api/<RolesController>/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                var role = await _roleService.GetRoleById(id);
+                await _roleService.DeleteRole(role);
+                var result = new ApiResponse<bool>(true);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
