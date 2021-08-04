@@ -15,17 +15,23 @@ namespace AppUTM.Client.Controllers
     public class CrearPDFController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly ITokenAcquisition _tokenAcquisition;
+        
 
         HttpClient httpClient = new HttpClient();
 
-        public CrearPDFController(IConfiguration configuration, ITokenAcquisition tokenAcquisition)
+        public CrearPDFController(IConfiguration configuration)
         {
             _configuration = configuration;
-            _tokenAcquisition = tokenAcquisition;
+         
         }
         public async Task<IActionResult> Index(int id)
         {
+            //// Define la URL de la Cabecera 
+            //string _headerUrl = Url.Action("HeaderPDF", "CrearPDF", null, "https");
+            //// Define la URL del Pie de página
+            //string _footerUrl = Url.Action("FooterPDF", "CrearPDF", null, "https");
+
+
             Cupones cupones = new Cupones();
             var jsonEmpresa = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/" + id);
             var empresa = JsonConvert.DeserializeObject<Empresa>(jsonEmpresa);
@@ -39,8 +45,23 @@ namespace AppUTM.Client.Controllers
 
             return new ViewAsPdf("Index", cupones)
             {
+                //CustomSwitches = "--header-html " + _headerUrl + " --header-spacing 0 "        
+
 
             };
+
+
+
         }
+
+        //public ActionResult HeaderPDF()
+        //{
+        //    return View("HeaderPDF");
+        //}
+        //public ActionResult FooterPDF()
+        //{
+        //    return View("FooterPDF");
+
+        //}
     }
 }

@@ -14,10 +14,10 @@ namespace AppUTM.Client.Models
         public int CuponesUsados { get; set; }
         public int CuponesVisitados { get; set; }
         public int PorcentajeDescuento { get; set; }
+        public int CuponesDisponibles { get; set; }
         public int NumeroPorPersona { get; set; }
         public string Descripcion { get; set; }
         public int EmpresaId { get; set; }
-
         public string NombreEmpresa {get;set;}
     }
 }

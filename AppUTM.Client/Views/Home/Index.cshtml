@@ -31,10 +31,11 @@
                 </div>
             </div>
         </div>
+        
         <div class="col-xl-3 col-sm-6 col-6 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="text-warning">X</h3>
+                    <h3 class="text-warning">@Html.EditorFor(model => model.CuponesTotales, new { HtmlAttributes = new { @class = "form-control", @placeholder = "Count", @autofocus_autocomplete = "off", disabled = true } })</h3>
                     <p class="mb-0">Cupones Totales</p>
                 </div>
             </div>
