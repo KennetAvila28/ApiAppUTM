@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
 using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,21 +16,21 @@ namespace AppUTM.Client.Controllers
     public class CrearPDFController : Controller
     {
         private readonly IConfiguration _configuration;
-        
+        private readonly ITokenAcquisition _tokenAcquisition;
 
-        HttpClient httpClient = new HttpClient();
 
-        public CrearPDFController(IConfiguration configuration)
+        public CrearPDFController(IConfiguration configuration, ITokenAcquisition tokenAcquisition)
         {
             _configuration = configuration;
-         
+            _tokenAcquisition = tokenAcquisition;
         }
+        HttpClient httpClient = new HttpClient();
         public async Task<IActionResult> Index(int id)
         {
             //// Define la URL de la Cabecera 
-            //string _headerUrl = Url.Action("HeaderPDF", "CrearPDF", null, "https");
-            //// Define la URL del Pie de página
-            //string _footerUrl = Url.Action("FooterPDF", "CrearPDF", null, "https");
+            string _headerUrl = Url.Action("HeaderPDF", "CrearPDF", null, "https");
+            ////// Define la URL del Pie de página
+            string _footerUrl = Url.Action("FooterPDF", "CrearPDF", null, "https");
 
 
             Cupones cupones = new Cupones();
@@ -45,7 +46,13 @@ namespace AppUTM.Client.Controllers
 
             return new ViewAsPdf("Index", cupones)
             {
-                //CustomSwitches = "--header-html " + _headerUrl + " --header-spacing 0 "        
+                // Establece la Cabecera y el Pie de página
+                CustomSwitches = "--header-html " + _headerUrl + " --header-spacing 13 " +
+                             "--footer-html " + _footerUrl + " --footer-spacing 0"
+            ,
+                PageMargins = new Margins(50, 10, 12, 10)
+
+
 
 
             };
@@ -54,14 +61,14 @@ namespace AppUTM.Client.Controllers
 
         }
 
-        //public ActionResult HeaderPDF()
-        //{
-        //    return View("HeaderPDF");
-        //}
-        //public ActionResult FooterPDF()
-        //{
-        //    return View("FooterPDF");
+        public ActionResult HeaderPDF()
+        {
+            return View("HeaderPDF");
+        }
+        public ActionResult FooterPDF()
+        {
+            return View("FooterPDF");
 
-        //}
+        }
     }
 }
