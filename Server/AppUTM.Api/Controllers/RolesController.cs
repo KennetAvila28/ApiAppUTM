@@ -31,6 +31,7 @@ namespace AppUTM.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RoleReturn>>> Get()
         {
+
             var roles = await _roleService.GetAllRoles();
             var roleList = _mapper.Map<IEnumerable<Role>, IEnumerable<RoleReturn>>(roles);
             var response = new ApiResponse<IEnumerable<RoleReturn>>(roleList);

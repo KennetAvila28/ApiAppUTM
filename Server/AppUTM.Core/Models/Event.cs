@@ -14,12 +14,14 @@ namespace AppUTM.Core.Models
         public DateTime EndDate { get; set; }
 
         [ForeignKey("Coordinations")]
-        public int Author { get; set; }
+        public int AuthorId { get; set; }
 
+        public Coordination Author { get; set; }
         public string Image { get; set; }
         public bool IsActivity { get; set; }
         public bool IsSuggest { get; set; }
         public bool IsPublished { get; set; }
+        public bool IsPassed { get; set; }
 
         [JsonIgnore]
         public IList<EventFavorite> EventFavorite { get; set; }

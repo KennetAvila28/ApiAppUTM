@@ -6,7 +6,7 @@ namespace AppUTM.Core.Models
     [Table("Favorites")]
     public class Favorites : BaseEntity
     {
-        public string Matricula { get; set; }
+        public string Clave { get; set; }
 
         public IList<EventFavorite> EventsfFavorites { get; set; }
     }

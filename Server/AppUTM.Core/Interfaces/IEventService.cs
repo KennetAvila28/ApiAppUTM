@@ -18,5 +18,13 @@ namespace AppUTM.Core.Interfaces
         Task UpdateEvent(Event eventToBeUpdated);
 
         Task DeleteEvent(Event @event);
+
+        Task<IEnumerable<Event>> GetAllEventsToday();
+
+        Task<IEnumerable<Event>> GetAllEventsWeek();
+
+        Task<IEnumerable<Event>> GetAllEventsQuarter();
+
+        Task<IEnumerable<Event>> GetAllEventsYear();
     }
 }

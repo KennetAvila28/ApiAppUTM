@@ -14,6 +14,7 @@ namespace AppUTM.Core.Repositories
         IEventFavoriteRepository EventFavorite { get; }
         IEventRepository Events { get; }
         IFavoriteRepository Favorites { get; }
+        ICoordinationsRepository Coordinations { get; }
 
         Task<int> CommitAsync();
     }

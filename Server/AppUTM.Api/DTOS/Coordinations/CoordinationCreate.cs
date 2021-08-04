@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppUTM.Core.Models;
 
-namespace AppUTM.Api.DTOS.Roles
+namespace AppUTM.Api.DTOS.Coordinations
 {
-    public class RoleForUpdateDto
+    public class CoordinationCreate
     {
         public string Nombre { get; set; }
-        public IList<RolePermission> RolePermissions { get; set; }
     }
 }

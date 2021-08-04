@@ -41,7 +41,6 @@ namespace AppUTM.Services
 
         public async Task UpdateRole(Role roleToBeUpdated)
         {
-           
             roleToBeUpdated.UpdateAt = DateTime.Now;
             var rolePermissionRemove = await _context.RolePermissions.Where(x => x.RoleId == roleToBeUpdated.Id).ToListAsync();
             _unitOfWork.RolePermission.RemoveRange(rolePermissionRemove);

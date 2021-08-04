@@ -17,5 +17,6 @@ namespace AppUTM.Api.DTOS.Events
         public bool IsActivity { get; set; }
         public bool IsSuggest { get; set; }
         public bool IsPublished { get; set; }
+        public Coordination Coordination { get; set; }
     }
 }

@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using AppUTM.Core.Models;
 
-namespace AppUTM.Core.Models
+namespace AppUTM.Api.DTOS.Coordinations
 {
-    public class Coordination : BaseEntity
+    public class CoordinatonReturn
     {
         public string Nombre { get; set; }
 
-        [JsonIgnore]
         public List<Event> Events { get; set; }
     }
 }

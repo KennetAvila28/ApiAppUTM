@@ -9,7 +9,6 @@ namespace AppUTM.Core.Models
         public List<UserRole> UserRoles { get; set; }
         public List<RolePermission> RolePermissions { get; set; }
 
-        [NotMapped]
-        public int[] PermissionsToBeDelete { get; set; }
+        //Todo:Add relationship Many to many with RoleModule
     }
 }

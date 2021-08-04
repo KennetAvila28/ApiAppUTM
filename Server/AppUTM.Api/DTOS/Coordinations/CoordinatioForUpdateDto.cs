@@ -4,11 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppUTM.Core.Models;
 
-namespace AppUTM.Api.DTOS.Roles
+namespace AppUTM.Api.DTOS.Coordinations
 {
-    public class RoleForUpdateDto
+    public class CoordinatioForUpdateDto
     {
         public string Nombre { get; set; }
-        public IList<RolePermission> RolePermissions { get; set; }
     }
 }

@@ -58,6 +58,27 @@ namespace AppUTM.Api.Controllers
             }
         }
 
+        // Get api/<EventController>
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Event>> GetAllEventsToday()
+        //{
+        //}
+        // Get api/<EventController>
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Event>> GetAllEventsWeek()
+        //{
+        //}
+        // Get api/<EventController>
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Event>> GetAllEventsQuarter()
+        //{
+        //}
+        // Get api/<EventController>
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Event>> GetAllEventsYear()
+        //{
+        //}
+
         // POST api/<EventController>
         [HttpPost]
         public async Task<ActionResult> Post(EventCreate eventCreate)

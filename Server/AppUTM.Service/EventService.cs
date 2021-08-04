@@ -44,5 +44,29 @@ namespace AppUTM.Services
             _unitOfWork.Events.Remove(@event);
             await _unitOfWork.CommitAsync();
         }
+
+        public async Task<IEnumerable<Event>> GetAllEventsToday()
+        {
+            await Task.Delay(1000);
+            return _unitOfWork.Events.Find(x => x.IsPublished & x.StartDate == DateTime.Today);
+        }
+
+        public async Task<IEnumerable<Event>> GetAllEventsWeek()
+        {
+            await Task.Delay(1000);
+            return _unitOfWork.Events.Find(x => x.StartDate.DayOfWeek >= DayOfWeek.Monday & x.StartDate.DayOfWeek <= DayOfWeek.Sunday & x.IsPublished);
+        }
+
+        public async Task<IEnumerable<Event>> GetAllEventsQuarter()
+        {
+            await Task.Delay(1000);
+            return _unitOfWork.Events.Find(x => x.StartDate.Month >= DateTime.Now.Month & x.StartDate.Month <= DateTime.Now.Month & x.IsPublished);
+        }
+
+        public async Task<IEnumerable<Event>> GetAllEventsYear()
+        {
+            await Task.Delay(1000);
+            return _unitOfWork.Events.Find(x => x.StartDate.Year == DateTime.Now.Year & x.IsPublished);
+        }
     }
 }
