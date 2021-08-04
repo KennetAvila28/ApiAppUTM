@@ -6,109 +6,115 @@
 }
 
 
-<html>
-<body>
-    <h1>Cupones de @Model.Empresa.Nombre</h1>
-    <p>@Model.Empresa.RFC</p>
-    <p> Dirección @Model.Empresa.Direccion</p>
-    <p>Teléfono @Model.Empresa.Telefono</p>
-    <div class="container mt-4 mx-auto row center-block">
-        <div style="border: 1px solid #666; padding: 20px">
-            <div class="col">
-                <div class="d-flex">
-                    <h5>Cupones Genéricos</h5>
-                </div>
-                <table style="text-align: center" class="table mt-3">
-                    <thead>
-                        <tr>
-                            <th scope="col">|Descripción</th>
-                            <th scope="col">|Vencimiento</th>
-                            <th scope="col">|Descuento</th>
-                            <th scope="col">|Núm. de cupones</th>
-                            <th scope="col">|Cupones usados</th>
-                            <th scope="col">|Cupones disponibles</th>
-                            <th scope="col">|Visualizaciones|</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.cuponesGenericos)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(x => item.Descripcion)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(x => item.FechaExpiracion)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(x => item.PorcentajeDescuento)%
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(x => item.NumeroPorPersona)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(x => item.CuponesUsados)
-                                </td>
-                                <td>
-                                    @(item.CuponesDisponibles = item.NumeroPorPersona-item.CuponesUsados)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(x => item.CuponesVisitados)
-                                </td>
+@*<img src="" />*@
+@*<img style="width:300px; height:300px" src="~/img/encabezado.png" id="logo" alt="UTM"/>*@
 
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+
+
+
+@*<p style="text-align: center; line-height: 25px">Reporte del listado de cupones por empresa</p>*@
+
+
+<h1>Reporte de la empresa: @Model.Empresa.Nombre</h1>
+<p style="line-height: 2px;">RFC: @Model.Empresa.RFC</p>
+<p style="line-height: 2px;"> Dirección: @Model.Empresa.Direccion</p>
+<p style="line-height: 2px;">Teléfono: @Model.Empresa.Telefono</p>
+<div class="container mt-4 mx-auto row center-block">
+    <div style="border: 1px solid #666; padding: 20px">
+        <div class="col">
+            <div class="d-flex">
+                <h5>Cupones Genéricos</h5>
             </div>
-
-        </div>
-        <br />
-        <br />
-        <div style="border: 1px solid #666; padding: 20px">
-            <div class="col">
-                <div class="d-flex">
-                    <h5>Cupones por Imagen</h5>
-                </div>
-                <table style="text-align: center" table mt-3">
-                    <thead>
+            <table style="text-align: center" class="table mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col">|Descripción</th>
+                        <th scope="col">|Vencimiento</th>
+                        <th scope="col">|Descuento</th>
+                        <th scope="col">|Núm. de cupones</th>
+                        <th scope="col">|Cupones usados</th>
+                        <th scope="col">|Cupones disponibles</th>
+                        <th scope="col">|Visualizaciones|</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.cuponesGenericos)
+                    {
                         <tr>
-                            <th scope="col">|Descripción</th>
-                            <th scope="col">|Vencimiento</th>
-                            <th scope="col">|Cupones usados</th>
-                            <th scope="col">|Visualizaciones|</th>
+                            <td>
+                                @Html.DisplayFor(x => item.Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.FechaExpiracion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.PorcentajeDescuento)%
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.NumeroPorPersona)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.CuponesUsados)
+                            </td>
+                            <td>
+                                @(item.CuponesDisponibles = item.NumeroPorPersona-item.CuponesUsados)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.CuponesVisitados)
+                            </td>
+
                         </tr>
-                    </thead>
-                    <tbody>
-
-
-                        @foreach (var item in Model.cuponesImagen)
-                        {
-                            <tr>
-
-                                <td>
-                                    @Html.DisplayFor(x => item.Descripcion)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(x => item.FechaExpiracion)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(x => item.CuponesUsados)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(x => item.CuponesVisitados)
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
-            </div>
-
+                    }
+                </tbody>
+            </table>
         </div>
+
     </div>
-</body>
-</html>    
+    <br />
+    <br />
+    <div style="border: 1px solid #666; padding: 20px">
+        <div class="col">
+            <div class="d-flex">
+                <h5>Cupones por Imagen</h5>
+            </div>
+            <table style="text-align: center" table mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col">|Descripción</th>
+                        <th scope="col">|Vencimiento</th>
+                        <th scope="col">|Cupones usados</th>
+                        <th scope="col">|Visualizaciones|</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    @foreach (var item in Model.cuponesImagen)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(x => item.Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.FechaExpiracion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.CuponesUsados)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.CuponesVisitados)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
 
 
 

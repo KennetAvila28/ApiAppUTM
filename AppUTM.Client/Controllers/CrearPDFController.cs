@@ -1,4 +1,5 @@
 ﻿using AppUTM.Client.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Web;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+
 
 namespace AppUTM.Client.Controllers
 {
@@ -29,7 +31,7 @@ namespace AppUTM.Client.Controllers
         {
             //// Define la URL de la Cabecera 
             string _headerUrl = Url.Action("HeaderPDF", "CrearPDF", null, "https");
-            ////// Define la URL del Pie de página
+            //////// Define la URL del Pie de página
             string _footerUrl = Url.Action("FooterPDF", "CrearPDF", null, "https");
 
 
@@ -46,11 +48,11 @@ namespace AppUTM.Client.Controllers
 
             return new ViewAsPdf("Index", cupones)
             {
-                // Establece la Cabecera y el Pie de página
-                CustomSwitches = "--header-html " + _headerUrl + " --header-spacing 13 " +
+                //    // Establece la Cabecera y el Pie de página
+                CustomSwitches = "--header-html " + _headerUrl + " --header-spacing 0 " +
                              "--footer-html " + _footerUrl + " --footer-spacing 0"
-            ,
-                PageMargins = new Margins(50, 10, 12, 10)
+                //,
+                //    PageMargins = new Margins(50, 10, 12, 10)
 
 
 
@@ -60,15 +62,17 @@ namespace AppUTM.Client.Controllers
 
 
         }
-
+        [AllowAnonymous]
         public ActionResult HeaderPDF()
         {
             return View("HeaderPDF");
         }
+        [AllowAnonymous]
         public ActionResult FooterPDF()
         {
             return View("FooterPDF");
-
         }
+
+
     }
 }
