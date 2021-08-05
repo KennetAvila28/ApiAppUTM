@@ -5,8 +5,8 @@
 }
 
 <div class="d-flex">
+    
     <h2 class="mt-2 mb-3">Cupones de @Model.Empresa.Nombre</h2>
-
 </div>
 <div class="container mt-4 mx-auto row center-block">
     <div>
@@ -14,33 +14,45 @@
             <div class="d-flex">
                 <h5>Cupones Genéricos</h5>
             </div>
-            <table  style="text-align: center" class="table mt-3">
+            <table style="text-align: center" class="table mt-3">
                 <thead>
-                    <tr>
-                        <th scope="col">Fecha de vencimiento</th>
-                        <th scope="col">Uso por persona</th>
-                        <th scope="col">Porcentaje de descuento</th>
-                        <th scope="col">Veces visitado el cupón</th>
-                        <th scope="col">Veces usado el cupón</th>                    
+                    <tr>                                   
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Vencimiento</th>
+                        <th scope="col">Descuento</th>
+                        <th scope="col">Núm. de cupones</th>
+                        <th scope="col">Cupones usados</th>
+                        <th scope="col">Cupones disponibles</th>
+                        <th scope="col">Visualizaciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.cuponesGenericos)
                     {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(x => item.FechaExpiracion)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(x => item.NumeroPorPersona)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(x => item.PorcentajeDescuento)%
-                        </td>
-                        <td>
-                            @Html.DisplayFor(x => item.CuponesUsados)
-                        </td>                      
-                    </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(x => item.Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.FechaExpiracion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.PorcentajeDescuento)%
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.NumeroPorPersona)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.CuponesUsados)
+                            </td>
+                            <td>
+                                @(item.CuponesDisponibles = item.NumeroPorPersona-item.CuponesUsados)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.CuponesVisitados)
+                            </td>
+
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -55,31 +67,33 @@
             <table style="text-align: center" class="table mt-3">
                 <thead>
                     <tr>
-                        <th scope="col">Fecha de vencimiento</th>
-                        <th scope="col">Imagen</th>
-                        <th scope="col">Veces visitado el cupón</th>
-                        <th scope="col">Veces usado el cupón</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Vencimiento</th>
+                        <th scope="col">Cupones usados</th>
+                        <th scope="col">Visualizaciones</th>
                     </tr>
+                    
                 </thead>
+
                 <tbody>
+                    
+          
                     @foreach (var item in Model.cuponesImagen)
                     {
                     <tr>
+
+                        <td>
+                            @Html.DisplayFor(x => item.Descripcion)
+                        </td>
                         <td>
                             @Html.DisplayFor(x => item.FechaExpiracion)
                         </td>
                         <td>
-                            <img class="qr" src="http://localhost:59131/api/CuponesImagen/image?nombreArchivo=@item.Imagen" alt="Cupón @item.EmpresaId">
+                            @Html.DisplayFor(x => item.CuponesUsados)
                         </td>
                         <td>
                             @Html.DisplayFor(x => item.CuponesVisitados)
                         </td>
-                        <td>
-                            @Html.DisplayFor(x => item.CuponesUsados)
-                        </td>
-
-
-
                     </tr>
                     }
                 </tbody>

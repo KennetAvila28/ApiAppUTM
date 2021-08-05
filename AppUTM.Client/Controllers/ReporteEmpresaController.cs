@@ -31,16 +31,24 @@ namespace AppUTM.Client.Controllers
         public async Task<IActionResult> Index(int id)
         {
             Cupones cupones = new Cupones();
+            CuponGenerico CuponG = new CuponGenerico();
             var jsonEmpresa = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/" + id);
             var empresa = JsonConvert.DeserializeObject<Empresa>(jsonEmpresa);
             cupones.Empresa = empresa;
             var jsonCuponesGenerico = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/empresa/" + id);
-            var listCupones = JsonConvert.DeserializeObject<IEnumerable<CuponGenerico>>(jsonCuponesGenerico);
+            var listCupones = JsonConvert.DeserializeObject<List<CuponGenerico>>(jsonCuponesGenerico);
             cupones.cuponesGenericos = listCupones;
             var jsonCuponesImagen = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/empresa/" + id);
-            var listCuponesImagen = JsonConvert.DeserializeObject<IEnumerable<CuponImagen>>(jsonCuponesImagen);
+            var listCuponesImagen = JsonConvert.DeserializeObject<List<CuponImagen>>(jsonCuponesImagen);
             cupones.cuponesImagen = listCuponesImagen;
+
+            CuponG.CuponesDisponibles = CuponG.NumeroPorPersona - CuponG.CuponesUsados;
+            
+            
             return View(cupones);
+           
+         
+            
         }
 
         //  CUPONES GÉNERICOS

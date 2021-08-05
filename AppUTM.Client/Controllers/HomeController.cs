@@ -38,6 +38,7 @@ namespace AppUTM.Client.Controllers
             ViewBag.image = await GetPhoto(_httpClient);
             HttpClient httpClient = new HttpClient();
             Dashboard listempresa = new Dashboard();
+            
             //Para empresas
             var jsonEmpresas = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas");
             var jsonResult = JsonConvert.DeserializeObject(jsonEmpresas).ToString();
@@ -52,7 +53,15 @@ namespace AppUTM.Client.Controllers
             var jsonCuponImag = await httpClient.GetStringAsync("http://localhost:59131/api/CuponesImagen");
             var jsonResult3 = JsonConvert.DeserializeObject(jsonCuponImag).ToString();
             var result3 = JsonConvert.DeserializeObject<List<CuponImagen>>(jsonResult3);
-            listempresa.CuponesImagenes = result3;           
+            listempresa.CuponesImagenes = result3;
+            //Para cupones totales
+
+            int Lista1 = result1.Count();
+            int Lista2 = result3.Count();
+
+            int CuponesTotales = Lista1 + Lista2;
+
+            listempresa.CuponesTotales = CuponesTotales;
 
             return View(listempresa);
 

@@ -10,5 +10,8 @@ namespace AppUTM.Client.Models
         public Empresa Empresa { get; set; }
         public IEnumerable<CuponGenerico> cuponesGenericos { get; set; }
         public IEnumerable<CuponImagen> cuponesImagen { get; set; }
+
+      
+
     }
 }

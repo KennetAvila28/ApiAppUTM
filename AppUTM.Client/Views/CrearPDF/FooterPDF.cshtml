@@ -1,0 +1,58 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ContactFooterPDF</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        img.imagen{
+            float:right;
+        }
+    </style>
+</head>
+<body>
+    <br />
+    <table style="width:100%">
+        
+            <tr>
+                <td>
+                    <p style="color: #BABBBD; line-height: 2px; font-weight: bold">Organismo Público Descentralizado del Gobierno del Estado de Yucatán</p>
+                    <p style="color: #BABBBD; line-height: 2px; font-weight: bold; font-size:12px">Calle 111 No. 315 x 46 y 48 Col. Santa Rosa|CP.97279|Mérida, Yucatán, Mexico</p>
+                    <p style="color: #BABBBD; line-height: 2px; font-weight: bold; font-size: 11px ">www.utmetropolitana.edu.mx  Tel. 01 (999) 9 40 61 00</p>
+                </td>
+                <td>
+                    
+                        <img style="width:120px; height:40px;" src="~/img/descarga.png">
+                    
+                    
+                </td>
+            </tr>
+       
+
+    </table>
+
+
+    <div class="text-center">
+        Página <span id='page'></span> de
+        <span id='topage'></span>
+
+        <script>
+            var vars = {};
+            var x = window.location.search.substring(1).split('&');
+            for (var i in x) {
+                var z = x[i].split('=', 2);
+                vars[z[0]] = unescape(z[1]);
+            }
+            document.getElementById('page').innerHTML = vars.page;
+            document.getElementById('topage').innerHTML = vars.topage;
+        </script>
+
+    </div>
+</body>
+</html>

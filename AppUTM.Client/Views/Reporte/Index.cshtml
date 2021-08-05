@@ -1,34 +1,34 @@
 ﻿@model AppUTM.Client.Models.ListEmpresas;
-
 @{
     ViewData["Title"] = "Reporte";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <script src="~/js/filter.js"></script>
 <h4>Reporte por empresa</h4>
 <div class="container mt-3">
+    <div class="mb-4 d-flex">
+        <input class="form-control me-3" type="search" id="inputTable" onkeyup="searchInTable()" aria-label="Search" placeholder="Buscar empresa...">
+    </div>
 
     <table class="table table-bordered main-table">
+        <thead>
+            <tr>
+
+
+            </tr>
+        </thead>
         <tbody id="myTable">
             @foreach (var item in Model.empresasRegistradas)
             {
                 <tr>
-                    <td>@item.Nombre</td>
+                    <td>@item.Nombre</td>                   
                     <td><a asp-controller="ReporteEmpresa" asp-action="Index" asp-route-Id="@item.EmpresaId">Ver información</a></td>
+
                 </tr>
             }
         </tbody>
     </table>
 </div>
 
-<!-- Método auxiliar del filtro-->
-<script>
-    $(document).ready(function () {
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
-</script>
+
