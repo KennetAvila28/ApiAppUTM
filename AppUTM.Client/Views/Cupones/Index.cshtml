@@ -33,7 +33,7 @@
                     <td>
                         @Html.DisplayFor(x => item.FechaExpiracion)
                     </td>
-                    <td><a class="btn btn-primary" asp-route-Id="@item.CuponGeneridoId" asp-action="UpdateGenerico">Editar</a></td>
+                    <td><a class="btn btn-green" asp-route-Id="@item.CuponGeneridoId" asp-action="UpdateGenerico">Editar</a></td>
                 </tr>
                 }
             </tbody>
@@ -67,7 +67,7 @@
                     <td>
                         <img class="qr" src="http://localhost:59131/api/CuponesImagen/image?nombreArchivo=@item.Imagen" alt="Cupón @item.EmpresaId">
                     </td>
-                    <td><a class="btn btn-primary" asp-route-Id="@item.CuponImagenId" asp-action="UpdateCuponImagen">Editar</a></td>
+                    <td><a class="btn btn-green" asp-route-Id="@item.CuponImagenId" asp-action="UpdateCuponImagen">Editar</a></td>
                 </tr>
                 }               
             </tbody>

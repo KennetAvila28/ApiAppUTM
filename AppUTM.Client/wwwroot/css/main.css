@@ -55,7 +55,7 @@
     margin-right: 20px;
 }
 .navbar-nav > li:last-child{
-    margin-right: 80px;;
+    margin-right: 80px;
 }
 .nav-b{ margin-bottom: 15px;}
 .btn-add{ width: 120px;}
@@ -95,11 +95,17 @@ a:hover{
 }
 
 .btn-green {
-    background-color: #90cb59;
+    background-color: #01a986;
 }
 
-#exampleModalCenterTitle{
-    font-weight: bold !important;    
+.disabled-input {
+    cursor: not-allowed !important;
+    background-color: #F7F5F4 !important;
+    color: #767575 !important;
+}
+
+#exampleModalCenterTitle {
+    font-weight: bold !important;
 }
 
 

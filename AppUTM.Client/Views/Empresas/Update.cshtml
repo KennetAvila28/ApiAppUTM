@@ -12,32 +12,47 @@
         <input type="hidden" asp-for="Domain" value="@Model.Domain" />
         <div class="form-group col-md-4">
             <label>RFC</label>
-            <label class="form-control">@Model.RFC</label>
+            @if (Model.RFC != null)
+            {
+                <label class="form-control disabled-input">@Model.RFC</label>
+            }
+            else
+            {
+                <label class="form-control disabled-input">No disponible</label>
+            }
             <input style="background-color:gray" type="hidden" class="form-control" asp-for="RFC" value="@Model.RFC">
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-6">
             <label>Nombre</label>
-            <label class="form-control">@Model.Nombre</label>
+            <label class="form-control disabled-input">@Model.Nombre</label>
             <input type="hidden" class="form-control" asp-for="Nombre" value="@Model.Nombre">
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-2">
             <label>Teléfono</label>
-            <label class="form-control">@Model.Telefono</label>
+            @if (Model.Telefono != null)
+            {
+                <label class="form-control disabled-input">@Model.Telefono</label>
+            }
+            else
+            {
+                <label class="form-control disabled-input">No disponible</label>
+            }
             <input type="hidden" class="form-control" asp-for="Telefono" value="@Model.Telefono">
         </div>
     </div>
     <div class="form-group row mt-4">
         <div class="form-group col-md-4">
             <label>Estado</label>
-            <label class="form-control">@Model.Activa</label>
+            <label class="form-control disabled-input">@Model.Activa</label>
             <input type="hidden" class="form-control" asp-for="Activa" value="@Model.Activa">
         </div>
-        <div class="form-group col-md-4">
-            <label>Dirección</label>
-            <label class="form-control">@Model.Direccion</label>
+        <div class="form-group col-md-8">
+            <label>Dirección</label>         
+            <label class="form-control disabled-input">@Model.Direccion</label>
             <input type="hidden" class="form-control" name="Direccion" asp-for="@Model.Direccion">
-        </div>
-
+        </div>       
+    </div>
+    <div class="form-group row mt-4">
         <div class="form-group col-md-4">
             <label>Alias</label>
             <input type="text" class="form-control" asp-for="Alias" value="@Model.Alias">
@@ -46,7 +61,6 @@
             <label>Tipo</label>
             <input type="text" class="form-control" asp-for="Tipo" value="@Model.Tipo">
         </div>
-
     </div>
     <div class="d-flex">
         <div class="mt-5">
