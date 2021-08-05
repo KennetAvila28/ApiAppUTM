@@ -43,6 +43,14 @@ namespace AppUTM.Services
         {
             roleToBeUpdated.Nombre = role.Nombre;
             roleToBeUpdated.UpdateAt = DateTime.Now;
+            foreach (var p in role.RolePermissions)
+            {
+                if (!roleToBeUpdated.RolePermissions.Any(us => us.PermissionId == p.PermissionId))
+                {
+                    p.RoleId = roleToBeUpdated.Id;
+                    await _unitOfWork.RolePermission.Add(p);
+                }
+            }
             foreach (var item in role.PermissionsToBeDelete)
             {
                 foreach (var permission in roleToBeUpdated.RolePermissions.Where(permission => permission.PermissionId == item))
