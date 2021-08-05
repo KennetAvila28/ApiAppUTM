@@ -31,7 +31,8 @@
                                 {
                                     <tr>
                                         <td>@item.NombreEmpresa</td>
-                                        <td><a class="button-a" asp-controller="Empresas" asp-action="PostImage">Registrar</a></td>
+                                        <td><a class="button-a" asp-controller="Empresas" asp-action="Create" asp-route-RFC="@item.RFC" 
+                                               asp-route-Nombre="@item.NombreEmpresa" asp-route-Direccion="@item.Direccion" asp-route-Telefono="@item.Telefono">Registrar</a></td>
                                     </tr>
                                 }
                             </tbody>

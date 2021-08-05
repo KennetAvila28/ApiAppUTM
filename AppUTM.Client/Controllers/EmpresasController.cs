@@ -42,7 +42,30 @@ namespace AppUTM.Client.Controllers
             return View(listEmpresas);
         }
 
+        public async Task<IActionResult> Create(string RFC, string Nombre, string Direccion, string Telefono)
+        {
+            HttpClient httpClient = new HttpClient();
+            Empresa empresa = new Empresa();
+            var Domain = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/Domain");
+            empresa.RFC = RFC;
+            empresa.Nombre = Nombre;
+            empresa.Direccion = Direccion;
+            empresa.Telefono = Telefono;
+            empresa.Domain = Domain;
+            return View(empresa);
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Create(Empresa empresa)
+        {
+            HttpClient httpClient = new HttpClient();           
+            empresa.ImagenEmpresa = UploadImage(empresa);
+            var json = await httpClient.PostAsJsonAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas", empresa);
+            if (json.IsSuccessStatusCode)
+                return RedirectToAction("Index");
+            else
+                return RedirectToAction("Error", "Home");
+        }
        
         public async Task<IActionResult> Update(int id)
         {

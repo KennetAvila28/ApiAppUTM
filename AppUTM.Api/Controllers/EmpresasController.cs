@@ -58,7 +58,7 @@ namespace AppUTM.Api.Controllers
             var empresaDto = _mapper.Map<Empresa, EmpresaReturn>(empresa);
             if (empresa != null) empresaDto.Domain = startupPath;
             return Ok(empresaDto);
-        }
+        }     
 
         [HttpPost]
         public async Task<ActionResult> Post(EmpresaCreate empresaDto)
@@ -117,7 +117,13 @@ namespace AppUTM.Api.Controllers
             return Ok(empresasUTM);         
         }
 
-
+        [HttpGet("domain")]
+        public ActionResult<string> Dominio()
+        {
+            string startupPath = Environment.CurrentDirectory;
+            var Domain = startupPath;
+            return Ok(Domain);
+        }
 
 
         //No aplica, Subir imagenes  multipart/form-data
