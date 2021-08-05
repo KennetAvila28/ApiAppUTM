@@ -1,6 +1,9 @@
-﻿@model IEnumerable<AppUTM.Client.Models.Roles.RoleReturn>
+﻿
+@using AppUTM.Api.DTOS.Permissions;
+@model IEnumerable<AppUTM.Client.Models.Roles.RoleReturn>
 
 @{
+    List<PermissionReturn> permisos = ViewBag.Permisos;
     ViewData["Title"] = "Index";
 }
 
@@ -12,7 +15,7 @@
 <table class="table">
     <thead>
         <tr>
-            
+
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
@@ -21,24 +24,38 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+        @foreach (var item in Model)
+        {
+            <tr>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @foreach (var rol in item.RolePermissions)
-                {
-                    <p>@rol.PermissionId</p>
-                }
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.Id })
-                @Html.ActionLink("Detalle", "Details", new { id = item.Id })
-                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+
+                    @foreach (var p in permisos)
+                    {
+                        if (item.RolePermissions.Any(r => r.PermissionId == p.Id))
+                        {
+
+
+                            <input type="checkbox" checked="checked" readonly="readonly" onclick="javascript: return false;" /><label>@p.Module</label>
+                        }
+                        else
+                        {
+                            <input type="checkbox" readonly="readonly" onclick="javascript: return false;" /><label>@p.Module</label>
+                        }
+
+                    }
+
+
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.Id })
+                    @Html.ActionLink("Detalle", "Details", new { id = item.Id })
+                    @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

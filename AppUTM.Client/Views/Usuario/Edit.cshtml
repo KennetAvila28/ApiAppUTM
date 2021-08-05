@@ -68,15 +68,15 @@
                 }
 
 
-            </div>
+            </div><br /><br />
             <div class="form-group">
                 <a class="btn btn-dark btn-sm" asp-action="Index">Regresar</a>
                 <input type="submit" value="Save" class="btn btn-success btn-sm" />
             </div>
-            </form>
-        </div>
+        </form>
     </div>
+</div>
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

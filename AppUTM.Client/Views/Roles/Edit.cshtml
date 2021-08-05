@@ -1,6 +1,8 @@
 ﻿@model AppUTM.Client.Models.Roles.RoleForUpdateDto
+@using AppUTM.Api.DTOS.Permissions;
 
 @{
+    List<PermissionReturn> permisos = ViewBag.Permisos;
     ViewData["Title"] = "Edit";
 }
 
@@ -11,21 +13,41 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+            @*<div class="form-group">
+                    <label asp-for="Id" class="control-label"></label>
+                    <input asp-for="Id" class="form-control" />
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
                 <input asp-for="Nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                @*<label asp-for="UserRoles" class="control-label"></label>*@
+                <br />
+                <label>Roles para eliminar: </label>
+                @foreach (var u in Model.RolePermissions)
+                {
+                    <input type="checkbox" name="permissionDelete[]" value="@u.PermissionId" /><label>@u.Permission.Module </label>
+                }
+                <br />
+                <br />
+                <label>Roles para Añadir: </label>
+                @foreach (var item in permisos)
+                {
+
+                    <input type="checkbox" name="permissionAdd[]" value="@item.Id" /><label>@item.Module </label>
+
+                }
+
+
+            </div>
             <br />
             <div class="form-group">
                 <a class="btn btn-dark btn-sm" asp-action="Index">Regresar</a>
-                <input type="submit" value="Save" class="btn btn-success btn-sm"
-                       />
+                <input type="submit" value="Save" class="btn btn-success btn-sm" />
             </div>
         </form>
     </div>

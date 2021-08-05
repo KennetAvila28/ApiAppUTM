@@ -4,8 +4,8 @@
 
 @{
     List<RoleReturn> roles = ViewBag.Roles;
-    List<UserReturn> user = new List<UserReturn>();
-    List<RoleReturn> role = new List<RoleReturn>();
+
+
     ViewData["Title"] = "Index";
 }
 
@@ -19,9 +19,7 @@
 <table class="table" style="margin:0;">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.ClaveEmpleado)
             </th>
@@ -43,43 +41,50 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClaveEmpleado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombres)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApellidoPaterno)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApellidoMaterno)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Correo)
-            </td>
-            <td>
-                @*@foreach (var u in item.UserRoles)
-            {
-                <input type="checkbox" name="roleDelete[]" value="@u.RoleId" /><label>@u.Role.Nombre</label>
+        @foreach (var item in Model)
+        {
+            <tr>
 
-            }*@
-                @foreach (var rol in item.UserRoles)
-                {
-                    <p>@rol.RoleId</p>
-                }
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.Id })
-                @Html.ActionLink("Detalles", "Detalles", new { id = item.Id })
-                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClaveEmpleado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombres)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApellidoPaterno)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApellidoMaterno)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Correo)
+                </td>
+                <td>
+
+                    @foreach (var r in roles)
+                    {
+                        if (item.UserRoles.Any(rol => rol.RoleId == r.Id))
+                        {
+
+
+                            <input type="checkbox" checked="checked" readonly="readonly" onclick="javascript: return false;" /><label>@r.Nombre</label>
+                        }
+                        else
+                        {
+                            <input type="checkbox" readonly="readonly" onclick="javascript: return false;" /><label>@r.Nombre</label>
+                        }
+
+                    }
+
+
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.Id })
+                    @Html.ActionLink("Detalles", "Detalles", new { id = item.Id })
+                    @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

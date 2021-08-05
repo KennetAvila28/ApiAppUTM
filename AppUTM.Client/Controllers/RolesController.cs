@@ -31,6 +31,9 @@ namespace AppUTM.Client.Controllers
         {
             HttpClient httpClient = new HttpClient();
             var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Roles");
+            var jsonPermissions = await httpClient.GetStringAsync("http://localhost:59131/api/Permissions/");
+            var listPermissions = JsonConvert.DeserializeObject<ApiResponse<List<PermissionReturn>>>(jsonPermissions);
+            ViewBag.Permisos = listPermissions.Data;
             var listRoles = JsonConvert.DeserializeObject<ApiResponse<List<RoleReturn>>>(jsonUser);
             return View(listRoles.Data);
         }
