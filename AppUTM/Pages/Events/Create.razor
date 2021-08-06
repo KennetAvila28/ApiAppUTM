@@ -1,0 +1,86 @@
+@page "/Events/Create"
+
+@inject NavigationManager navigation
+@inject HttpClient Http
+@inject NotificationService NotificationService
+<div class="container">
+    <h1>Crear un evento</h1>
+    <RadzenTemplateForm TItem="EventCreate" Data="@OEventCreate" Submit="@(OnSubmit)" InvalidSubmit="OnInvalidSubmit">
+        <div class="container mb-3">
+            <div class="row mb-3">
+                <RadzenImage Path="@_imgUrl" class="img-thumbnail mx-auto" Style="width: 256px;height: 256px;" />
+                <InputFile OnChange="@OnFileSelection" class="form-control mt-3" />
+            </div>
+        </div>
+        <div class="form-group mb-3 mx-auto">
+            <RadzenLabel Text="Titulo:" />
+            <RadzenTextBox Name="Title" @bind-Value="@OEventCreate.Title" Style="width: auto;" />
+            <RadzenRequiredValidator Component="Title" Text="El titulo es requerido" Popup="true" Style="position: absolute" />
+            <RadzenLabel Text="Fecha de inicio:" />
+            <RadzenDatePicker @bind-Value="@OEventCreate.StartDate" Name="StartDate" TValue="DateTime" ShowTime="true" DateFormat="MM/dd/yyyy HH:mm" />
+            <RadzenRequiredValidator Component="StartDate" Text="Seleccina una fecha de inicio" Style="position: absolute" Popup="true" />
+            <RadzenLabel Text="Fecha de termino:" />
+            <RadzenDatePicker @bind-Value="@OEventCreate.EndDate" Name="EndDate" TValue="DateTime" ShowTime="true" DateFormat="MM/dd/yyyy HH:mm" />
+            <RadzenRequiredValidator Component="EndDate" Text="Seleccina una fecha de inicio" Style="position: absolute" Popup="true" />
+        </div>
+        <div class="form-group mb-3">
+            <RadzenLabel Text="Coordinacion:" />
+            <RadzenDropDown @bind-Value="OEventCreate.AuthorId" Name="Coordination" TValue="int" Data="_coordinations" TextProperty="@nameof(CoordinationReturn.Nombre)" ValueProperty="@nameof(CoordinationReturn.Id)" />
+            <RadzenRequiredValidator Component="Coordination" Text="Elige una coordinacion" Popup="true" Style="position: absolute" />
+        </div>
+        <div class="form-group mt-4">
+            <RadzenCheckBox @bind-Value="@OEventCreate.IsSuggest" TValue="bool" /><RadzenLabel Text="Sugerido" />
+            <RadzenCheckBox @bind-Value="@OEventCreate.IsActivity" TValue="bool" /><RadzenLabel Text="Actividad" />
+        </div>
+        <div class="form-group  mb-3">
+            <RadzenHtmlEditor @bind-Value="@OEventCreate.Content" style="height: 500px; margin-bottom: 1rem;" />
+        </div>
+        <div class="form-group mt-4">
+            <div>
+                <RadzenButton Text="Crear evento" ButtonStyle="ButtonStyle.Success" ButtonType="ButtonType.Submit" />
+                <RadzenButton Text="Cancelar" ButtonStyle="ButtonStyle.Light" Click="@(Cancel)" />
+            </div>
+        </div>
+    </RadzenTemplateForm>
+</div>
+
+@code {
+    private EventCreate OEventCreate { get; set; } = new();
+    string _imgUrl = string.Empty;
+    IEnumerable<CoordinationReturn> _coordinations;
+    protected override async Task OnInitializedAsync()
+    {
+        _coordinations = await GetExtensions.GetAllCoordinations(Http);
+    }
+
+    private async Task OnFileSelection(InputFileChangeEventArgs e)
+    {
+
+        try
+        {
+            var imageType = e.File.ContentType;
+            _imgUrl = $"data:{imageType};base64,{await ImageHelper.ImageToBase64(e)}";
+            OEventCreate.Image = await ImageHelper.ImageToBase64(e);
+        }
+        catch (Exception ex)
+        {
+            NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo cargar la imagen", Detail = $"{ex.Message}", Duration = 3000 });
+        }
+    }
+    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+        NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Completa los campos requeridos", Duration = 3000 });
+    }
+
+    public async Task OnSubmit(EventCreate model)
+    {
+        var eventMessage = await Http.PostAsJsonAsync("Event", model);
+        NotificationExtensions.ShowNotification(NotificationService, eventMessage.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Evento creado con exito", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear el evento", Duration = 3000 });
+        navigation.NavigateTo("/Events");
+    }
+
+    void Cancel()
+    {
+        navigation.NavigateTo("/Events");
+    }
+}

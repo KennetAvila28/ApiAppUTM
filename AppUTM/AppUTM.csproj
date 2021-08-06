@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Favorites\" />
+    <Folder Include="wwwroot\css\bootstrap\" />
   </ItemGroup>
 
 </Project>

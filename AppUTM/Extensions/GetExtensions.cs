@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using AppUTM.Client.Models.Permissions;
+using AppUTM.Models.Coordinations;
+using AppUTM.Models.Events;
 using AppUTM.Models.Permissions;
 using AppUTM.Models.Roles;
 using AppUTM.Models.Users;
@@ -52,6 +54,30 @@ namespace AppUTM.Extensions
         {
             var permission = await http.GetFromJsonAsync<ApiResponse<PermissionForUpdateDto>>("Permissions/" + id);
             return permission?.Data;
+        }
+
+        public static async Task<IEnumerable<EventReturn>> GetAllEvents(HttpClient http)
+        {
+            var events = await http.GetFromJsonAsync<ApiResponse<IEnumerable<EventReturn>>>("Event");
+            return events?.Data;
+        }
+
+        public static async Task<EventForUpdateDto> GetEventById(HttpClient http, int id)
+        {
+            var events = await http.GetFromJsonAsync<ApiResponse<EventForUpdateDto>>("Event/" + id);
+            return events?.Data;
+        }
+
+        public static async Task<IEnumerable<CoordinationReturn>> GetAllCoordinations(HttpClient http)
+        {
+            var events = await http.GetFromJsonAsync<ApiResponse<IEnumerable<CoordinationReturn>>>("Coordinations");
+            return events?.Data;
+        }
+
+        public static async Task<RoleForUpdateDto> GetCoordinationById(HttpClient http, int id)
+        {
+            var role = await http.GetFromJsonAsync<ApiResponse<RoleForUpdateDto>>("Coordinations/" + id);
+            return role?.Data;
         }
     }
 }

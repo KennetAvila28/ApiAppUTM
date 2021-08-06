@@ -1,6 +1,7 @@
 ﻿using System;
+using AppUTM.Models.Coordinations;
 
-namespace AppUTM.Client.Models.Events
+namespace AppUTM.Models.Events
 {
     public class EventReturn
     {
@@ -9,7 +10,8 @@ namespace AppUTM.Client.Models.Events
         public string Content { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int Author { get; set; }
+        public int AuthorId { get; set; }
+        public CoordinationReturn Author { get; set; }
         public string Image { get; set; }
         public bool IsActivity { get; set; }
         public bool IsSuggest { get; set; }

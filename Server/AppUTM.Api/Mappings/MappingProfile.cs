@@ -4,6 +4,7 @@ using AppUTM.Api.DTOS.Users;
 using AppUTM.Core.Models;
 using AutoMapper;
 using System;
+using AppUTM.Api.DTOS.Coordinations;
 using AppUTM.Api.DTOS.Events;
 
 namespace AppUTM.Api.Mappings
@@ -58,6 +59,17 @@ namespace AppUTM.Api.Mappings
                     destination.Status = true;
                 }));
             CreateMap<EventReturn, Event>();
+
+            CreateMap<Coordination, CoordinationCreate>().ReverseMap();
+            CreateMap<Coordination, CoordinationReturn>().ReverseMap();
+            CreateMap<Coordination, CoordinationForUpdateDto>().ReverseMap();
+            CreateMap<CoordinationCreate, Coordination>().AfterMap(
+                ((source, destination) =>
+                {
+                    destination.CreateAt = DateTime.Now;
+                    destination.Status = true;
+                }));
+            CreateMap<CoordinationReturn, Coordination>();
         }
     }
 }

@@ -4,13 +4,13 @@
 @inject HttpClient _http
 @inject NotificationService NotificationService
 
-<div class="container mt-3">
-    <div class="d-flex">
-        <h4>Lista de usuarios</h4>
-        <a class="btn btn-primary text-white mx-4 mb-3" href="/Users/Create">Agregar</a>
-    </div>
-    @if (_users != null)
-    {
+@if (_users != null)
+{
+    <div class="container mt-3">
+        <div class="d-flex">
+            <h4>Lista de usuarios</h4>
+            <a class="btn btn-success text-white mx-4 mb-3" href="/Users/Create">Agregar</a>
+        </div>
         <table class="table">
             <thead class="bg-light text-center">
                 <tr>
@@ -41,17 +41,18 @@
                             }
 
                         }
-                        <td><a class="btn btn-primary text-white" href="/Users/Edit/@user.Id">Editar</a></td>
+                        <td><a class="btn btn-success text-white" href="/Users/Edit/@user.Id">Editar</a></td>
                     </tr>
                 }
             </tbody>
         </table>
-    }
-    else
-    {
-        NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Cargando Usuarios...", Duration = 1000 });
-    }
-</div>
+    </div>
+
+}
+else
+{
+    <Spinner />
+}
 
 @code
 {

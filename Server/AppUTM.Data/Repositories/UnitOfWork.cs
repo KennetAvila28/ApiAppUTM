@@ -11,7 +11,6 @@ namespace AppUTM.Data.Repositories
         private PermissionRepository _permissionRepository;
         private RolePermissionRepository _rolesPermissionRepository;
         private UserRolesRepository _userRolesRepository;
-        private EventFavoriteRepository _eventFavoriteRepository;
         private EventRepository _eventRepository;
         private FavoriteRepository _favoriteRepository;
         private CoordinationRepository _coordinationRepository;
@@ -23,7 +22,6 @@ namespace AppUTM.Data.Repositories
         public IPermissionRepository Permissions => _permissionRepository ??= new PermissionRepository(Context);
         public IRolePermissionRepository RolePermission => _rolesPermissionRepository ??= new RolePermissionRepository(Context);
         public IUserRolesRepository UserRoles => _userRolesRepository ??= new UserRolesRepository(Context);
-        public IEventFavoriteRepository EventFavorite => _eventFavoriteRepository ??= new EventFavoriteRepository(Context);
         public IEventRepository Events => _eventRepository ??= new EventRepository(Context);
         public IFavoriteRepository Favorites => _favoriteRepository ??= new FavoriteRepository(Context);
         public ICoordinationsRepository Coordinations => _coordinationRepository ??= new CoordinationRepository(Context);

@@ -1,0 +1,31 @@
+﻿@using Microsoft.Graph
+@inject GraphServiceClient GraphClient
+<style>
+    .avatar {
+        vertical-align: middle;
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+    }
+</style>
+<div style="text-align: center;">
+    <img src="data:image/jpeg;base64,@_imgurl" alt="Avatar" class="avatar mb-2">
+    <p>
+        @name
+    </p>
+</div>
+
+@code{
+    string _imgurl;
+    string name;
+    protected override async Task OnInitializedAsync()
+    {
+        var stream = await GraphClient.Me.Photo.Content
+            .Request()
+            .GetAsync();
+        var user = await GraphClient.Me.Request().GetAsync();
+        name = user.DisplayName;
+        _imgurl = await GraphClientExtensions.ImageToBase64(GraphClientExtensions.ReadToEnd(stream));
+    }
+
+}

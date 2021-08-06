@@ -22,8 +22,5 @@ namespace AppUTM.Core.Models
         public bool IsSuggest { get; set; }
         public bool IsPublished { get; set; }
         public bool IsPassed { get; set; }
-
-        [JsonIgnore]
-        public IList<EventFavorite> EventFavorite { get; set; }
     }
 }

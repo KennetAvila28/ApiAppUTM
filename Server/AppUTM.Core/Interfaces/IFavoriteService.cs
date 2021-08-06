@@ -9,13 +9,11 @@ namespace AppUTM.Core.Interfaces
 {
     public interface IFavoriteService
     {
-        Task<List<Event>> GetAllFavorites();
+        Task<IEnumerable<Favorites>> GetAllFavorites();
 
         Task<Favorites> GetFavoriteById(int id);
 
         Task<Favorites> CreateFavorite(Favorites newFavorite);
-
-        Task UpdateFavorite(Favorites favoriteToBeUpdated);
 
         Task DeleteFavorite(Favorites favorite);
     }

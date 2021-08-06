@@ -6,10 +6,9 @@ using AppUTM.Core.Models;
 
 namespace AppUTM.Api.DTOS.Coordinations
 {
-    public class CoordinatonReturn
+    public class CoordinationForUpdateDto
     {
+        public int Id { get; set; }
         public string Nombre { get; set; }
-
-        public List<Event> Events { get; set; }
     }
 }

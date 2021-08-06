@@ -10,31 +10,31 @@
         <EditForm Model="@_oUserForUpdateDto">
             <div class="form-group">
                 <RadzenLabel Text="Clave de empleado:"></RadzenLabel>
-                <RadzenNumeric ShowUpDown="false" TValue="int" @bind-Value="@_oUserForUpdateDto.ClaveEmpleado" Style="width: auto;"></RadzenNumeric>
+                <RadzenNumeric ShowUpDown="false" TValue="int" @bind-Value="@_oUserForUpdateDto.ClaveEmpleado" Style="width: auto;" ReadOnly="true"></RadzenNumeric>
             </div>
             <div class="form-group">
                 <RadzenLabel Text="Nombres:"></RadzenLabel>
-                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.Nombres" Style="width: auto;"></RadzenTextBox>
+                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.Nombres" Style="width: auto;" ReadOnly="true"></RadzenTextBox>
             </div>
 
             <div class="form-group">
                 <RadzenLabel Text="Apellido Paterno:"></RadzenLabel>
-                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.ApellidoPaterno" Style="width: auto;"></RadzenTextBox>
+                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.ApellidoPaterno" Style="width: auto;" ReadOnly="true"></RadzenTextBox>
             </div>
             <div class="form-group">
                 <RadzenLabel Text="Apellido Materno:"></RadzenLabel>
-                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.ApellidoMaterno" Style="width: auto;"></RadzenTextBox>
+                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.ApellidoMaterno" Style="width: auto;" ReadOnly="true"></RadzenTextBox>
             </div>
             <div class="form-group">
                 <RadzenLabel Text="Correo Institucional:"></RadzenLabel>
-                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.Correo" Style="width: auto;"></RadzenTextBox>
+                <RadzenTextBox @bind-Value="@_oUserForUpdateDto.Correo" Style="width: auto;" ReadOnly="true"></RadzenTextBox>
             </div>
             <div class="form-group">
                 <RadzenDropDown Multiple="true" Placeholder="Selecciona un rol..." Data=@_roles TextProperty="@nameof(UserRole.Nombre)" TValue="IEnumerable<UserRole>" Change=@(_selectRol) Style="width: auto;" />
             </div>
             <div class="form-group">
-                <button class="btn btn-primary ml-2" @onclick="Post" role="button" type="submit">Crear</button>
-                <button class="btn btn-primary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+                <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Actualizar usuario</button>
+                <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
                 <button class="btn btn-danger ml-2" @onclick="Delete" role="button">Eliminar</button>
             </div>
         </EditForm>

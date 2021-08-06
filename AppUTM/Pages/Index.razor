@@ -1,3 +1,55 @@
 ﻿@page "/"
+<AuthorizeView>
+    <Authorized>
+        @using Radzen.Blazor.Rendering
+        @inject HttpClient http
+        @if (_events == null)
+        {
+            <Spinner />
+        }
+        else
+        {
+            <div class="container">
+                <h2 class="mx-auto">BIENVENIDO @context.User.Identity?.Name</h2>
+                <hr />
+                <RadzenScheduler Data="_events" TItem="EventReturn" StartProperty="@nameof(EventReturn.StartDate)" EndProperty="@nameof(EventReturn.EndDate)" TextProperty="@nameof(EventReturn.Title)">
+                    <Template Context="data">
+                        <strong>@data.Title</strong>
+                    </Template>
+                    <ChildContent>
+                        <RadzenDayView />
+                        <RadzenWeekView />
+                        <RadzenMonthView />
+                    </ChildContent>
+                </RadzenScheduler>
+            </div>
+        }
 
-<h1>Hello, world!</h1>
+        @code
+        {
+            IEnumerable<EventReturn> _events;
+            protected override async Task OnInitializedAsync()
+            {
+                _events = await GetExtensions.GetAllEvents(http);
+
+            }
+
+        }
+    </Authorized>
+    <NotAuthorized>
+        <div class="container">
+            <div class="row">
+                <div style="text-align: center;">
+                    <h1>
+                        PLATAFORMA DE ADMINISTRACION DE EVENTOS
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div style="text-align: center;">
+                    <RadzenImage Path="Images/logo_green.png" Style="width: auto;height: 450px;" />
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>

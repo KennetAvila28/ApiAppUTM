@@ -22,10 +22,10 @@ namespace AppUTM.Services
             _context = context;
         }
 
-        public async Task<List<Event>> GetAllFavorites() => await _context.Events.Include(x => x.EventFavorite).ToListAsync();
+        public async Task<IEnumerable<Favorites>> GetAllFavorites() => await _context.Favorites.Include(x => x.Event).ToListAsync();
 
         public async Task<Favorites> GetFavoriteById(int id) =>
-            await _context.Favorites.Include(x => x.EventsfFavorites).ThenInclude(y => y.Event)
+            await _context.Favorites.Include(x => x.Event)
                 .SingleOrDefaultAsync(z => z.Id == id);
 
         public async Task<Favorites> CreateFavorite(Favorites newFavorite)
@@ -35,14 +35,8 @@ namespace AppUTM.Services
             return newFavorite;
         }
 
-        public Task UpdateFavorite(Favorites favoriteToBeUpdated)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task DeleteFavorite(Favorites favorite)
         {
-            _unitOfWork.EventFavorite.RemoveRange(favorite.EventsfFavorites);
             _unitOfWork.Favorites.Remove(favorite);
             await _unitOfWork.CommitAsync();
         }

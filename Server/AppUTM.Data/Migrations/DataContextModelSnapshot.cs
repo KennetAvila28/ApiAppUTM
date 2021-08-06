@@ -77,6 +77,9 @@ namespace AppUTM.Data.Migrations
                     b.Property<bool>("IsActivity")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPassed")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
@@ -105,21 +108,6 @@ namespace AppUTM.Data.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("AppUTM.Core.Models.EventFavorite", b =>
-                {
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FavoriteId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EventId", "FavoriteId");
-
-                    b.HasIndex("FavoriteId");
-
-                    b.ToTable("EventsFavorites");
-                });
-
             modelBuilder.Entity("AppUTM.Core.Models.Favorites", b =>
                 {
                     b.Property<int>("Id")
@@ -136,6 +124,9 @@ namespace AppUTM.Data.Migrations
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -147,7 +138,40 @@ namespace AppUTM.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EventId");
+
                     b.ToTable("Favorites");
+                });
+
+            modelBuilder.Entity("AppUTM.Core.Models.NavigationMenu", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ActionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ControllerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ParentMenuId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Visible")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentMenuId");
+
+                    b.ToTable("NavegationMenu");
                 });
 
             modelBuilder.Entity("AppUTM.Core.Models.Permission", b =>
@@ -208,6 +232,21 @@ namespace AppUTM.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("AppUTM.Core.Models.RoleMenuPermission", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("NavigationMenuId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("RoleId", "NavigationMenuId");
+
+                    b.HasIndex("NavigationMenuId");
+
+                    b.ToTable("RoleMenuPermission");
                 });
 
             modelBuilder.Entity("AppUTM.Core.Models.RolePermission", b =>
@@ -293,23 +332,35 @@ namespace AppUTM.Data.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("AppUTM.Core.Models.EventFavorite", b =>
+            modelBuilder.Entity("AppUTM.Core.Models.Favorites", b =>
                 {
                     b.HasOne("AppUTM.Core.Models.Event", "Event")
-                        .WithMany("EventFavorite")
+                        .WithMany()
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppUTM.Core.Models.Favorites", "Favorite")
-                        .WithMany("EventsfFavorites")
-                        .HasForeignKey("FavoriteId")
+                    b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("AppUTM.Core.Models.NavigationMenu", b =>
+                {
+                    b.HasOne("AppUTM.Core.Models.NavigationMenu", "ParentNavigationMenu")
+                        .WithMany()
+                        .HasForeignKey("ParentMenuId");
+
+                    b.Navigation("ParentNavigationMenu");
+                });
+
+            modelBuilder.Entity("AppUTM.Core.Models.RoleMenuPermission", b =>
+                {
+                    b.HasOne("AppUTM.Core.Models.NavigationMenu", "NavigationMenu")
+                        .WithMany()
+                        .HasForeignKey("NavigationMenuId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Event");
-
-                    b.Navigation("Favorite");
+                    b.Navigation("NavigationMenu");
                 });
 
             modelBuilder.Entity("AppUTM.Core.Models.RolePermission", b =>
@@ -353,16 +404,6 @@ namespace AppUTM.Data.Migrations
             modelBuilder.Entity("AppUTM.Core.Models.Coordination", b =>
                 {
                     b.Navigation("Events");
-                });
-
-            modelBuilder.Entity("AppUTM.Core.Models.Event", b =>
-                {
-                    b.Navigation("EventFavorite");
-                });
-
-            modelBuilder.Entity("AppUTM.Core.Models.Favorites", b =>
-                {
-                    b.Navigation("EventsfFavorites");
                 });
 
             modelBuilder.Entity("AppUTM.Core.Models.Permission", b =>

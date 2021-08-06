@@ -1,17 +1,19 @@
 ﻿@page "/Roles"
 @using Microsoft.AspNetCore.Authorization
 @using AppUTM.Models.Permissions
+@using System.Linq
 @attribute [Authorize]
 @inject HttpClient _http
+@inject NavigationManager navigation
 @inject NotificationService NotificationService
 
-<div class="container mt-3">
-    <div class="d-flex">
-        <h4>Lista de roles</h4>
-        <a class="btn btn-primary text-white mx-4 mb-3" href="/Roles/Create">Agregar</a>
-    </div>
-    @if (_roles != null)
-    {
+@if (_roles != null)
+{
+    <div class="container mt-3">
+        <div class="d-flex">
+            <h1 class="mx-auto">Lista de roles</h1>
+            <RadzenButton class="mx-auto" Text="Agregar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Roles/Create")) />
+        </div>
         <table class="table">
             <thead class="bg-light text-center">
                 <tr>
@@ -41,17 +43,18 @@
                             }
 
                         }
-                        <td><a class="btn btn-primary text-white" href="/Roles/Edit/@role.Id">Editar</a></td>
+                        <td> <RadzenButton class="mx-auto" Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Roles/Edit/{role.Id}")) /></td>
                     </tr>
                 }
             </tbody>
         </table>
-    }
-    else
-    {
-        NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Cargando roles...", Duration = 1000 });
-    }
-</div>
+    </div>
+
+}
+else
+{
+    <Spinner />
+}
 
 @code
 {

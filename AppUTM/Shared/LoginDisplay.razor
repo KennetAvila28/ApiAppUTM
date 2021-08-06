@@ -8,9 +8,8 @@
 
 <AuthorizeView>
     <Authorized>
-        @context.User.Identity?.Name
-        @*<img src="https://graph.microsoft.com/beta/users/@context./photo/$value" alt="image" class="img-fluid avatar-md rounded-circle">*@
-        <button class="nav-link btn btn-outline-light ml-2" @onclick="BeginLogout"> Log out</button>
+
+        <button class="btn btn-outline-light" @onclick="BeginLogout"> Log out</button>
     </Authorized>
     <NotAuthorized>
         <a class="btn btn-outline-light" href="authentication/login">Log in</a>

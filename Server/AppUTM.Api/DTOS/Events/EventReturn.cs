@@ -12,7 +12,8 @@ namespace AppUTM.Api.DTOS.Events
         public string Content { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int Author { get; set; }
+        public int AuthorId { get; set; }
+        public Coordination Author { get; set; }
         public string Image { get; set; }
         public bool IsActivity { get; set; }
         public bool IsSuggest { get; set; }

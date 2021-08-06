@@ -26,5 +26,9 @@ namespace AppUTM.Core.Interfaces
         Task<IEnumerable<Event>> GetAllEventsQuarter();
 
         Task<IEnumerable<Event>> GetAllEventsYear();
+
+        IEnumerable<Event> GetRechazedEvents();
+
+        IEnumerable<Event> GetPassedEvents();
     }
 }

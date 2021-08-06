@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AppUTM.Client.Models.Permissions
+﻿namespace AppUTM.Models.Permissions
 {
     public class PermissionCreate
     {

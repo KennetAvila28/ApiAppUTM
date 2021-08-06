@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AppUTM.Api.DTOS.Events;
-using AppUTM.Api.Helpers;
 using AppUTM.Api.Responses;
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppUTM.Api.Controllers
 {
@@ -15,7 +15,9 @@ namespace AppUTM.Api.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
+        //TODO:add get rechazed, passed and published events
         private readonly IMapper _mapper;
+
         private readonly IEventService _eventService;
 
         public EventController(IMapper mapper, IEventService eventService)
@@ -25,6 +27,7 @@ namespace AppUTM.Api.Controllers
         }
 
         // GET: api/<EventController>
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Event>>> Get()
         {
@@ -42,6 +45,7 @@ namespace AppUTM.Api.Controllers
         }
 
         // GET api/<EventController>/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Event>> Get(int id)
         {
@@ -58,26 +62,67 @@ namespace AppUTM.Api.Controllers
             }
         }
 
-        // Get api/<EventController>
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Event>> GetAllEventsToday()
-        //{
-        //}
-        // Get api/<EventController>
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Event>> GetAllEventsWeek()
-        //{
-        //}
-        // Get api/<EventController>
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Event>> GetAllEventsQuarter()
-        //{
-        //}
-        // Get api/<EventController>
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Event>> GetAllEventsYear()
-        //{
-        //}
+        //Get api/<EventController>/GetToday
+        [AllowAnonymous]
+        [HttpGet("GetToday")]
+        public async Task<ActionResult<IEnumerable<Event>>> GetAllEventsToday()
+        {
+            var eventsToday = await _eventService.GetAllEventsToday();
+            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsToday);
+            var response = new ApiResponse<IEnumerable<EventReturn>>(eventDto);
+            return Ok(response);
+        }
+
+        // Get api/<EventController>/GetWeek
+        [AllowAnonymous]
+        [HttpGet("GetWeek")]
+        public async Task<ActionResult<IEnumerable<Event>>> GetAllEventsWeek()
+        {
+            var eventsWeek = await _eventService.GetAllEventsWeek();
+            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsWeek);
+            var response = new ApiResponse<IEnumerable<EventReturn>>(eventDto);
+            return Ok(response);
+        }
+
+        // Get api/<EventController>/GetQuarter
+        [AllowAnonymous]
+        [HttpGet("GetQuarter")]
+        public async Task<ActionResult<IEnumerable<Event>>> GetAllEventsQuarter()
+        {
+            var eventsQuarter = await _eventService.GetAllEventsQuarter();
+            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsQuarter);
+            var response = new ApiResponse<IEnumerable<EventReturn>>(eventDto);
+            return Ok(response);
+        }
+
+        // Get api/<EventController>/GetYear
+        [AllowAnonymous]
+        [HttpGet("GetYear")]
+        public async Task<ActionResult<IEnumerable<Event>>> GetAllEventsYear()
+        {
+            var eventsYear = await _eventService.GetAllEventsYear();
+            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsYear);
+            var response = new ApiResponse<IEnumerable<EventReturn>>(eventDto);
+            return Ok(response);
+        }
+
+        [HttpGet("GetPassed")]
+        public ActionResult<IEnumerable<Event>> GetAllEventsPassed()
+        {
+            var eventsYear = _eventService.GetPassedEvents();
+            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsYear);
+            var response = new ApiResponse<IEnumerable<EventReturn>>(eventDto);
+            return Ok(response);
+        }
+
+        [HttpGet("GetRechazed")]
+        public ActionResult<IEnumerable<Event>> GetAllEventsRechazed()
+        {
+            var eventsYear = _eventService.GetRechazedEvents();
+            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsYear);
+            var response = new ApiResponse<IEnumerable<EventReturn>>(eventDto);
+            return Ok(response);
+        }
 
         // POST api/<EventController>
         [HttpPost]
@@ -86,7 +131,6 @@ namespace AppUTM.Api.Controllers
             try
             {
                 var eventEntity = _mapper.Map<EventCreate, Event>(eventCreate);
-                eventEntity.Image = ImageHelper.ImageToBase64(eventCreate.ImageFile);
                 await _eventService.CreateEvent(eventEntity);
                 var eventResponse = _mapper.Map<Event, EventReturn>(eventEntity);
                 var response = new ApiResponse<EventReturn>(eventResponse);
@@ -105,10 +149,7 @@ namespace AppUTM.Api.Controllers
             try
             {
                 var eventForUpdate = _mapper.Map<EventForUpdateDto, Event>(eventForUpdateDto);
-                if (eventForUpdateDto.ImageFile != null)
-                {
-                    eventForUpdate.Image = ImageHelper.ImageToBase64(eventForUpdateDto.ImageFile);
-                }
+
                 eventForUpdate.Id = id;
                 await _eventService.UpdateEvent(eventForUpdate);
                 var eventResponse = _mapper.Map<Event, EventReturn>(eventForUpdate);

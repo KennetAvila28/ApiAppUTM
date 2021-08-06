@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 
-namespace AppUTM.Client.Models.Events
+namespace AppUTM.Models.Events
 {
     public class EventForUpdateDto
     {
@@ -10,7 +10,7 @@ namespace AppUTM.Client.Models.Events
         public string Content { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int Author { get; set; }
+        public int AuthorId { get; set; }
         public string Image { get; set; }
         public IFormFile ImageFile { get; set; }
         public bool IsActivity { get; set; }

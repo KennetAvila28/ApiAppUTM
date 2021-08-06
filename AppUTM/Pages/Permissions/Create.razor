@@ -1,6 +1,5 @@
 @page "/Permissions/Create"
 @using AppUTM.Models.Users
-@using AppUTM.Client.Models.Permissions
 @inject NavigationManager navigation
 @inject HttpClient Http
 @inject NotificationService NotificationService
@@ -11,10 +10,10 @@
         <RadzenTextBox ShowUpDown="false" @bind-Value="@_oPermissionCreate.Module" Style="width: auto;"></RadzenTextBox>
     </div>
     <div class="form-group">
-        <button class="btn btn-primary ml-2" @onclick="Post" role="button" type="submit">Crear</button>
-        <button class="btn btn-primary ml-2" @onclick="Cancel" role="button">
-            Cancelar
-        </button>
+        <div class="form-group mt-4">
+            <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Crear Permiso</button>
+            <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+        </div>
     </div>
 </div>
 
