@@ -1,4 +1,4 @@
-﻿@page "/Events"
+﻿@page "/Events/published"
 @using Microsoft.AspNetCore.Authorization
 @using AppUTM.Models.Events
 @attribute [Authorize]
@@ -14,8 +14,7 @@ else
 {
     <div class="container mt-3">
         <div class="d-flex mb-3">
-            <h2 class="mx-auto">Lista de eventos</h2>
-            <RadzenButton Text="Agregar Evento" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Events/Create")) />
+            <h2 class="mx-auto">Lista de eventos publicados</h2>
         </div>
         <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_events" PageSize="10" TItem="EventReturn">
             <Columns>
@@ -49,16 +48,6 @@ else
                         <RadzenCheckBox @bind-Value="@data.IsActivity" TValue="bool" Disabled="true" />
                     </Template>
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="EventReturn" Title="Editar">
-                    <Template Context="data">
-                        <RadzenButton Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Events/Edit/{data.Id}")) />
-                    </Template>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="EventReturn" Title="Mandar a revision">
-                    <Template Context="data">
-                        <RadzenButton Text="Revision" ButtonStyle="ButtonStyle.Success" Click=@(()=>Revised(data.Id)) />
-                    </Template>
-                </RadzenDataGridColumn>
             </Columns>
         </RadzenDataGrid>
     </div>
@@ -70,13 +59,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _events = await GetExtensions.GetAllEvents(_http);
-    }
-
-    async Task Revised(int id)
-    {
-        var eventMessage = await _http.PostAsJsonAsync("Event/Revised", id);
-        NotificationExtensions.ShowNotification(NotificationService, eventMessage.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Evento mandado a revision", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo mandar a revisión el evento", Duration = 3000 });
-        _events = await GetExtensions.GetAllEvents(_http);
+        _events = await GetExtensions.GetAllEventsPublished(_http);
     }
 }

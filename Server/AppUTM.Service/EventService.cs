@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppUTM.Core.Interfaces;
+﻿using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AppUTM.Core.Repositories;
 using AppUTM.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppUTM.Services
 {
@@ -21,7 +21,7 @@ namespace AppUTM.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Event>> GetAllEvents() => await _context.Events.Include(x => x.Author).ToListAsync();
+        public async Task<IEnumerable<Event>> GetAllEvents() => await _context.Events.Include(x => x.Author).Where(x => x.IsPublished == false & x.IsRechazed == false & x.IsRevised == false).ToListAsync();
 
         public async Task<Event> GetEventById(int id)
         {
@@ -43,15 +43,75 @@ namespace AppUTM.Services
             await _unitOfWork.CommitAsync();
         }
 
+        public async Task PublishEvent(int id)
+        {
+            try
+            {
+                var eventSelect = await _unitOfWork.Events.GetById(id);
+                if (eventSelect.IsPassed)
+                {
+                    eventSelect.UpdateAt = DateTime.Now;
+                    eventSelect.IsPublished = true;
+                    eventSelect.IsPassed = false;
+                    _unitOfWork.Events.Update(eventSelect);
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+            catch
+            {
+                throw new ArgumentException("Evento no ha sido aprobado anteriormente");
+            }
+        }
+
+        public async Task PassedEvent(int id)
+        {
+            try
+            {
+                var eventSelect = await _unitOfWork.Events.GetById(id);
+                eventSelect.IsPassed = true;
+                eventSelect.IsRevised = false;
+                eventSelect.UpdateAt = DateTime.Now;
+                _unitOfWork.Events.Update(eventSelect);
+                await _unitOfWork.CommitAsync();
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.Message);
+            }
+        }
+
+        public async Task RechazedEvent(int id)
+        {
+            var eventSelect = await _unitOfWork.Events.GetById(id);
+            eventSelect.UpdateAt = DateTime.Now;
+            eventSelect.IsRevised = false;
+            eventSelect.IsRechazed = true;
+            _unitOfWork.Events.Update(eventSelect);
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task RevisedEvent(int id)
+        {
+            var eventSelect = await _unitOfWork.Events.GetById(id);
+            eventSelect.UpdateAt = DateTime.Now;
+            eventSelect.IsRevised = true;
+            _unitOfWork.Events.Update(eventSelect);
+            await _unitOfWork.CommitAsync();
+        }
+
         public async Task DeleteEvent(Event @event)
         {
             _unitOfWork.Events.Remove(@event);
             await _unitOfWork.CommitAsync();
         }
 
-        public IEnumerable<Event> GetRechazedEvents() => _unitOfWork.Events.Find(x => x.IsPassed == false).OrderBy(x => x.StartDate).ToList();
+        public IEnumerable<Event> GetRechazedEvents() => _context.Events.OrderBy(x => x.StartDate).Include(x => x.Author).Where(x => x.IsPassed == false & x.IsRechazed).ToList();
 
-        public IEnumerable<Event> GetPassedEvents() => _unitOfWork.Events.Find(x => x.IsPassed == true).OrderBy(x => x.StartDate).ToList();
+        public IEnumerable<Event> GetPassedEvents() => _context.Events.OrderBy(x => x.StartDate).Include(x => x.Author).Where(x => x.IsPassed & x.IsRechazed == false).ToList();
+
+        public IEnumerable<Event> GetPublishedEvents() => _context.Events.OrderBy(x => x.StartDate).Include(x => x.Author).Where(x => x.IsPassed == false && x.IsPublished && x.IsRechazed == false).ToList();
+
+        public IEnumerable<Event> GetRevisedEvents() => _context.Events.OrderBy(x => x.StartDate).Include(x => x.Author).Where(x => x.IsRevised & x.IsRechazed == false).ToList();
 
         public async Task<IEnumerable<Event>> GetAllEventsToday()
         {

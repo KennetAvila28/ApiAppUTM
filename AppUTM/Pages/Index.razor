@@ -30,7 +30,7 @@
             IEnumerable<EventReturn> _events;
             protected override async Task OnInitializedAsync()
             {
-                _events = await GetExtensions.GetAllEvents(http);
+                _events = await GetExtensions.GetAllEventsPublished(http);
 
             }
 

@@ -1,0 +1,46 @@
+﻿@page "/Coordinations"
+@using Microsoft.AspNetCore.Authorization
+@using AppUTM.Models.Permissions
+@attribute [Authorize]
+@inject HttpClient _http
+@inject NavigationManager navigation
+@inject NotificationService NotificationService
+
+@if (_coordinations != null)
+{
+    <div class="container mt-3">
+        <div class="d-flex mb-3">
+            <h1 class="mx-auto">Lista de Coordinaciones</h1>
+            <RadzenButton Text="Agregar" ButtonStyle="ButtonStyle.Success" class="mx-auto" Click=@(() => navigation.NavigateTo($"/Coordinations/Create")) />
+        </div>
+        <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_coordinations" PageSize="10" TItem="CoordinationReturn">
+            <Columns>
+                <RadzenDataGridColumn TItem="CoordinationReturn" Property="Nombre" Title="Nombre">
+                    <Template Context="data">
+                        @($"{data.Nombre}")
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="CoordinationReturn" Title="Acciones">
+                    <Template Context="data">
+                        <RadzenButton Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Coordinations/Edit/{data.Id}")) />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+
+}
+else
+{
+    <Spinner />
+}
+
+@code
+{
+    private IEnumerable<CoordinationReturn> _coordinations;
+    protected override async Task OnInitializedAsync()
+    {
+        _coordinations = await GetExtensions.GetAllCoordinations(_http);
+        await Task.Delay(1000);
+    }
+}

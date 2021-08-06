@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppUTM.Core.Interfaces;
+﻿using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AppUTM.Core.Repositories;
 using AppUTM.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AppUTM.Services
 {
@@ -22,14 +19,15 @@ namespace AppUTM.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Favorites>> GetAllFavorites() => await _context.Favorites.Include(x => x.Event).ToListAsync();
+        public async Task<IEnumerable<Favorites>> GetAllFavorites() => await _context.Favorites.Include(x => x.Events).ToListAsync();
 
         public async Task<Favorites> GetFavoriteById(int id) =>
-            await _context.Favorites.Include(x => x.Event)
+            await _context.Favorites.Include(x => x.Events)
                 .SingleOrDefaultAsync(z => z.Id == id);
 
         public async Task<Favorites> CreateFavorite(Favorites newFavorite)
         {
+            if (!await _context.Favorites.AnyAsync(x => x.Clave != newFavorite.Clave)) return newFavorite = null;
             await _unitOfWork.Favorites.Add(newFavorite);
             await _unitOfWork.CommitAsync();
             return newFavorite;

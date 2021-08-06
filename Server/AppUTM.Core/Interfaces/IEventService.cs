@@ -17,6 +17,14 @@ namespace AppUTM.Core.Interfaces
 
         Task UpdateEvent(Event eventToBeUpdated);
 
+        Task PublishEvent(int id);
+
+        Task PassedEvent(int id);
+
+        Task RechazedEvent(int id);
+
+        Task RevisedEvent(int id);
+
         Task DeleteEvent(Event @event);
 
         Task<IEnumerable<Event>> GetAllEventsToday();
@@ -30,5 +38,9 @@ namespace AppUTM.Core.Interfaces
         IEnumerable<Event> GetRechazedEvents();
 
         IEnumerable<Event> GetPassedEvents();
+
+        IEnumerable<Event> GetPublishedEvents();
+
+        IEnumerable<Event> GetRevisedEvents();
     }
 }

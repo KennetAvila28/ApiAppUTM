@@ -22,7 +22,7 @@
 
     public async Task Post()
     {
-        if (string.IsNullOrEmpty(_oPermissionCreate.Module))
+        if (!string.IsNullOrEmpty(_oPermissionCreate.Module))
         {
             var permission = await Http.PostAsJsonAsync("Permissions", _oPermissionCreate);
             NotificationExtensions.ShowNotification(NotificationService, permission.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Permiso creado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear el permiso", Duration = 3000 });

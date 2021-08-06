@@ -1,6 +1,5 @@
-﻿@page "/Events"
+﻿@page "/Events/Passed"
 @using Microsoft.AspNetCore.Authorization
-@using AppUTM.Models.Events
 @attribute [Authorize]
 @inject HttpClient _http
 @inject NavigationManager navigation
@@ -15,9 +14,8 @@ else
     <div class="container mt-3">
         <div class="d-flex mb-3">
             <h2 class="mx-auto">Lista de eventos</h2>
-            <RadzenButton Text="Agregar Evento" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Events/Create")) />
         </div>
-        <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_events" PageSize="10" TItem="EventReturn">
+        <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Count="@_count" Data="_events" PageSize="10" TItem="EventReturn">
             <Columns>
                 <RadzenDataGridColumn TItem="EventReturn" Property="Title" Title="Titulo">
                     <Template Context="data">
@@ -49,14 +47,9 @@ else
                         <RadzenCheckBox @bind-Value="@data.IsActivity" TValue="bool" Disabled="true" />
                     </Template>
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="EventReturn" Title="Editar">
+                <RadzenDataGridColumn TItem="EventReturn" Title="Acciones">
                     <Template Context="data">
-                        <RadzenButton Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Events/Edit/{data.Id}")) />
-                    </Template>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="EventReturn" Title="Mandar a revision">
-                    <Template Context="data">
-                        <RadzenButton Text="Revision" ButtonStyle="ButtonStyle.Success" Click=@(()=>Revised(data.Id)) />
+                        <RadzenButton Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => Published(data.Id)) />
                     </Template>
                 </RadzenDataGridColumn>
             </Columns>
@@ -66,17 +59,17 @@ else
 
 @code
 {
+    int _count;
     IEnumerable<EventReturn> _events;
 
     protected override async Task OnInitializedAsync()
     {
-        _events = await GetExtensions.GetAllEvents(_http);
+        _events = await GetExtensions.GetAllEventsPassed(_http);
     }
-
-    async Task Revised(int id)
+    async Task Published(int id)
     {
-        var eventMessage = await _http.PostAsJsonAsync("Event/Revised", id);
-        NotificationExtensions.ShowNotification(NotificationService, eventMessage.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Evento mandado a revision", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo mandar a revisión el evento", Duration = 3000 });
+        var eventMessage = await _http.PostAsJsonAsync("Event/Published", id);
+        NotificationExtensions.ShowNotification(NotificationService, eventMessage.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Evento publicado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo publicar el evento", Duration = 3000 });
         _events = await GetExtensions.GetAllEvents(_http);
     }
 }

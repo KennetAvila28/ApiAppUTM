@@ -1,0 +1,8 @@
+﻿@page "/Events/Review/{Id:int}"
+<DetailsEvent Id="@Id" Review="true" />
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+}

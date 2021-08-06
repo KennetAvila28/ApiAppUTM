@@ -15,6 +15,9 @@ namespace AppUTM.Models.Events
         public string Image { get; set; }
         public bool IsActivity { get; set; }
         public bool IsSuggest { get; set; }
+        public bool IsPassed { get; set; }
         public bool IsPublished { get; set; }
+        public bool IsRechazed { get; set; }
+        public bool IsRevised { get; set; }
     }
 }

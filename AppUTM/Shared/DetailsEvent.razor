@@ -1,0 +1,81 @@
+﻿<h3>Detalles del evento</h3>
+@inject NavigationManager navigation
+@inject HttpClient Http
+@inject NotificationService NotificationService
+<div class="container">
+    <RadzenTemplateForm TItem="EventForUpdateDto" Data="@_oEventForUpdateDto">
+        <div class="container mb-3">
+            <div class="row">
+                <RadzenImage Path="@_imgUrl" class="img-thumbnail mx-auto" Style="width: 256px;height: 256px;" />
+            </div>
+        </div>
+
+        <div class="form-group mb-3 mx-auto">
+            <RadzenLabel Text="Titulo:" />
+            <RadzenTextBox Name="Title" @bind-Value="@_oEventForUpdateDto.Title" Style="width: auto;" ReadOnly="true" />
+            <RadzenRequiredValidator Component="Title" Text="El titulo es requerido" Popup="true" Style="position: absolute" />
+            <RadzenLabel Text="Fecha de inicio:" />
+            <RadzenDatePicker @bind-Value="@_oEventForUpdateDto.StartDate" Name="StartDate" TValue="DateTime" ShowTime="true" DateFormat="MM/dd/yyyy HH:mm" ReadOnly="true" />
+            <RadzenRequiredValidator Component="StartDate" Text="Seleccina una fecha de inicio" Style="position: absolute" Popup="true" />
+            <RadzenLabel Text="Fecha de termino:" />
+            <RadzenDatePicker @bind-Value="@_oEventForUpdateDto.EndDate" Name="EndDate" TValue="DateTime" ShowTime="true" DateFormat="MM/dd/yyyy HH:mm" ReadOnly="true" />
+            <RadzenRequiredValidator Component="EndDate" Text="Seleccina una fecha de inicio" Style="position: absolute" Popup="true" />
+        </div>
+        <div class="form-group mb-3">
+            <RadzenLabel Text="Coordinacion:" />
+            <RadzenDropDown @bind-Value="_oEventForUpdateDto.AuthorId" Name="Coordination" TValue="int" Data="_coordinations" TextProperty="@nameof(CoordinationReturn.Nombre)" ValueProperty="@nameof(CoordinationReturn.Id)" Disabled="true" />
+            <RadzenRequiredValidator Component="Coordination" Text="Elige una coordinacion" Popup="true" Style="position: absolute" />
+        </div>
+
+        <div class="form-group mt-4">
+            <RadzenCheckBox @bind-Value="@_oEventForUpdateDto.IsSuggest" TValue="bool" Disabled="true" /><RadzenLabel Text="Sugerido" />
+            <RadzenCheckBox @bind-Value="@_oEventForUpdateDto.IsActivity" TValue="bool" Disabled="true" /><RadzenLabel Text="Actividad" />
+        </div>
+        <div class="form-group  mb-3">
+            <RadzenHtmlEditor @bind-Value="@_oEventForUpdateDto.Content" style="height: 500px; margin-bottom: 1rem;" Disabled="true" />
+        </div>
+        <div class="form-group mt-4">
+            <div>
+                <RadzenButton Text="Cancelar" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Light" Click="@(Cancel)" />
+                @if (Review)
+                {
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" ButtonType="ButtonType.Button" Click="@(Passed)" Text="Aprobar evento" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" ButtonType="ButtonType.Button" Click="@(Rechazed)" Text="Rechazar evento" />
+                }
+            </div>
+        </div>
+    </RadzenTemplateForm>
+</div>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    [Parameter]
+    public bool Review { get; set; }
+    EventForUpdateDto _oEventForUpdateDto = new();
+    IEnumerable<CoordinationReturn> _coordinations;
+    string _imgUrl = string.Empty;
+    protected override async Task OnInitializedAsync()
+    {
+        _oEventForUpdateDto = await GetExtensions.GetEventById(Http, Id);
+        _imgUrl = $"data:data:image/png;base64,{_oEventForUpdateDto.Image ?? string.Empty}";
+        _coordinations = await GetExtensions.GetAllCoordinations(Http);
+
+    }
+
+    void Cancel()
+    {
+        navigation.NavigateTo("/Events/Revised");
+    }
+    async Task Passed()
+    {
+        var eventMessage = await Http.PostAsJsonAsync("Event/Passed", Id);
+        NotificationExtensions.ShowNotification(NotificationService, eventMessage.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Evento aprobado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo aprobar el evento", Duration = 3000 });
+        navigation.NavigateTo("/Events/Revised");
+    }
+    async Task Rechazed()
+    {
+        var eventMessage = await Http.PostAsJsonAsync("Event/Rechazed", Id);
+        NotificationExtensions.ShowNotification(NotificationService, eventMessage.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Evento rechazado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo rechazar el evento", Duration = 3000 });
+        navigation.NavigateTo("/Events/Revised");
+    }
+}

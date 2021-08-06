@@ -35,12 +35,9 @@ namespace AppUTM.Extensions
                 NoOpGraphAuthenticationProvider>();
             services.AddScoped<IHttpProvider, HttpClientHttpProvider>(sp =>
                 new HttpClientHttpProvider(new HttpClient()));
-            services.AddScoped(sp =>
-            {
-                return new GraphServiceClient(
-                    sp.GetRequiredService<IAuthenticationProvider>(),
-                    sp.GetRequiredService<IHttpProvider>());
-            });
+            services.AddScoped(sp => new GraphServiceClient(
+                sp.GetRequiredService<IAuthenticationProvider>(),
+                sp.GetRequiredService<IHttpProvider>()));
 
             return services;
         }
@@ -52,7 +49,7 @@ namespace AppUTM.Extensions
                 TokenProvider = tokenProvider;
             }
 
-            public IAccessTokenProvider TokenProvider { get; }
+            private IAccessTokenProvider TokenProvider { get; }
 
             public async Task AuthenticateRequestAsync(HttpRequestMessage request)
             {

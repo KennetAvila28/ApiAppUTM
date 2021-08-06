@@ -62,6 +62,30 @@ namespace AppUTM.Extensions
             return events?.Data;
         }
 
+        public static async Task<IEnumerable<EventReturn>> GetAllEventsPublished(HttpClient http)
+        {
+            var events = await http.GetFromJsonAsync<ApiResponse<IEnumerable<EventReturn>>>("Event/GetPublished");
+            return events?.Data;
+        }
+
+        public static async Task<IEnumerable<EventReturn>> GetAllEventsRechazed(HttpClient http)
+        {
+            var events = await http.GetFromJsonAsync<ApiResponse<IEnumerable<EventReturn>>>("Event/GetRechazed");
+            return events?.Data;
+        }
+
+        public static async Task<IEnumerable<EventReturn>> GetAllEventsPassed(HttpClient http)
+        {
+            var events = await http.GetFromJsonAsync<ApiResponse<IEnumerable<EventReturn>>>("Event/GetPassed");
+            return events?.Data;
+        }
+
+        public static async Task<IEnumerable<EventReturn>> GetAllEventsRevised(HttpClient http)
+        {
+            var events = await http.GetFromJsonAsync<ApiResponse<IEnumerable<EventReturn>>>("Event/GetRevised");
+            return events?.Data;
+        }
+
         public static async Task<EventForUpdateDto> GetEventById(HttpClient http, int id)
         {
             var events = await http.GetFromJsonAsync<ApiResponse<EventForUpdateDto>>("Event/" + id);
@@ -70,14 +94,14 @@ namespace AppUTM.Extensions
 
         public static async Task<IEnumerable<CoordinationReturn>> GetAllCoordinations(HttpClient http)
         {
-            var events = await http.GetFromJsonAsync<ApiResponse<IEnumerable<CoordinationReturn>>>("Coordinations");
-            return events?.Data;
+            var coordinations = await http.GetFromJsonAsync<ApiResponse<IEnumerable<CoordinationReturn>>>("Coordinations");
+            return coordinations?.Data;
         }
 
-        public static async Task<RoleForUpdateDto> GetCoordinationById(HttpClient http, int id)
+        public static async Task<CoordinationForUpdateDto> GetCoordinationById(HttpClient http, int id)
         {
-            var role = await http.GetFromJsonAsync<ApiResponse<RoleForUpdateDto>>("Coordinations/" + id);
-            return role?.Data;
+            var coordination = await http.GetFromJsonAsync<ApiResponse<CoordinationForUpdateDto>>("Coordinations/" + id);
+            return coordination?.Data;
         }
     }
 }

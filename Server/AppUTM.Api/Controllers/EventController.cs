@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AppUTM.Api.DTOS.Events;
+﻿using AppUTM.Api.DTOS.Events;
 using AppUTM.Api.Responses;
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AppUTM.Api.Controllers
 {
@@ -109,8 +109,26 @@ namespace AppUTM.Api.Controllers
         [HttpGet("GetPassed")]
         public ActionResult<IEnumerable<Event>> GetAllEventsPassed()
         {
-            var eventsYear = _eventService.GetPassedEvents();
-            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsYear);
+            var eventsPassed = _eventService.GetPassedEvents();
+            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsPassed);
+            var response = new ApiResponse<IEnumerable<EventReturn>>(eventDto);
+            return Ok(response);
+        }
+
+        [HttpGet("GetRevised")]
+        public ActionResult<IEnumerable<Event>> GetAllEventsRevised()
+        {
+            var eventsPassed = _eventService.GetRevisedEvents();
+            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsPassed);
+            var response = new ApiResponse<IEnumerable<EventReturn>>(eventDto);
+            return Ok(response);
+        }
+
+        [HttpGet("GetPublished")]
+        public ActionResult<IEnumerable<Event>> GetAllEventsPublished()
+        {
+            var eventsPublished = _eventService.GetPublishedEvents();
+            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsPublished);
             var response = new ApiResponse<IEnumerable<EventReturn>>(eventDto);
             return Ok(response);
         }
@@ -118,10 +136,70 @@ namespace AppUTM.Api.Controllers
         [HttpGet("GetRechazed")]
         public ActionResult<IEnumerable<Event>> GetAllEventsRechazed()
         {
-            var eventsYear = _eventService.GetRechazedEvents();
-            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsYear);
+            var eventsRechazed = _eventService.GetRechazedEvents();
+            var eventDto = _mapper.Map<IEnumerable<Event>, IEnumerable<EventReturn>>(eventsRechazed);
             var response = new ApiResponse<IEnumerable<EventReturn>>(eventDto);
             return Ok(response);
+        }
+
+        [HttpPost("Rechazed")]
+        public async Task<ActionResult<Event>> Rechazed([FromBody] int id)
+        {
+            try
+            {
+                await _eventService.RechazedEvent(id);
+                var response = new ApiResponse<bool>(true);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("Published")]
+        public async Task<ActionResult<Event>> Published([FromBody] int id)
+        {
+            try
+            {
+                await _eventService.PublishEvent(id);
+                var response = new ApiResponse<bool>(true);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("Passed")]
+        public async Task<ActionResult<Event>> Passed([FromBody] int id)
+        {
+            try
+            {
+                await _eventService.PassedEvent(id);
+                var response = new ApiResponse<bool>(true);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("Revised")]
+        public async Task<ActionResult<Event>> Revised([FromBody] int id)
+        {
+            try
+            {
+                await _eventService.RevisedEvent(id);
+                var response = new ApiResponse<bool>(true);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // POST api/<EventController>

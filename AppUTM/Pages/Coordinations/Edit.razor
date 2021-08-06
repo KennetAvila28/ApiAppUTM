@@ -1,4 +1,4 @@
-@page "/Permissions/Edit/{Id:int}"
+@page "/Coordinations/Edit/{Id:int}"
 @inject NavigationManager navigation
 @inject HttpClient Http
 @inject NotificationService NotificationService
@@ -6,11 +6,11 @@
 <div class="container-fluid">
     <div class="form-group">
         <RadzenLabel Text="Modulo:"></RadzenLabel>
-        <RadzenTextBox ShowUpDown="false" @bind-Value="@_oPermissionUpdateDto.Module" Style="width: auto;"></RadzenTextBox>
+        <RadzenTextBox ShowUpDown="false" @bind-Value="@_oCoordinationUpdateDto.Nombre" Style="width: auto;"></RadzenTextBox>
     </div>
     <div class="form-group">
         <div class="form-group mt-4">
-            <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Actualizar permiso</button>
+            <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Actualizar coordinacion</button>
             <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
         </div>
     </div>
@@ -19,25 +19,25 @@
 @code {
     [Parameter]
     public int Id { get; set; }
-    PermissionForUpdateDto _oPermissionUpdateDto = new();
+    CoordinationForUpdateDto _oCoordinationUpdateDto = new();
     protected override async Task OnInitializedAsync()
     {
-        _oPermissionUpdateDto = await GetExtensions.GetPermissionById(Http, Id);
+        _oCoordinationUpdateDto = await GetExtensions.GetCoordinationById(Http, Id);
     }
 
     public async Task Post()
     {
-        if (!string.IsNullOrEmpty(_oPermissionUpdateDto.Module))
+        if (!string.IsNullOrEmpty(_oCoordinationUpdateDto.Nombre))
         {
-            var permission = await Http.PutAsJsonAsync("Permissions", _oPermissionUpdateDto);
+            var permission = await Http.PutAsJsonAsync("Coordinations", _oCoordinationUpdateDto);
             NotificationExtensions.ShowNotification(NotificationService, permission.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Permiso creado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear el permiso", Duration = 3000 });
-            navigation.NavigateTo("/Permissions");
+            navigation.NavigateTo("/Coordinations");
         }
         else
-            NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Ingresa un modulo", Duration = 3000 });
+            NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Ingresa un nombre", Duration = 3000 });
     }
     void Cancel()
     {
-        navigation.NavigateTo("/Permissions");
+        navigation.NavigateTo("/Coordinations");
     }
 }
