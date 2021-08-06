@@ -49,6 +49,7 @@ namespace AppUTM.Api
             services.AddTransient<IPermissionService, PermissionService>();
             services.AddTransient<ICoordinationService, CoordinationService>();
             services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IFavoriteService, FavoriteService>();
             services.AddControllers().AddNewtonsoftJson(opt =>
             {
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
