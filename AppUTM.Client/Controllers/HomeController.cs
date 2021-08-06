@@ -63,6 +63,8 @@ namespace AppUTM.Client.Controllers
 
             listempresa.CuponesTotales = CuponesTotales;
 
+
+
             return View(listempresa);
 
             //var jsonEmpresas = await httpClient.GetStringAsync("http://localhost:59131/api/Empresas");
