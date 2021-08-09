@@ -11,7 +11,7 @@ namespace AppUTM.Core.Interfaces
     {
         Task<IEnumerable<Favorites>> GetAllFavorites();
 
-        Task<Favorites> GetFavoriteById(int id);
+        Task<Favorites> GetFavoriteById(string clave);
 
         Task<Favorites> CreateFavorite(Favorites newFavorite);
 

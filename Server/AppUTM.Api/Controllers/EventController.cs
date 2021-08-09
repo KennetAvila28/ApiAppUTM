@@ -15,7 +15,6 @@ namespace AppUTM.Api.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        //TODO:add get rechazed, passed and published events
         private readonly IMapper _mapper;
 
         private readonly IEventService _eventService;

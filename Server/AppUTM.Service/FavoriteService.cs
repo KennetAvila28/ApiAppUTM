@@ -5,6 +5,7 @@ using AppUTM.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AppUTM.Data.Migrations;
 
 namespace AppUTM.Services
 {
@@ -21,13 +22,28 @@ namespace AppUTM.Services
 
         public async Task<IEnumerable<Favorites>> GetAllFavorites() => await _context.Favorites.Include(x => x.Events).ToListAsync();
 
-        public async Task<Favorites> GetFavoriteById(int id) =>
-            await _context.Favorites.Include(x => x.Events)
-                .SingleOrDefaultAsync(z => z.Id == id);
+        public async Task<Favorites> GetFavoriteById(string clave) =>
+            await _context.Favorites.Include(x => x.Events).AsNoTracking()
+                .SingleOrDefaultAsync(z => z.Clave == clave);
 
         public async Task<Favorites> CreateFavorite(Favorites newFavorite)
         {
-            if (!await _context.Favorites.AnyAsync(x => x.Clave != newFavorite.Clave)) return newFavorite = null;
+            var favorites = await GetFavoriteById(newFavorite.Clave);
+            if (favorites != null)
+            {
+                var eventFavorite = new EventFavorites
+                {
+                    FavoriteId = favorites.Id,
+                    EventId = newFavorite.EventId
+                };
+                await _context.EventFavorites.AddAsync(eventFavorite);
+                await _unitOfWork.CommitAsync();
+                return newFavorite = null;
+            }
+
+            var evebntId = await _unitOfWork.Events.GetById(newFavorite.EventId);
+            newFavorite.Events = new List<Event>();
+            newFavorite.Events.Add(evebntId);
             await _unitOfWork.Favorites.Add(newFavorite);
             await _unitOfWork.CommitAsync();
             return newFavorite;
@@ -35,7 +51,13 @@ namespace AppUTM.Services
 
         public async Task DeleteFavorite(Favorites favorite)
         {
-            _unitOfWork.Favorites.Remove(favorite);
+            var favorites = await GetFavoriteById(favorite.Clave);
+            var eventFavorite = new EventFavorites
+            {
+                FavoriteId = favorites.Id,
+                EventId = favorite.EventId
+            };
+            _context.EventFavorites.Remove(eventFavorite);
             await _unitOfWork.CommitAsync();
         }
     }

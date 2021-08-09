@@ -6,6 +6,7 @@ using AutoMapper;
 using System;
 using AppUTM.Api.DTOS.Coordinations;
 using AppUTM.Api.DTOS.Events;
+using AppUTM.Api.DTOS.Favorites;
 
 namespace AppUTM.Api.Mappings
 {
@@ -70,6 +71,10 @@ namespace AppUTM.Api.Mappings
                     destination.Status = true;
                 }));
             CreateMap<CoordinationReturn, Coordination>();
+
+            CreateMap<Favorites, FavoriteCreate>().ReverseMap();
+            CreateMap<Favorites, FavoriteReturn>().ReverseMap();
+            CreateMap<FavoriteReturn, Favorites>();
         }
     }
 }

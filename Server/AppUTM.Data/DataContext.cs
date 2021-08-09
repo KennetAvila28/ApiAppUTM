@@ -17,7 +17,7 @@ namespace AppUTM.Data
         public DbSet<Favorites> Favorites { get; set; }
         public DbSet<Coordination> Coordinations { get; set; }
         public DbSet<RoleMenuPermission> RoleMenuPermission { get; set; }
-
+        public DbSet<EventFavorites> EventFavorites { get; set; }
         public DbSet<NavigationMenu> NavigationMenu { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,6 +37,18 @@ namespace AppUTM.Data
                 .WithOne(s => s.Author)
                 .HasForeignKey(s => s.AuthorId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Favorites>().HasMany(p => p.Events).WithMany(e => e.Favorites)
+                .UsingEntity<EventFavorites>(
+                    ef => ef.HasOne(prop => prop.Event)
+                        .WithMany().HasForeignKey(prop => prop.EventId),
+                    ef => ef.HasOne(prop => prop.Favorites)
+                        .WithMany().HasForeignKey(prop => prop.FavoriteId),
+                    ef =>
+                    {
+                        ef.HasKey(prop => new { prop.FavoriteId, prop.EventId });
+                    }
+                );
         }
     }
 }

@@ -4,14 +4,16 @@ using AppUTM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppUTM.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210808131835_add_key_Favorites")]
+    partial class add_key_Favorites
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,21 +114,6 @@ namespace AppUTM.Data.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("AppUTM.Core.Models.EventFavorites", b =>
-                {
-                    b.Property<int>("FavoriteId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FavoriteId", "EventId");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("EventFavorites");
                 });
 
             modelBuilder.Entity("AppUTM.Core.Models.Favorites", b =>
@@ -322,6 +309,21 @@ namespace AppUTM.Data.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("EventFavorites", b =>
+                {
+                    b.Property<int>("EventsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FavoritesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EventsId", "FavoritesId");
+
+                    b.HasIndex("FavoritesId");
+
+                    b.ToTable("EventFavorites");
+                });
+
             modelBuilder.Entity("AppUTM.Core.Models.Event", b =>
                 {
                     b.HasOne("AppUTM.Core.Models.Coordination", "Author")
@@ -331,25 +333,6 @@ namespace AppUTM.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("AppUTM.Core.Models.EventFavorites", b =>
-                {
-                    b.HasOne("AppUTM.Core.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppUTM.Core.Models.Favorites", "Favorites")
-                        .WithMany()
-                        .HasForeignKey("FavoriteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Favorites");
                 });
 
             modelBuilder.Entity("AppUTM.Core.Models.NavigationMenu", b =>
@@ -414,6 +397,21 @@ namespace AppUTM.Data.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EventFavorites", b =>
+                {
+                    b.HasOne("AppUTM.Core.Models.Event", null)
+                        .WithMany()
+                        .HasForeignKey("EventsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppUTM.Core.Models.Favorites", null)
+                        .WithMany()
+                        .HasForeignKey("FavoritesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AppUTM.Core.Models.Coordination", b =>

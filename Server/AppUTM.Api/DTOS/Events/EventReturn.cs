@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AppUTM.Core.Models;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace AppUTM.Api.DTOS.Events
 {
@@ -20,6 +21,6 @@ namespace AppUTM.Api.DTOS.Events
         public bool IsPublished { get; set; }
         public bool IsRechazed { get; set; }
         public bool IsRevised { get; set; }
-        public Coordination Coordination { get; set; }
+        public List<Core.Models.Favorites> Favorites { get; set; }
     }
 }

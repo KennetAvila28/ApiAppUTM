@@ -17,12 +17,12 @@ namespace AppUTM.Api.Controllers
     public class FavoritesController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IFavoriteService _Favoriteservice;
+        private readonly IFavoriteService _favoriteService;
 
-        public FavoritesController(IMapper mapper, IFavoriteService Favoriteservice)
+        public FavoritesController(IMapper mapper, IFavoriteService favoriteservice)
         {
             _mapper = mapper;
-            _Favoriteservice = Favoriteservice;
+            _favoriteService = favoriteservice;
         }
 
         // GET: api/<FavoriteController>
@@ -31,7 +31,7 @@ namespace AppUTM.Api.Controllers
         {
             try
             {
-                var favorites = await _Favoriteservice.GetAllFavorites();
+                var favorites = await _favoriteService.GetAllFavorites();
                 var favoriteList = _mapper.Map<IEnumerable<Favorites>, IEnumerable<FavoriteReturn>>(favorites);
                 var response = new ApiResponse<IEnumerable<FavoriteReturn>>(favoriteList);
                 return Ok(response);
@@ -43,12 +43,12 @@ namespace AppUTM.Api.Controllers
         }
 
         // GET api/<FavoriteController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Favorites>> Get(int id)
+        [HttpGet("{clave}")]
+        public async Task<ActionResult<Favorites>> Get(string clave)
         {
             try
             {
-                var selectedFavorite = await _Favoriteservice.GetFavoriteById(id);
+                var selectedFavorite = await _favoriteService.GetFavoriteById(clave);
                 var favoriteDto = _mapper.Map<Favorites, FavoriteReturn>(selectedFavorite);
                 var response = new ApiResponse<FavoriteReturn>(favoriteDto);
                 return Ok(response);
@@ -61,30 +61,31 @@ namespace AppUTM.Api.Controllers
 
         // POST api/<FavoriteController>
         [HttpPost]
-        public async Task<ActionResult> Post(FavoriteCreate FavoriteCreate)
+        public async Task<ActionResult> Post(FavoriteCreate favoriteCreate)
         {
             try
             {
-                var favoriteEntity = _mapper.Map<FavoriteCreate, Favorites>(FavoriteCreate);
-                await _Favoriteservice.CreateFavorite(favoriteEntity);
+                var favoriteEntity = _mapper.Map<FavoriteCreate, Favorites>(favoriteCreate);
+                var newfavorite = await _favoriteService.CreateFavorite(favoriteEntity);
+                if (newfavorite == null) return Ok("Evento agregado");
                 var favoriteResponse = _mapper.Map<Favorites, FavoriteReturn>(favoriteEntity);
                 var response = new ApiResponse<FavoriteReturn>(favoriteResponse);
                 return Ok(response);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(e.InnerException);
             }
         }
 
         // DELETE api/<FavoriteController>/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete]
+        public async Task<ActionResult> Delete(FavoriteCreate favoriteCreate)
         {
             try
             {
-                var favoriteForDelete = await _Favoriteservice.GetFavoriteById(id);
-                await _Favoriteservice.DeleteFavorite(favoriteForDelete);
+                var favoriteEntity = _mapper.Map<FavoriteCreate, Favorites>(favoriteCreate);
+                await _favoriteService.DeleteFavorite(favoriteEntity);
                 var response = new ApiResponse<bool>(true);
                 return Ok(response);
             }
