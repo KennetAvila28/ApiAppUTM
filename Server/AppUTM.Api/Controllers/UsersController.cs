@@ -3,7 +3,9 @@ using AppUTM.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using AppUTM.Api.DTOS;
 using AppUTM.Api.DTOS.Users;
 using AppUTM.Api.Responses;
 using AppUTM.Core.Interfaces;
@@ -53,6 +55,25 @@ namespace AppUTM.Api.Controllers
                 var Userdto = _mapper.Map<User, UserReturn>(user);
                 var response = new ApiResponse<UserReturn>(Userdto);
                 return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("empleado/")]
+        public async Task<ActionResult> GetGraphUser(Token token)
+        {
+            const string url = "https://graph.microsoft.com/v1.0/me";
+            try
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", token.Code);
+                var json = await client.GetStringAsync(url);
+                return Ok(json);
             }
             catch (Exception e)
             {
@@ -114,13 +135,13 @@ namespace AppUTM.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
+
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             try
             {
-
                 await _Userervice.DeleteUser(await _Userervice.GetUserById(id));
                 var result = new ApiResponse<bool>(true);
                 return Ok(result);
