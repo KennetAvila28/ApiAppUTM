@@ -9,11 +9,14 @@ namespace AppUTM.Core.Repositories
         IPermissionRepository Permissions { get; }
         IRoleRepository Roles { get; }
         IUserRepository Users { get; }
+        IModuleRepository Module { get; }
         public IRepository<Empresa> EmpresaRepository { get; }
         public IRepository<CuponGenerico> CuponGenericoRepository { get; }
         public IRepository<CuponImagen> CuponImagenRepository { get; }
         IRolePermissionRepository RolePermission { get; }
         IUserRolesRepository UserRoles { get; }
+
+        IModuleRoleRepository ModuleRoles { get; }
 
         Task<int> CommitAsync();
     }

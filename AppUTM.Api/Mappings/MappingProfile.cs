@@ -1,5 +1,6 @@
 ﻿using AppUTM.Api.DTOS.Cupones;
 using AppUTM.Api.DTOS.Empresas;
+using AppUTM.Api.DTOS.Modules;
 using AppUTM.Api.DTOS.Permissions;
 using AppUTM.Api.DTOS.Roles;
 using AppUTM.Api.DTOS.Users;
@@ -47,7 +48,16 @@ namespace AppUTM.Api.Mappings
                     destination.CreateAt = DateTime.Now;
                     destination.Status = true;
                 }));
+
+
             CreateMap<PermissionReturn, Permission>();
+
+
+
+
+            CreateMap<Module, ModuleCreate>().ReverseMap();
+            CreateMap<Module, ModuleReturn>().ReverseMap();
+            CreateMap<Module, moduleToBeUpdated>().ReverseMap();
             //empresas
             CreateMap<Empresa, EmpresaReturn>().ReverseMap();
             CreateMap<Empresa, EmpresaCreate>().ReverseMap();
