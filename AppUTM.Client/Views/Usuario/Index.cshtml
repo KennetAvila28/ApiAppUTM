@@ -10,11 +10,10 @@
 }
 
 <h1>Usuarios</h1>
-
 <p>
-    <a class="btn btn-primary btn-sm" asp-action="Create">Crear usuario</a>
-    <a class="btn btn-success btn-sm" asp-controller="Roles" asp-action="Index">Roles</a>
-    <a class="btn btn-dark btn-sm" asp-controller="Permissions" asp-action="Index">Permisos</a>
+    <a class="btn btn-primary btn-sm" asp-controller="Usuario" asp-action="Empleados" >Crear usuario</a>
+    @*<a class="btn btn-success btn-sm" asp-controller="Roles" asp-action="Index">Roles</a>
+    <a class="btn btn-dark btn-sm" asp-controller="Permissions" asp-action="Index">Permisos</a>*@
 </p>
 <table class="table" style="margin:0;">
     <thead>
@@ -68,11 +67,11 @@
                         {
 
 
-                            <input type="checkbox" checked="checked" readonly="readonly" onclick="javascript: return false;" /><label>@r.Nombre</label>
+                            <input type="checkbox" checked="checked" readonly="readonly" onclick="javascript: return false;" /><label>@r.Nombre</label> <br />
                         }
                         else
                         {
-                            <input type="checkbox" readonly="readonly" onclick="javascript: return false;" /><label>@r.Nombre</label>
+                            <input type="checkbox" readonly="readonly" onclick="javascript: return false;" /><label>@r.Nombre</label><br />
                         }
 
                     }

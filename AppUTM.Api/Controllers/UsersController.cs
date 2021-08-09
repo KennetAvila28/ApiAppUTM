@@ -14,6 +14,9 @@ using AppUTM.Core.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
+using System.Text.Json;
+using Hangfire.Server;
+using System.Text.RegularExpressions;
 
 namespace AppUTM.Api.Controllers
 {
@@ -71,10 +74,14 @@ namespace AppUTM.Api.Controllers
         {
             try
             {
-                var Url = "http://api.utmetropolitana.edu.mx/api/Empleados/Get?correoinstitucional=";
                 var Client = new HttpClient();
-                var json = await Client.GetStringAsync(Url + correo);
-                return Ok(json);
+                var Url = "http://api.utmetropolitana.edu.mx/api/Empleados/Get?correoinstitucional=";
+                var jsonstring = await Client.GetStringAsync(Url + correo);
+                var jsonclean = Regex.Replace(jsonstring, @"\s{2,}|//", " ").Substring(1);
+                jsonclean = jsonclean.Remove(jsonclean.Length - 1).Replace(@"\", "").Replace("\u0022", "");
+                var jsonempleados = jsonclean.Replace("ClaveEmpleado:", "\u0022ClaveEmpleado\u0022:\u0022").Replace(",PrimerNombre:", "\u0022,\u0022PrimerNombre\u0022:\u0022").Replace(",SegundoNombre:", "\u0022,\u0022SegundoNombre\u0022:\u0022").Replace(",PrimerApellido:", "\u0022,\u0022PrimerApellido\u0022:\u0022")
+                .Replace(",SegundoApellido:", "\u0022,\u0022SegundoApellido\u0022:\u0022").Replace(",CorreoInstitucional:", "\u0022,\u0022CorreoInstitucional\u0022:\u0022").Replace(",NombreArea:", "\u0022,\u0022NombreArea\u0022:\u0022").Replace(",Departamento:", "\u0022,\u0022Departamento\u0022:\u0022").Replace(",TipoEmpleado:", "\u0022,\u0022TipoEmpleado\u0022:\u0022").Replace("}", "\u0022}");
+                return Ok(jsonempleados);
             }
             catch (Exception e)
             {

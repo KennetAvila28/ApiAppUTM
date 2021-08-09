@@ -1,0 +1,31 @@
+﻿@model IEnumerable<AppUTM.Client.Models.Users.EmpleadoUTM>
+
+@{
+    ViewBag.listemp = "item";
+    ViewData["Title"] = "Create";
+}
+
+
+
+<table class="table table-bordered">
+    <tbody id="myModalTable">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.PrimerNombre @item.SegundoNombre @item.PrimerApellido </td>
+                <td>
+
+                    <a class="button-a" asp-controller="Usuario" asp-action="Create"
+                       asp-route-ClaveEmpleado="@item.ClaveEmpleado" 
+                       asp-route-Nombres="@item.PrimerNombre @item.SegundoNombre"
+                       asp-route-ApellidoPaterno="@item.PrimerApellido"
+                       asp-route-ApellidoMaterno="@item.SegundoApellido"
+                       asp-route-Correo="@item.CorreoInstitucional">
+                        Registrar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

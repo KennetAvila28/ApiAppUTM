@@ -1,0 +1,18 @@
+﻿@model AppUTM.Client.Models.Users.EmpleadoUTM;
+@{
+
+    ViewData["Title"] = "Empleados";
+
+}
+
+<h1>Buscar Empleado</h1>
+
+<form>
+    <div class="mb-2">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Correo" aria-label="" aria-describedby="basic-addon2" name="correo">
+            <span class="input-group-text" id="basic-addon2">&#64;utmetropolitana.edu.mx</span>
+        </div>
+        <button class="btn btn-success" type="submit" asp-controller="Usuario" asp-action="EmpleadoConsulta">Buscar</button>
+    </div>
+</form>

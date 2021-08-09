@@ -38,6 +38,27 @@ namespace AppUTM.Client.Controllers
             var listUsuario = JsonConvert.DeserializeObject<ApiResponse<List<UserReturn>>>(jsonUser);
             return View(listUsuario.Data);
         }
+
+        [HttpGet] //Vista para busqueda
+        public IActionResult Empleados()
+        {
+
+            return View();
+        }
+
+        // GET: Empleado
+        [HttpGet]
+        public async Task<IActionResult> EmpleadoConsulta(string correo)
+        {
+            HttpClient httpClient = new HttpClient();
+            List<EmpleadoUTM> listemp = new List<EmpleadoUTM>();
+            //string extension = "@utmetropolitana.edu.mx";
+            //Muestra las empresas que proporciona la API de la UTM
+            var jsonEmpleado = await httpClient.GetStringAsync("http://localhost:59131/api/Users/empleado/" + correo);
+            var jsonlist = JsonConvert.DeserializeObject<List<EmpleadoUTM>>(jsonEmpleado);
+            ViewBag.listemp = jsonlist;
+            return View(jsonlist);
+        }
         // GET: UsuarioController
 
         // GET: UsuarioController/Details/5
@@ -49,9 +70,15 @@ namespace AppUTM.Client.Controllers
             return View(listUsuario.Data);
         }
         [HttpGet]
-        public async Task<ActionResult> Create()
+        public async Task<ActionResult> Create(int ClaveEmpleado, string Nombres, string ApellidoPaterno, string ApellidoMaterno, string Correo)
         {
             HttpClient httpClient = new HttpClient();
+            User empleado = new User();
+            empleado.ClaveEmpleado = ClaveEmpleado;
+            empleado.Nombres = Nombres;
+            empleado.ApellidoPaterno = ApellidoPaterno;
+            empleado.ApellidoMaterno = ApellidoMaterno;
+            empleado.Correo = Correo;
             var json = await httpClient.GetStringAsync("http://localhost:59131/api/Users/");
             var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/");
             var listRoles = JsonConvert.DeserializeObject<ApiResponse<List<RoleReturn>>>(jsonUser);
@@ -64,6 +91,8 @@ namespace AppUTM.Client.Controllers
         public IActionResult Create(UserCreate userCreate, int[] role)
         {
             HttpClient httpClient = new HttpClient();
+
+
             List<UserRole> listaRoles = new List<UserRole>();
             foreach (var item in role)
             {
@@ -72,6 +101,7 @@ namespace AppUTM.Client.Controllers
                 listaRoles.Add(roleUser);
             }
             userCreate.UserRoles = listaRoles;
+
 
             var CrearCliente = httpClient.PostAsJsonAsync<UserCreate>("http://localhost:59131/api/Users", userCreate);
             CrearCliente.Wait();
