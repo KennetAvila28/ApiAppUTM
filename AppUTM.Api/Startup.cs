@@ -49,6 +49,7 @@ namespace AppUTM.Api
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IPermissionService, PermissionService>();
+            services.AddTransient<IModuleService, ModuleService>();
             services.AddTransient<IEmpresaServices, EmpresaService>();
             services.AddTransient<ICuponGenericoServices, CuponGenericoService>();
             services.AddTransient<ICuponImagenServices, CuponImagenService>();

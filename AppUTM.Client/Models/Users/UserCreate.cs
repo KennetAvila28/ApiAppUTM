@@ -9,7 +9,7 @@ namespace AppUTM.Client.Models.Users
 {
     public class UserCreate
     {
-        [DisplayName("Clave")]
+        [DisplayName("Clave del Empleado")]
         public int ClaveEmpleado { get; set; }
         public string Nombres { get; set; }
         [DisplayName("Apellido Paterno")]
