@@ -116,7 +116,7 @@ namespace AppUTM.Services
         public async Task<IEnumerable<Event>> GetAllEventsToday()
         {
             await Task.Delay(1000);
-            return _context.Events.Include(p => p.Favorites).Where(x => x.IsPublished && x.StartDate == DateTime.Today).OrderBy(x => x.StartDate).ToList();
+            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.IsPublished && x.StartDate == DateTime.Today).OrderBy(x => x.StartDate).ToList();
         }
 
         public async Task<IEnumerable<Event>> GetAllEventsWeek()
@@ -124,19 +124,19 @@ namespace AppUTM.Services
             var sunday = DayOfWeek.Sunday - DateTime.Now.DayOfWeek;
             var saturday = DayOfWeek.Saturday - DateTime.Now.DayOfWeek;
             await Task.Delay(1000);
-            return _context.Events.Include(p => p.Favorites).Where(x => x.StartDate.Date >= DateTime.Now.AddDays(sunday) && x.StartDate <= DateTime.Now.AddDays(saturday) && x.IsPublished == true).ToList();
+            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.StartDate.Date >= DateTime.Now.AddDays(sunday) && x.StartDate <= DateTime.Now.AddDays(saturday) && x.IsPublished == true).ToList();
         }
 
         public async Task<IEnumerable<Event>> GetAllEventsQuarter()
         {
             await Task.Delay(1000);
-            return _context.Events.Include(p => p.Favorites).Where(x => x.StartDate.Month >= DateTime.Now.Month && x.StartDate.Month <= DateTime.Now.Month + 3 && x.IsPublished).OrderBy(x => x.StartDate).ToList();
+            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.StartDate.Month >= DateTime.Now.Month && x.StartDate.Month <= DateTime.Now.Month + 3 && x.IsPublished).OrderBy(x => x.StartDate).ToList();
         }
 
         public async Task<IEnumerable<Event>> GetAllEventsYear()
         {
             await Task.Delay(1000);
-            return _context.Events.Include(p => p.Favorites).Where(x => x.StartDate.Year == DateTime.Now.Year && x.IsPublished).OrderBy(x => x.StartDate).ToList();
+            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.StartDate.Year == DateTime.Now.Year && x.IsPublished).OrderBy(x => x.StartDate).ToList();
         }
     }
 }

@@ -2,7 +2,7 @@
 @inject NavigationManager navigation
 @inject HttpClient Http
 @inject NotificationService NotificationService
-<h1>Editar un Permiso</h1>
+<h1>Editar una Coordinacion</h1>
 <div class="container-fluid">
     <div class="form-group">
         <RadzenLabel Text="Modulo:"></RadzenLabel>
@@ -29,8 +29,8 @@
     {
         if (!string.IsNullOrEmpty(_oCoordinationUpdateDto.Nombre))
         {
-            var permission = await Http.PutAsJsonAsync("Coordinations", _oCoordinationUpdateDto);
-            NotificationExtensions.ShowNotification(NotificationService, permission.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Permiso creado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear el permiso", Duration = 3000 });
+            var permission = await Http.PutAsJsonAsync("Coordinations/" + Id, _oCoordinationUpdateDto);
+            NotificationExtensions.ShowNotification(NotificationService, permission.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Coordinacion actualizada", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo actualizar la coordinacion", Duration = 3000 });
             navigation.NavigateTo("/Coordinations");
         }
         else

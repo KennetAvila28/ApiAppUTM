@@ -10,6 +10,6 @@ namespace AppUTM.Api.DTOS.Coordinations
     {
         public int Id { get; set; }
         public string Nombre { get; set; }
-        public List<Event> Events { get; set; }
+        //public List<Event> Events { get; set; }
     }
 }
