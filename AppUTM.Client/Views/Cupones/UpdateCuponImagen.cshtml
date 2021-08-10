@@ -6,7 +6,7 @@
 
 <h4>Datos del cupón @Model.CuponImagenId</h4>
 <form asp-action="UpdateCuponImagen" method="post" enctype="multipart/form-data">
-    <img class="qr-full" src="http://localhost:59131/api/CuponesImagen/image?nombreArchivo=@Model.Imagen" alt="@Model.CuponImagenId">
+    <img class="qr-full" src="data:image/jpeg;base64, @Model.Imagen" alt="@Model.CuponImagenId">
     <div class="mt-1">
         <label for="">Cambiar imagen</label>
         <input class="form-control" type="file" asp-for="Foto">
@@ -26,8 +26,7 @@
     <input type="hidden" asp-for="CuponesVisitados" value="@Model.CuponesVisitados" />
     <input type="hidden" asp-for="CuponesUsados" value="@Model.CuponesUsados" />
     <input type="hidden" asp-for="EmpresaId" value="@Model.EmpresaId" />
-    <input type="hidden" asp-for="CuponImagenId" value="@Model.CuponImagenId" />
-    <input type="hidden" asp-for="Domain" value="@Model.Domain" />
+    <input type="hidden" asp-for="CuponImagenId" value="@Model.CuponImagenId" />>
 
     <input type="submit" class="btn btn-green mt-4 mx-3" value="Actualizar Datos" />
     <button type="button" class="btn btn-danger mt-4" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Eliminar Cupón</button>

@@ -8,8 +8,7 @@
 <h4>Datos de @Model.Nombre</h4>
 <form asp-action="Update" enctype="multipart/form-data">
     <div class="form-group row mt-4">
-        <input type="hidden" asp-for="EmpresaId" value="@Model.EmpresaId">
-        <input type="hidden" asp-for="Domain" value="@Model.Domain" />
+        <input type="hidden" asp-for="EmpresaId" value="@Model.EmpresaId">   
         <div class="form-group col-md-4">
             <label>RFC</label>
             @if (Model.RFC != null)
@@ -68,8 +67,7 @@
             <input class="form-control" type="file" name="Foto">
             <input type="hidden" name="ImagenEmpresa" asp-for="@Model.ImagenEmpresa" />
         </div>
-        <img class="mx-2 mt-3" id="company" src="http://localhost:59131/api/Empresas/image?nombreArchivo=@Model.ImagenEmpresa" alt="@Model.ImagenEmpresa"> <!-- http://api.utmetropolitana.edu.mx/api/Empresas/image?nombreArchivo= -->
-
+        <img class="mx-2 mt-3" id="company" src="data:image/jpeg;base64, @Model.ImagenEmpresa" alt="@Model.ImagenEmpresa">
     </div>
     <div>
         <input type="submit" class="btn btn-green mt-4" value="Guardar Datos" />

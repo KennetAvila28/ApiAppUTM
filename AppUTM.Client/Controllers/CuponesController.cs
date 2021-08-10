@@ -35,10 +35,10 @@ namespace AppUTM.Client.Controllers
             var empresa = JsonConvert.DeserializeObject<Empresa>(jsonEmpresa);
             cupones.Empresa = empresa;
             var jsonCuponesGenerico = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/empresa/" + id);
-            var listCupones = JsonConvert.DeserializeObject<IEnumerable<CuponGenerico>>(jsonCuponesGenerico);            
+            var listCupones = JsonConvert.DeserializeObject<IEnumerable<CuponGenerico>>(jsonCuponesGenerico);
             cupones.cuponesGenericos = listCupones;
             var jsonCuponesImagen = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/empresa/" + id);
-            var listCuponesImagen = JsonConvert.DeserializeObject<IEnumerable<CuponImagen>>(jsonCuponesImagen);           
+            var listCuponesImagen = JsonConvert.DeserializeObject<IEnumerable<CuponImagen>>(jsonCuponesImagen);
             cupones.cuponesImagen = listCuponesImagen;          
             return View(cupones);
         }
@@ -122,14 +122,21 @@ namespace AppUTM.Client.Controllers
             var empresa = JsonConvert.DeserializeObject<Empresa>(jsonEmpresa);
             cupon.EmpresaId = empresa.EmpresaId;
             cupon.NombreEmpresa = empresa.Nombre;
-            cupon.Domain = empresa.Domain;
             return View(cupon);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCuponImagen(CuponImagen cupon)
         {
-            cupon.Imagen = UploadImage(cupon);
+            if(cupon.Foto != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await cupon.Foto.CopyToAsync(ms);
+                    var fileBytes = ms.ToArray();
+                    cupon.Imagen = Convert.ToBase64String(fileBytes);                
+                }
+            }      
             var json = await httpClient.PostAsJsonAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/", cupon);
             if (json.IsSuccessStatusCode)
                 return RedirectToAction("Index", new { id = cupon.EmpresaId });
@@ -146,10 +153,17 @@ namespace AppUTM.Client.Controllers
         } 
 
         [HttpPost]
-        public IActionResult UpdateCuponImagen(int id, CuponImagen cupon)
+        public async Task<IActionResult> UpdateCuponImagen(int id, CuponImagen cupon)
         {
             if (cupon.Foto != null)
-                cupon.Imagen = UploadImage(cupon);
+            {
+                using (var sm = new MemoryStream())
+                {
+                    await cupon.Foto.CopyToAsync(sm);
+                    var fileBytes = sm.ToArray();
+                    cupon.Imagen = Convert.ToBase64String(fileBytes);
+                }
+            }
             httpClient.BaseAddress = new Uri(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/");
             var putTask = httpClient.PutAsJsonAsync<CuponImagen>("?id=" + id, cupon);
             putTask.Wait();
@@ -170,7 +184,7 @@ namespace AppUTM.Client.Controllers
         }
 
 
-        //Subir imagen
+        /* Guardar imagen 
         private string UploadImage(CuponImagen cupon)
         {
             string fileName = null, filePath = null;
@@ -186,5 +200,7 @@ namespace AppUTM.Client.Controllers
             }
             return fileName;
         }
+
+        */
     }
 }

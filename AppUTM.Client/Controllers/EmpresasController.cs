@@ -42,16 +42,14 @@ namespace AppUTM.Client.Controllers
             return View(listEmpresas);
         }
 
-        public async Task<IActionResult> Create(string RFC, string Nombre, string Direccion, string Telefono)
+        public IActionResult Create(string RFC, string Nombre, string Direccion, string Telefono)
         {
             HttpClient httpClient = new HttpClient();
-            Empresa empresa = new Empresa();
-            var Domain = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/Domain");
+            Empresa empresa = new Empresa();          
             empresa.RFC = RFC;
             empresa.Nombre = Nombre;
             empresa.Direccion = Direccion;
-            empresa.Telefono = Telefono;
-            empresa.Domain = Domain;
+            empresa.Telefono = Telefono;    
             return View(empresa);
         }
 
@@ -59,7 +57,15 @@ namespace AppUTM.Client.Controllers
         public async Task<IActionResult> Create(Empresa empresa)
         {
             HttpClient httpClient = new HttpClient();           
-            empresa.ImagenEmpresa = UploadImage(empresa);
+            if (empresa.Foto != null)
+            {
+                using (var sm = new MemoryStream())
+                {
+                    await empresa.Foto.CopyToAsync(sm);
+                    var fileBytes = sm.ToArray();
+                    empresa.ImagenEmpresa = Convert.ToBase64String(fileBytes);
+                }
+            }
             var json = await httpClient.PostAsJsonAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas", empresa);
             if (json.IsSuccessStatusCode)
                 return RedirectToAction("Index");
@@ -74,19 +80,23 @@ namespace AppUTM.Client.Controllers
             var empresa = JsonConvert.DeserializeObject<Empresa>(json);
             var jsonCuponesGenericos = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/empresa/" + id);
             var jsonCuponesImagen = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/empresa/" + id);
-            if (jsonCuponesGenericos != null || jsonCuponesImagen != null) empresa.Cupones = true;
+            if (jsonCuponesGenericos.Length > 5 || jsonCuponesImagen.Length > 5) empresa.Cupones = true;
             return View(empresa);
         }
 
         [HttpPost]
-        public IActionResult Update(int id, Empresa empresa)
+        public async Task<IActionResult> Update(int id, Empresa empresa)
         {
             HttpClient httpClient = new HttpClient();
 
             if (empresa.Foto != null)
             {
-                string imagen = UploadImage(empresa);
-                empresa.ImagenEmpresa = imagen;
+                using (var sm = new MemoryStream())
+                {
+                    await empresa.Foto.CopyToAsync(sm);
+                    var fileBytes = sm.ToArray();
+                    empresa.ImagenEmpresa = Convert.ToBase64String(fileBytes);
+                }
             }
             httpClient.BaseAddress = new Uri(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/");
             var putTask = httpClient.PutAsJsonAsync<Empresa>("?id=" + id, empresa);
@@ -98,6 +108,23 @@ namespace AppUTM.Client.Controllers
                 return RedirectToAction("Error", "Home");
         }
 
+        public IActionResult DeleteEmpresas(int empresaId, int id)
+        {
+            HttpClient httpClient = new HttpClient();
+
+            var deleteTask = httpClient.DeleteAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/" + id);
+            deleteTask.Wait();
+            if (deleteTask.Result.IsSuccessStatusCode)
+                return RedirectToAction("Index", new { id = empresaId });
+            else
+                return RedirectToAction("Error", "Home");
+        }
+
+
+
+
+
+        /*
         private string UploadImage(Empresa empresa)
         {
             string fileName = null, filePath = null;
@@ -113,18 +140,7 @@ namespace AppUTM.Client.Controllers
             }
             return fileName;
         }
-
-        public IActionResult DeleteEmpresas(int empresaId, int id)
-        {
-            HttpClient httpClient = new HttpClient();
-
-            var deleteTask = httpClient.DeleteAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/" + id);
-            deleteTask.Wait();
-            if (deleteTask.Result.IsSuccessStatusCode)
-                return RedirectToAction("Index", new { id = empresaId });
-            else
-                return RedirectToAction("Error", "Home");
-        }
+        */
 
 
         //It doesn't work well

@@ -65,7 +65,7 @@
                     </td>
                    
                     <td>
-                        <img class="qr" src="http://localhost:59131/api/CuponesImagen/image?nombreArchivo=@item.Imagen" alt="Cupón @item.EmpresaId">
+                        <img class="qr" src="data:image/jpeg;base64, @item.Imagen" alt="Cupón @item.EmpresaId">
                     </td>
                     <td><a class="btn btn-green" asp-route-Id="@item.CuponImagenId" asp-action="UpdateCuponImagen">Editar</a></td>
                 </tr>
