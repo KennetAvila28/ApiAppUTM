@@ -1,5 +1,6 @@
 ﻿using AppUTM.Api.DTOS.Cupones;
 using AppUTM.Api.DTOS.Empresas;
+using AppUTM.Api.DTOS.HistorialCupones;
 using AppUTM.Api.DTOS.Modules;
 using AppUTM.Api.DTOS.Permissions;
 using AppUTM.Api.DTOS.Roles;
@@ -58,15 +59,18 @@ namespace AppUTM.Api.Mappings
             CreateMap<Module, ModuleCreate>().ReverseMap();
             CreateMap<Module, ModuleReturn>().ReverseMap();
             CreateMap<Module, moduleToBeUpdated>().ReverseMap();
-            //empresas
+            //Empresas
             CreateMap<Empresa, EmpresaReturn>().ReverseMap();
             CreateMap<Empresa, EmpresaCreate>().ReverseMap();
-            //cupongenerico
+            //CuponGenerico
             CreateMap<CuponGenerico, CuponGenericoReturn>().ReverseMap();
             CreateMap<CuponGenerico, CuponGenericoCreate>().ReverseMap();
-            //cuponImagen
+            //CuponImagen
             CreateMap<CuponImagen, CuponImagenReturn>().ReverseMap();
             CreateMap<CuponImagen, CuponImagenCreate>().ReverseMap();
+            //HistorialCupones
+            CreateMap<HistorialCupones, HistorialCuponesReturn>().ReverseMap();
+            CreateMap<HistorialCupones, HistorialCuponesCreate>().ReverseMap();
         }
     }
 }

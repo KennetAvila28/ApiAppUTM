@@ -13,6 +13,7 @@ namespace AppUTM.Core.Repositories
         public IRepository<Empresa> EmpresaRepository { get; }
         public IRepository<CuponGenerico> CuponGenericoRepository { get; }
         public IRepository<CuponImagen> CuponImagenRepository { get; }
+        public IRepository<HistorialCupones> HistorialCuponesRepository { get; }
         IRolePermissionRepository RolePermission { get; }
         IUserRolesRepository UserRoles { get; }
 

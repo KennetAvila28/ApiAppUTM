@@ -1,9 +1,11 @@
 ﻿using AppUTM.Api.DTOS.Cupones;
+using AppUTM.Api.DTOS.HistorialCupones;
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppUTM.Api.Controllers
@@ -13,12 +15,14 @@ namespace AppUTM.Api.Controllers
     public class CuponesGenericosController : ControllerBase
     {
         private readonly ICuponGenericoServices _service;
+        private readonly IHistorialCuponesServices _historialService;
         private readonly IMapper _mapper;
 
-        public CuponesGenericosController(ICuponGenericoServices services, IMapper mapper)
+        public CuponesGenericosController(ICuponGenericoServices services, IHistorialCuponesServices historial, IMapper mapper)
         {
             this._service = services;
-            this._mapper = mapper;  
+            this._historialService = historial;
+            this._mapper = mapper;
         }
 
         [HttpGet]
@@ -43,7 +47,7 @@ namespace AppUTM.Api.Controllers
             var cupon = await _service.GetCuponGenerico(id);
             var cuponDto = _mapper.Map<CuponGenerico, CuponGenericoReturn>(cupon);
             return Ok(cuponDto);
-        }      
+        }
 
         [HttpPost]
         public async Task<ActionResult> Post(CuponGenericoCreate cuponDto)
@@ -53,7 +57,7 @@ namespace AppUTM.Api.Controllers
             var cuponResponseDto = _mapper.Map<CuponGenerico, CuponGenericoReturn>(cupon);
             return Ok(cuponResponseDto);
         }
-     
+
         [HttpPut]
         public async Task<ActionResult> Put(int id, CuponGenericoCreate cuponGenerico)
         {
@@ -74,7 +78,39 @@ namespace AppUTM.Api.Controllers
             return Ok(true);
         }
 
+
         //Métodos para la aplicación móvil
+
+        //Contabiliza las visitas de todos los cupones de una empresa
+        [HttpGet("apply/empresa/{id:int}")]
+        public async Task<ActionResult<IEnumerable<CuponGenerico>>> ViewCoupons(int id)
+        {
+            var cupones = _service.GetCuponGenericosEmpresa(id);
+            if (cupones != null)
+            {
+                for (int i = 0; i < cupones.Count(); i++)
+                    cupones.ElementAt(i).CuponesVisitados++;
+                await _service.UpdateRangeCupones(cupones);
+            }
+            var cuponesDto = _mapper.Map<IEnumerable<CuponGenerico>, IEnumerable<CuponGenericoReturn>>(cupones);
+            return Ok(cuponesDto);
+        }
+
+        [HttpPut("apply")]
+        public async Task<ActionResult> AplicarCupon(int id, HistorialCuponesCreate registroCupon)
+        {
+            var cuponData = await _service.GetCuponGenerico(id);
+            if (cuponData == null) return NotFound();
+            var registroCuponDto = _mapper.Map<HistorialCuponesCreate, HistorialCupones>(registroCupon);
+            await _historialService.AddHistorialCupon(registroCuponDto);
+            cuponData.CuponesUsados++;
+            await _service.UpdateCuponGenerico(cuponData);
+            return Ok(cuponData);
+        }
+
+
+        /*
+        Contabiliza visitas por cupón
         [HttpGet("apply/{id:int}")]
         public async Task<ActionResult<CuponGenerico>> VerCupon(int id)
         {
@@ -85,15 +121,7 @@ namespace AppUTM.Api.Controllers
             var cuponDto = _mapper.Map<CuponGenerico, CuponGenericoReturn>(cupon);
             return Ok(cuponDto);
         }
-
-        [HttpPut("apply")]
-        public async Task<ActionResult> AplicarCupon(int id, CuponGenerico cupon)
-        {
-            var cuponData = await _service.GetCuponGenerico(id);
-            if (cuponData == null) return NotFound();
-            cuponData.CuponesUsados++;
-            await _service.UpdateCuponGenerico(cuponData);
-            return Ok(cuponData);
-        }
+        
+        */
     }
 }

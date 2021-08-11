@@ -11,6 +11,7 @@ namespace AppUTM.Data
         public DbSet<Empresa> Empresas { get; set; }
         public DbSet<CuponImagen> CuponesImagen { get; set; }
         public DbSet<CuponGenerico> CuponesGenericos { get; set; }
+        public DbSet<HistorialCupones> HistorialUsoCupones { get; set; }
 
         public DbSet<Module> Modules { get; set; }
         public DbSet<User> Users { get; set; }

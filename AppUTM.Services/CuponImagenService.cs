@@ -50,5 +50,11 @@ namespace AppUTM.Services
             _unitOfWork.CuponImagenRepository.Update(cuponImagen);
             await _unitOfWork.CommitAsync();
         }
+
+        public async Task UpdateRangeCupones(IEnumerable<CuponImagen> cupones)
+        {
+            _unitOfWork.CuponImagenRepository.UpdateRange(cupones);
+            await _unitOfWork.CommitAsync();
+        }
     }
 }

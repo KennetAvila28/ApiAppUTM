@@ -61,5 +61,10 @@ namespace AppUTM.Data.Repositories
         {
             Context.Set<TEntity>().Update(entity);
         }
+
+        public void UpdateRange(IEnumerable<TEntity> entities)
+        {
+            Context.Set<TEntity>().UpdateRange(entities);
+        }
     }
 }

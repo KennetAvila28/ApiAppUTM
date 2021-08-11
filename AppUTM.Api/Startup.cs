@@ -53,7 +53,8 @@ namespace AppUTM.Api
             services.AddTransient<IEmpresaServices, EmpresaService>();
             services.AddTransient<ICuponGenericoServices, CuponGenericoService>();
             services.AddTransient<ICuponImagenServices, CuponImagenService>();
-            services.AddTransient<IAlmacenarImagen, AlmacenarImagen>();
+            services.AddTransient<IHistorialCuponesServices, HistorialCuponesService>();
+            services.AddTransient<IAlmacenarImagen, AlmacenarImagen>();           
             services.AddControllers().AddNewtonsoftJson(opt =>
             {
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;

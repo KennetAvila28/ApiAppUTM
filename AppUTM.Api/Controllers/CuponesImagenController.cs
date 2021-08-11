@@ -1,4 +1,5 @@
 ﻿using AppUTM.Api.DTOS.Cupones;
+using AppUTM.Api.DTOS.HistorialCupones;
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppUTM.Api.Controllers
@@ -15,17 +17,17 @@ namespace AppUTM.Api.Controllers
     public class CuponesImagenController : ControllerBase
     {
         private readonly ICuponImagenServices _service;
+        private readonly IHistorialCuponesServices _historialService;
         private readonly IMapper _mapper;
         public readonly IAlmacenarImagen _almacenarImagen;
         private readonly string contenedor = "Cupones";
-        private readonly IWebHostEnvironment _env;
 
-        public CuponesImagenController(ICuponImagenServices services, IMapper mapper, IAlmacenarImagen almacenarImagen, IWebHostEnvironment environment)
+        public CuponesImagenController(ICuponImagenServices services, IMapper mapper, IAlmacenarImagen almacenarImagen, IHistorialCuponesServices historial)
         {
             this._service = services;
+            this._historialService = historial;
             this._mapper = mapper;
-            this._almacenarImagen = almacenarImagen;
-            this._env = environment;
+            this._almacenarImagen = almacenarImagen; 
         }
 
         [HttpGet]
@@ -42,7 +44,7 @@ namespace AppUTM.Api.Controllers
             var cupones = _service.GetCuponesImagenEmpresa(id);
             var cuponesDto = _mapper.Map<IEnumerable<CuponImagen>, IEnumerable<CuponImagenReturn>>(cupones);
             return Ok(cuponesDto);
-        }
+        }      
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<CuponImagen>> Details(int id)
@@ -52,28 +54,7 @@ namespace AppUTM.Api.Controllers
             var cuponDto = _mapper.Map<CuponImagen, CuponImagenReturn>(cupon);
             if (cupon != null) cuponDto.Domain = startupPath;
             return Ok(cuponDto);
-        }
-
-        [HttpGet("apply/{id:int}")]
-        public async Task<ActionResult<CuponImagen>> VerCupon(int id)
-        {
-            var cupon = await _service.GetCuponImagen(id);
-            if (cupon == null) return NotFound();
-            cupon.CuponesVisitados++;
-            await _service.UpdateCuponImagen(cupon);
-            var cuponDto = _mapper.Map<CuponImagen, CuponImagenReturn>(cupon);
-            return Ok(cuponDto);
-        }
-
-        [HttpPut("apply")]
-        public async Task<ActionResult> AplicarCupon(int id, CuponImagen cupon)
-        {
-            var cuponData = await _service.GetCuponImagen(id);
-            if (cuponData == null) return NotFound();
-            cuponData.CuponesUsados++;
-            await _service.UpdateCuponImagen(cuponData);
-            return Ok(cuponData);
-        }
+        }       
 
         [HttpPost]
         public async Task<ActionResult> Post (CuponImagenCreate cuponDto)
@@ -111,6 +92,48 @@ namespace AppUTM.Api.Controllers
             return NoContent();
         }
 
+
+        //Métodos para la aplicación móvil
+
+        [HttpGet("apply/empresa/{id:int}")]
+        public async Task<ActionResult<IEnumerable<CuponImagen>>> ViewCoupons(int id)
+        {
+            var cupones = _service.GetCuponesImagenEmpresa(id);
+            if (cupones != null)
+            {
+                for (int i = 0; i < cupones.Count(); i++)
+                    cupones.ElementAt(i).CuponesVisitados++;
+                await _service.UpdateRangeCupones(cupones);
+            }
+            var cuponesDto = _mapper.Map<IEnumerable<CuponImagen>, IEnumerable<CuponImagenReturn>>(cupones);
+            return Ok(cuponesDto);
+        }
+
+        [HttpPut("apply")]
+        public async Task<ActionResult> AplicarCupon(int id, HistorialCuponesCreate registroCupon)
+        {
+            var cuponData = await _service.GetCuponImagen(id);
+            if (cuponData == null) return NotFound();
+            var registroCuponDto = _mapper.Map<HistorialCuponesCreate, HistorialCupones>(registroCupon);
+            await _historialService.AddHistorialCupon(registroCuponDto);
+            cuponData.CuponesUsados++;
+            await _service.UpdateCuponImagen(cuponData);
+            return Ok(cuponData);
+        }
+
+        /*
+        [HttpGet("apply/{id:int}")]
+        public async Task<ActionResult<CuponImagen>> VerCupon(int id)
+        {
+            var cupon = await _service.GetCuponImagen(id);
+            if (cupon == null) return NotFound();
+            cupon.CuponesVisitados++;
+            await _service.UpdateCuponImagen(cupon);
+            var cuponDto = _mapper.Map<CuponImagen, CuponImagenReturn>(cupon);
+            return Ok(cuponDto);
+        }       
+
+        
         [HttpGet]
         [Route("image")]
         public IActionResult ReturnImage([FromQuery] string nombreArchivo)
@@ -126,5 +149,7 @@ namespace AppUTM.Api.Controllers
                 return File(image, "image/jpeg");
             }
         }
+
+        */
     }
 }

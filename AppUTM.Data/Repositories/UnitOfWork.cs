@@ -14,6 +14,7 @@ namespace AppUTM.Data.Repositories
         private IRepository<Empresa> _empresaRepository;
         private IRepository<CuponGenerico> _cuponGenerico;
         private IRepository<CuponImagen> _cuponImagen;
+        private IRepository<HistorialCupones> _historalCupones;
         private RolePermissionRepository _rolesPermissionRepository;
         private UserRolesRepository _userRolesRepository;
         private ModuleRoleRepository _moduleRolesRepository;
@@ -32,6 +33,7 @@ namespace AppUTM.Data.Repositories
         public IRepository<Empresa> EmpresaRepository => _empresaRepository ?? new Repository<Empresa>(Context);
         public IRepository<CuponGenerico> CuponGenericoRepository => _cuponGenerico ?? new Repository<CuponGenerico>(Context);
         public IRepository<CuponImagen> CuponImagenRepository => _cuponImagen ?? new Repository<CuponImagen>(Context);
+        public IRepository<HistorialCupones> HistorialCuponesRepository => _historalCupones ?? new Repository<HistorialCupones>(Context);
 
         public IRolePermissionRepository RolePermission => _rolesPermissionRepository ??= new RolePermissionRepository(Context);
         public IUserRolesRepository UserRoles => _userRolesRepository ??= new UserRolesRepository(Context);
