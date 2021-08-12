@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="5.7.3" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.15.0" />
     <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="1.15.0" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.15.0" />

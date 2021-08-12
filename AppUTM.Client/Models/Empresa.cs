@@ -15,8 +15,6 @@ namespace AppUTM.Client.Models
         public string ImagenEmpresa { get; set; }
         public IFormFile Foto { get; set; }
         public string Domain { get; set; }
-
-        //Propiedades auxiliares
         public bool Cupones { get; set; } = false;
     }
 }

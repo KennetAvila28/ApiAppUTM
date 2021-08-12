@@ -52,11 +52,31 @@ namespace AppUTM.Client.Controllers
             listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
             var jsonEmpresasUTM = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/empresasUTM");
             listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<EmpresasUTM>>(jsonEmpresasUTM);
+
+
+
             return View(listEmpresas);
         }
-        public IActionResult Reporte1()
+        [HttpGet]
+        public async Task<IActionResult> Reporte1()
         {
-            return View();
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            //ViewBag.image = await GetPhoto(_httpClient);
+
+            HttpClient httpClient = new HttpClient();
+            //http://api.utmetropolitana.edu.mx/api/Empresas/Get
+            //http://localhost:59131/api/Empresas
+
+            ListEmpresas listEmpresas = new ListEmpresas();
+            var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas");
+            listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
+            var jsonEmpresasUTM = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/empresasUTM");
+            listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<EmpresasUTM>>(jsonEmpresasUTM);
+
+
+
+            return View(listEmpresas);
         }
 
         public async Task<IActionResult> Update(int id)
@@ -131,32 +151,5 @@ namespace AppUTM.Client.Controllers
 
             return base64String;
         }
-        //It doesn't work well
-        /*
-        [HttpPost]
-        private async Task<string> SendImage(IFormFile imagen)
-        {
-            HttpClient httpClient = new HttpClient();
-            var fileName = imagen.FileName;
-            var nombreArchivo = $"{Guid.NewGuid()}-{fileName}";
-            string url =  _configuration["CouponAdmin:CouponAdminBaseAddress"]  + "Empresas/agregarFoto";
-            using (var memoryStream = new MemoryStream())
-            {
-                var path = Path.GetTempPath();           
-                var ruta = Path.Combine(path, fileName);                
-                await imagen.CopyToAsync(memoryStream);
-                var contenido = memoryStream.ToArray();
-
-                var archivo = Path.GetFileName(ruta);
-                await System.IO.File.WriteAllBytesAsync(ruta, contenido);
-                using var requestContent = new MultipartFormDataContent();
-                using var fileStream = System.IO.File.OpenRead(ruta);
-                requestContent.Add(new StreamContent(fileStream), "imagen", archivo);
-                await httpClient.PostAsync(url, requestContent);
-            }
-            return fileName;
-        }
-
-        */
     }
 }

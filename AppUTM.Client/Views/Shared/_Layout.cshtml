@@ -45,17 +45,20 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" asp-controller="Empresas" asp-action="Index">Empresas</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-controller="Reporte" asp-action="Index">Reporte</a>
-                        </li>
                         @*<li class="nav-item">
-                        <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Seguridad</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-                            <ul class="navbar-nav">*@
+                            <a class="nav-link active" aria-current="page" asp-controller="Reporte" asp-action="Index">Reporte</a>
+                        </li>*@
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" style="color:black" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Reportes
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" aria-current="page" asp-controller="Reporte" asp-action="Index">Empresas con cupones</a></li>
+                                <li><a class="dropdown-item" aria-current="page"asp-controller="Reporte" asp-action="Reporte1">Empresas sin cupones</a></li>
+                                @*<li><a class="dropdown-item" asp-controller="Permissions" asp-action="Index">Permisos</a></li>*@
+                            </ul>
+                        </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" style="color:black" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Seguridad
@@ -66,7 +69,7 @@
                                 <li><a class="dropdown-item" asp-controller="Permissions" asp-action="Index">Permisos</a></li>
                             </ul>
                         </li>
-                        </ul>
+                    </ul>
 
                 </div>
 

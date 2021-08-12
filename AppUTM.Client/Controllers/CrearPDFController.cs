@@ -69,7 +69,73 @@ namespace AppUTM.Client.Controllers
         {
             return View("FooterPDF");
         }
+        [AllowAnonymous]
+        public ActionResult HeaderPDFEmpresas()
+        {
+            return View("HeaderPDFEmpresas");
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> EmpresasSinCupones()
+        {
+            //// Define la URL de la Cabecera 
+            string _headerUrl = Url.Action("HeaderPDFEmpresas", "CrearPDF", null, "https");
+            //////// Define la URL del Pie de página
+            string _footerUrl = Url.Action("FooterPDF", "CrearPDF", null, "https");
+
+
+
+            HttpClient httpClient = new HttpClient();
+            //Muestra las empresas registradas
+            ListEmpresas listEmpresas = new ListEmpresas();
+            var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas");
+            listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
+            //Muestra las empresas que proporciona la API de la UTM
+            var jsonEmpresasUTM = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/empresasUTM");
+            listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<EmpresasUTM>>(jsonEmpresasUTM);
+            return new ViewAsPdf("EmpresasSinCupones", listEmpresas)
+            {
+                //    // Establece la Cabecera y el Pie de página
+                CustomSwitches = "--header-html " + _headerUrl + " --header-spacing 0 " +
+                  "--footer-html " + _footerUrl + " --footer-spacing 0"
+                //,
+                //    PageMargins = new Margins(50, 10, 12, 10)
+
+            };
+        }
+        //PDF DE PRUEBA
+        public async Task<IActionResult> Prueba(int id)
+        {
+            //// Define la URL de la Cabecera 
+            string _headerUrl = Url.Action("HeaderPDF", "CrearPDF", null, "https");
+            //////// Define la URL del Pie de página
+            string _footerUrl = Url.Action("FooterPDF", "CrearPDF", null, "https");
+
+
+            Cupones cupones = new Cupones();
+            var jsonEmpresa = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/" + id);
+            var empresa = JsonConvert.DeserializeObject<Empresa>(jsonEmpresa);
+            cupones.Empresa = empresa;
+            var jsonCuponesGenerico = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/empresa/" + id);
+            var listCupones = JsonConvert.DeserializeObject<IEnumerable<CuponGenerico>>(jsonCuponesGenerico);
+            cupones.cuponesGenericos = listCupones;
+            var jsonCuponesImagen = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/empresa/" + id);
+            var listCuponesImagen = JsonConvert.DeserializeObject<IEnumerable<CuponImagen>>(jsonCuponesImagen);
+            cupones.cuponesImagen = listCuponesImagen;
+
+            return new ViewAsPdf("Prueba", cupones)
+            {
+                //    // Establece la Cabecera y el Pie de página
+                CustomSwitches = "--header-html " + _headerUrl + " --header-spacing 0 " +
+                             "--footer-html " + _footerUrl + " --footer-spacing 0"
+                //,
+                //    PageMargins = new Margins(50, 10, 12, 10)
+
+            };
+
+
+
+        }
 
     }
 }

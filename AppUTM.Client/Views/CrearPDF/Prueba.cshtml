@@ -1,0 +1,89 @@
+﻿@model AppUTM.Client.Models.Cupones
+@{
+    ViewData["Title"] = "Reporte";
+    Layout = null; }
+<html>
+<head>
+    <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css" crossorigin="anonymous">
+    <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <title>Reporte</title>
+</head>
+<body>
+    <h1>Reporte de la empresa: @Model.Empresa.Nombre</h1>
+    <p style="line-height: 2px;">Datos:</p>
+    <p style="line-height: 2px;">RFC: @Model.Empresa.RFC</p>
+    <p style="line-height: 2px;"> Dirección: @Model.Empresa.Direccion</p>
+    <p style="line-height: 2px;">Teléfono: @Model.Empresa.Telefono</p>
+    <div class="container mt-4 mx-auto row center-block">
+        <div style="border: 1px solid #666; padding: 20px">
+            <div class="col">
+                <div class="d-flex">
+                    <h5>Cupones Genéricos</h5>
+                </div>
+                <table style="text-align: center" class="table mt-3">
+                    <thead>
+                        <tr>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Vencimiento</th>
+                            <th scope="col">Descuento</th>
+                            <th scope="col">Núm. de cupones</th>
+                            <th scope="col">Cupones usados</th>
+                            <th scope="col">Cupones disponibles</th>
+                            <th scope="col">Visualizaciones|</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.cuponesGenericos)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(x => item.Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(x => item.FechaExpiracion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(x => item.PorcentajeDescuento)%
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(x => item.NumeroPorPersona)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(x => item.CuponesUsados)
+                                </td>
+                                <td>
+                                    @(item.CuponesDisponibles = item.NumeroPorPersona-item.CuponesUsados)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(x => item.CuponesVisitados)
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <br />
+        <br />
+    </div>
+    <div class="card" style="width: 18rem;">
+        @foreach (var item in Model.cuponesImagen)
+        {
+
+            @*<img alt="Card image cap" class="qr; card-img-top" src="data:image/jpeg;base64, @item.Imagen" @item.EmpresaId">*@
+            <img style="width:200px; height:80px" class="card-img-top; qr" src="data:image/jpeg;base64, @item.Imagen" alt="Cupón">
+            <div class="card-body">
+                <h5 class="card-title">Cupón</h5>
+                <p class="card-text"></p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        }
+        </div>
+</body>
+</html>
+
+
+
