@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppUTM.Data.Repositories
 {
-    public class RolePermissionRepository : Repository<RolePermission>, IRolePermissionRepository
+    public class RoleModuleRepository : Repository<RoleModule>, IRoleModuleRepository
     {
-        public RolePermissionRepository(DbContext context) : base(context)
+        public RoleModuleRepository(DbContext context) : base(context)
         {
         }
     }

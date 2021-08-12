@@ -1,7 +1,7 @@
 ﻿@page "/Roles"
 @using Microsoft.AspNetCore.Authorization
-@using AppUTM.Models.Permissions
 @using System.Linq
+@using AppUTM.Models.Modules
 @attribute [Authorize]
 @inject HttpClient _http
 @inject NavigationManager navigation
@@ -18,9 +18,9 @@
             <thead class="bg-light text-center">
                 <tr>
                     <th scope="col">Nombre</th>
-                    @foreach (var permission in _permissions)
+                    @foreach (var module in _modules)
                     {
-                        <th scope="col">@permission.Module</th>
+                        <th scope="col">@module.Name</th>
                     }
                     <th scope="col">Acciones</th>
                 </tr>
@@ -30,9 +30,9 @@
                 {
                     <tr>
                         <td>@role.Nombre</td>
-                        @foreach (var permission in _permissions)
+                        @foreach (var module in _modules)
                         {
-                            if (role.RolePermissions.Any(r => r.PermissionId == permission.Id))
+                            if (role.RoleModules.Any(r => r.ModuleId == module.Id))
                             {
                                 <td><input class="form-check-input" type="checkbox" checked="checked" onclick="javascript: return false;" /></td>
 
@@ -58,11 +58,11 @@ else
 
 @code
 {
-    private IList<PermissionReturn> _permissions;
+    private IList<ModuleReturn> _modules;
     private IList<RoleReturn> _roles;
     protected override async Task OnInitializedAsync()
     {
-        _permissions = await GetExtensions.GetAllPermissions(_http);
+        _modules = await GetExtensions.GetAllModules(_http);
         _roles = await GetExtensions.GetAllRoles(_http);
         await Task.Delay(1000);
     }

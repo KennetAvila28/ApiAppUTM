@@ -8,8 +8,8 @@ namespace AppUTM.Data.Repositories
         protected readonly DataContext Context;
         private UserRepository _usersRepository;
         private RoleRepository _roleRepository;
-        private PermissionRepository _permissionRepository;
-        private RolePermissionRepository _rolesPermissionRepository;
+        private ModuleRepository _ModuleRepository;
+        private RoleModuleRepository _rolesModuleRepository;
         private UserRolesRepository _userRolesRepository;
         private EventRepository _eventRepository;
         private FavoriteRepository _favoriteRepository;
@@ -19,8 +19,8 @@ namespace AppUTM.Data.Repositories
 
         public IUserRepository Users => _usersRepository ??= new UserRepository(Context);
         public IRoleRepository Roles => _roleRepository ??= new RoleRepository(Context);
-        public IPermissionRepository Permissions => _permissionRepository ??= new PermissionRepository(Context);
-        public IRolePermissionRepository RolePermission => _rolesPermissionRepository ??= new RolePermissionRepository(Context);
+        public IModuleRepository Modules => _ModuleRepository ??= new ModuleRepository(Context);
+        public IRoleModuleRepository RoleModule => _rolesModuleRepository ??= new RoleModuleRepository(Context);
         public IUserRolesRepository UserRoles => _userRolesRepository ??= new UserRolesRepository(Context);
         public IEventRepository Events => _eventRepository ??= new EventRepository(Context);
         public IFavoriteRepository Favorites => _favoriteRepository ??= new FavoriteRepository(Context);

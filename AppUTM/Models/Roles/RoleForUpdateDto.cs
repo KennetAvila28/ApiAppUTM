@@ -5,6 +5,5 @@ namespace AppUTM.Models.Roles
     public class RoleForUpdateDto
     {
         public string Nombre { get; set; }
-        public IList<RolePermission> RolePermissions { get; set; }
     }
 }

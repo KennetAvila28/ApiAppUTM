@@ -1,0 +1,44 @@
+@page "/Modules/Edit/{Id:int}"
+@using AppUTM.Models.Modules
+@inject NavigationManager navigation
+@inject HttpClient Http
+@inject NotificationService NotificationService
+<h1>Editar un modulo</h1>
+<div class="container-fluid">
+    <div class="form-group">
+        <RadzenLabel Text="Nombre:"></RadzenLabel>
+        <RadzenTextBox ShowUpDown="false" @bind-Value="@_oModuleUpdateDto.Name" Style="width: auto;"></RadzenTextBox>
+    </div>
+    <div class="form-group">
+        <div class="form-group mt-4">
+            <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Actualizar Modulo</button>
+            <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    ModuleForUpdateDto _oModuleUpdateDto = new();
+    protected override async Task OnInitializedAsync()
+    {
+        _oModuleUpdateDto = await GetExtensions.GetModuleById(Http, Id);
+    }
+
+    public async Task Post()
+    {
+        if (!string.IsNullOrEmpty(_oModuleUpdateDto.Name))
+        {
+            var Module = await Http.PutAsJsonAsync("Modules", _oModuleUpdateDto);
+            NotificationExtensions.ShowNotification(NotificationService, Module.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Permiso creado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear el permiso", Duration = 3000 });
+            navigation.NavigateTo("/Modules");
+        }
+        else
+            NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Ingresa un modulo", Duration = 3000 });
+    }
+    void Cancel()
+    {
+        navigation.NavigateTo("/Modules");
+    }
+}

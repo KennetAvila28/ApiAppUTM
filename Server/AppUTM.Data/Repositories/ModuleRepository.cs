@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppUTM.Data.Repositories
 {
-    public class PermissionRepository : Repository<Permission>, IPermissionRepository
+    public class ModuleRepository : Repository<Module>, IModuleRepository
 
     {
-        public PermissionRepository(DbContext context) : base(context)
+        public ModuleRepository(DbContext context) : base(context)
         {
         }
     }

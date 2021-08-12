@@ -6,10 +6,10 @@ namespace AppUTM.Core.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {
-        IPermissionRepository Permissions { get; }
+        IModuleRepository Modules { get; }
         IRoleRepository Roles { get; }
         IUserRepository Users { get; }
-        IRolePermissionRepository RolePermission { get; }
+        IRoleModuleRepository RoleModule { get; }
         IUserRolesRepository UserRoles { get; }
         IEventRepository Events { get; }
         IFavoriteRepository Favorites { get; }

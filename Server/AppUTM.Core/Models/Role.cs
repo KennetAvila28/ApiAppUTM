@@ -8,7 +8,6 @@ namespace AppUTM.Core.Models
     {
         public string Nombre { get; set; }
         public List<UserRole> UserRoles { get; set; }
-        public List<RolePermission> RolePermissions { get; set; }
-        public List<RoleMenuPermission> Type { get; set; }
+        public List<RoleModule> RoleModules { get; set; }
     }
 }

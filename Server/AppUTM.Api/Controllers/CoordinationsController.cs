@@ -25,7 +25,6 @@ namespace AppUTM.Api.Controllers
         }
 
         // GET: api/<CoordinationController>
-        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Coordination>>> Get()
         {

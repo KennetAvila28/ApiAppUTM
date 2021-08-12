@@ -7,13 +7,13 @@ using AppUTM.Models.Roles;
 
 namespace AppUTM.Extensions
 {
-    internal static class PermissionsToRolePermissionExtensions
+    internal static class ModulesToRoleModuleExtensions
     {
-        public static async Task<IList<RolePermission>> Convert(HttpClient http)
+        public static async Task<IList<RoleModule>> Convert(HttpClient http)
         {
-            var permissions = await GetExtensions.GetAllPermissions(http);
+            var permissions = await GetExtensions.GetAllModules(http);
 
-            return permissions.Select(per => new RolePermission() { Module = per.Module, PermissionId = per.Id, }).ToList();
+            return permissions.Select(per => new RoleModule() { Name = per.Name, ModuleId = per.Id, }).ToList();
         }
     }
 }

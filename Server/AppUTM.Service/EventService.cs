@@ -30,7 +30,6 @@ namespace AppUTM.Services
 
         public async Task<Event> CreateEvent(Event newEvent)
         {
-            newEvent.Image ??= ImageNotAviable.NotAviable;
             await _unitOfWork.Events.Add(newEvent);
             await _unitOfWork.CommitAsync();
             return newEvent;

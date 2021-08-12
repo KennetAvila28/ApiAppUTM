@@ -1,4 +1,4 @@
-﻿using AppUTM.Api.DTOS.Permissions;
+﻿using AppUTM.Api.DTOS.Modules;
 using AppUTM.Api.DTOS.Roles;
 using AppUTM.Api.DTOS.Users;
 using AppUTM.Core.Models;
@@ -38,17 +38,17 @@ namespace AppUTM.Api.Mappings
                 }));
 
             CreateMap<UserReturn, Role>();
-            //Permission
-            CreateMap<Permission, PermissionCreate>().ReverseMap();
-            CreateMap<Permission, PermissionReturn>().ReverseMap();
-            CreateMap<Permission, PermissionForUpdateDto>().ReverseMap();
-            CreateMap<PermissionCreate, Permission>().AfterMap(
+            //Module
+            CreateMap<Module, ModuleCreate>().ReverseMap();
+            CreateMap<Module, ModuleReturn>().ReverseMap();
+            CreateMap<Module, ModuleForUpdateDto>().ReverseMap();
+            CreateMap<ModuleCreate, Module>().AfterMap(
                 ((source, destination) =>
                 {
                     destination.CreateAt = DateTime.Now;
                     destination.Status = true;
                 }));
-            CreateMap<PermissionReturn, Permission>();
+            CreateMap<ModuleReturn, Module>();
             //Events
             CreateMap<Event, EventCreate>().ReverseMap();
             CreateMap<Event, EventReturn>().ReverseMap();

@@ -2,7 +2,7 @@
 
 namespace AppUTM.Core.Repositories
 {
-    public interface IPermissionRepository : IRepository<Permission>
+    public interface IModuleRepository : IRepository<Module>
     {
     }
 }

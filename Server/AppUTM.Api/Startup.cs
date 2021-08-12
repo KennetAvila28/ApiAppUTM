@@ -46,7 +46,7 @@ namespace AppUTM.Api
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<IPermissionService, PermissionService>();
+            services.AddTransient<IModuleService, ModuleService>();
             services.AddTransient<ICoordinationService, CoordinationService>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IFavoriteService, FavoriteService>();

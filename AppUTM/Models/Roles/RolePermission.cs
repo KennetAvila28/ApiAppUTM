@@ -1,11 +1,13 @@
-﻿using AppUTM.Models.Permissions;
+﻿using AppUTM.Models.Modules;
 
 namespace AppUTM.Models.Roles
 {
-    public class RolePermission
+    public class RoleModule
     {
-        public string Module { get; set; }
-        public int PermissionId { get; set; }
-        public PermissionReturn Permission { get; set; }
+        public string Name { get; set; }
+        public int ModuleId { get; set; }
+        public ModuleReturn Module { get; set; }
+        public bool Read { get; set; }
+        public bool Write { get; set; }
     }
 }

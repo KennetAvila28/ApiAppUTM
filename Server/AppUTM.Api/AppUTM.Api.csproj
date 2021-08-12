@@ -23,4 +23,8 @@
     <ProjectReference Include="..\AppUTM.Service\AppUTM.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOS\RoleModule\" />
+  </ItemGroup>
+
 </Project>

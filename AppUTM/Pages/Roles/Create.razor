@@ -10,7 +10,7 @@
         <RadzenTextBox ShowUpDown="false" TValue="int" @bind-Value="@_oRoleCreate.Nombre" Style="width: auto;"></RadzenTextBox>
     </div>
     <div class="form-group">
-        <RadzenDropDown Multiple="true" Placeholder="Selecciona un permiso..." Data=@_permissions TextProperty="@nameof(RolePermission.Module)" TValue="IEnumerable<RolePermission>" Change=@(_selectPermission) Style="width:auto;" />
+        <RadzenDropDown Multiple="false" Placeholder="Selecciona un modulo..." Data=@_permissions TextProperty="@nameof(RoleModule.Name)" TValue="RoleModule" Change=@(_selectPermission) Style="width:auto;" />
     </div>
     <div class="form-group">
         <div class="form-group mt-4">
@@ -21,30 +21,30 @@
 </div>
 
 @code {
-    IList<RolePermission> _permissions;
-    IEnumerable<RolePermission> _rolePermissions;
+    IList<RoleModule> _permissions;
+    IEnumerable<RoleModule> _RoleModules;
     readonly RolesCreate _oRoleCreate = new();
 
     protected override async Task OnInitializedAsync()
     {
-        _permissions = await PermissionsToRolePermissionExtensions.Convert(Http);
+        _permissions = await ModulesToRoleModuleExtensions.Convert(Http);
     }
 
     void _selectPermission(object permission)
     {
-        _rolePermissions = (IEnumerable<RolePermission>)permission;
+        _RoleModules = (IEnumerable<RoleModule>)permission;
     }
 
     public async Task Post()
     {
         if (_oRoleCreate != null)
         {
-            var rolePermissionscast = new List<RolePermission>();
-            foreach (var permission in _rolePermissions)
+            var RoleModulescast = new List<RoleModule>();
+            foreach (var permission in _RoleModules)
             {
-                rolePermissionscast.Add(permission);
+                RoleModulescast.Add(permission);
             }
-            _oRoleCreate.RolePermissions = rolePermissionscast;
+            _oRoleCreate.RoleModules = RoleModulescast;
             var role = await Http.PostAsJsonAsync("Roles", _oRoleCreate);
             NotificationExtensions.ShowNotification(NotificationService, role.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Rol creado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear el rol", Duration = 3000 });
             navigation.NavigateTo("/Roles");

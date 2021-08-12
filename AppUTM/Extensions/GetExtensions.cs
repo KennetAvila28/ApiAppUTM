@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using AppUTM.Models.Coordinations;
 using AppUTM.Models.Events;
-using AppUTM.Models.Permissions;
+using AppUTM.Models.Modules;
 using AppUTM.Models.Roles;
 using AppUTM.Models.Users;
 using AppUTM.Responses;
@@ -20,10 +20,10 @@ namespace AppUTM.Extensions
             return rolesData?.Data;
         }
 
-        public static async Task<IList<PermissionReturn>> GetAllPermissions(HttpClient http)
+        public static async Task<IList<ModuleReturn>> GetAllModules(HttpClient http)
         {
-            var permissionData = await http.GetFromJsonAsync<ApiResponse<IList<PermissionReturn>>>("Permissions");
-            return permissionData?.Data;
+            var moduleData = await http.GetFromJsonAsync<ApiResponse<IList<ModuleReturn>>>("Module");
+            return moduleData?.Data;
         }
 
         public static async Task<IList<UserReturn>> GetAllUsers(HttpClient http)
@@ -50,10 +50,10 @@ namespace AppUTM.Extensions
             return role?.Data;
         }
 
-        public static async Task<PermissionForUpdateDto> GetPermissionById(HttpClient http, int id)
+        public static async Task<ModuleForUpdateDto> GetModuleById(HttpClient http, int id)
         {
-            var permission = await http.GetFromJsonAsync<ApiResponse<PermissionForUpdateDto>>("Permissions/" + id);
-            return permission?.Data;
+            var moduleData = await http.GetFromJsonAsync<ApiResponse<ModuleForUpdateDto>>("Module/" + id);
+            return moduleData?.Data;
         }
 
         public static async Task<IEnumerable<EventReturn>> GetAllEvents(HttpClient http)
