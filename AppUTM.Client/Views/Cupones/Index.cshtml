@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Listado de cupones";
+    int i = 1;
 }
 
 <div class="d-flex">
@@ -12,12 +13,12 @@
     <div class="col">
         <div class="d-flex">
             <h5>Cupones textuales</h5>
-            <a class="btn btn-dark btn-sm text-center mx-3" asp-action="CreateGenerico" asp-route-Id="@Model.Empresa.EmpresaId">Agregar</a>
+            <a class="btn btn-green btn-sm text-center mx-3" asp-action="CreateGenerico" asp-route-Id="@Model.Empresa.EmpresaId">Agregar</a>
         </div>
         <table class="table mt-3">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">#</th>
                     <th scope="col">Fecha de vencimiento</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -27,9 +28,9 @@
                 @foreach(var item in Model.cuponesGenericos)
                 {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(x => item.CuponGeneridoId)
-                    </td>
+                    <th scope="row">
+                        @(i++)
+                    </th>
                     <td>
                         @Html.DisplayFor(x => item.FechaExpiracion)
                     </td>
@@ -42,34 +43,35 @@
     <div class="col">
         <div class="d-flex">
             <h5>Cupones por imagen</h5>
-            <a class="btn btn-dark btn-sm text-center mx-3" asp-action="CreateCuponImagen" asp-route-Id="@Model.Empresa.EmpresaId">Agregar</a>
+            <a class="btn btn-green btn-sm text-center mx-3" asp-action="CreateCuponImagen" asp-route-Id="@Model.Empresa.EmpresaId">Agregar</a>
         </div>
+        <p style="display:none">@(i=1)</p>
         <table class="table mt-3">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">#</th>
                     <th scope="col">Fecha de vencimiento</th>
                     <th scope="col">Imagen</th>
                     <td scope="col"></td>
                 </tr>
             </thead>
-            <tbody>
+            <tbody>                
                 @foreach (var item in Model.cuponesImagen)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(x => item.CuponImagenId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(x => item.FechaExpiracion)
-                    </td>
-                   
-                    <td>
-                        <img class="qr" src="data:image/jpeg;base64, @item.Imagen" alt="Cupón @item.EmpresaId">
-                    </td>
-                    <td><a class="btn btn-green" asp-route-Id="@item.CuponImagenId" asp-action="UpdateCuponImagen">Editar</a></td>
-                </tr>
-                }               
+                    <tr>
+                        <th scope="row">
+                            @(i++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(x => item.FechaExpiracion)
+                        </td>
+
+                        <td>
+                            <img class="qr" src="data:image/jpeg;base64, @item.Imagen" alt="Cupón @item.EmpresaId">
+                        </td>
+                        <td><a class="btn btn-green" asp-route-Id="@item.CuponImagenId" asp-action="UpdateCuponImagen">Editar</a></td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

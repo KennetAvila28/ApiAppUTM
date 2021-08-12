@@ -34,7 +34,7 @@ namespace AppUTM.Client.Controllers
             //http://localhost:59131/api/Empresas
             //Muestra las empresas registradas
             ListEmpresas listEmpresas = new ListEmpresas();
-            var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas");
+            var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/all");
             listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
             //Muestra las empresas que proporciona la API de la UTM
             var jsonEmpresasUTM = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/empresasUTM");
@@ -106,6 +106,15 @@ namespace AppUTM.Client.Controllers
                 return View(empresa);
             else
                 return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Desactivar(int id)
+        {
+            HttpClient httpClient = new HttpClient();
+            var json = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/Desactivar/" + id);
+            var empresa = JsonConvert.DeserializeObject<Empresa>(json);
+            return View(empresa);
         }
 
         public IActionResult DeleteEmpresas(int empresaId, int id)

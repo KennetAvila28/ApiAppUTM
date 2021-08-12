@@ -4,6 +4,7 @@ using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -88,6 +89,7 @@ namespace AppUTM.Api.Controllers
             var cupones = _service.GetCuponGenericosEmpresa(id);
             if (cupones != null)
             {
+                cupones = cupones.Where(e => e.FechaExpiracion > DateTime.Now);
                 for (int i = 0; i < cupones.Count(); i++)
                     cupones.ElementAt(i).CuponesVisitados++;
                 await _service.UpdateRangeCupones(cupones);

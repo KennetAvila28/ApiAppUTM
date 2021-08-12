@@ -20,20 +20,28 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-
-                        <!--    Agregar el consumo de la api externa integrada con la nuestra   -->
-
+                    <div class="modal-body">                  
                         <input class="form-control me-3 mb-3" type="search" id="inputModalTable" onkeyup="searchInModalTable()" aria-label="Search" placeholder="Buscar empresa...">
                         <table class="table table-bordered modal-table">
                             <tbody id="myModalTable">
                                 @foreach (var item in Model.empresasUTM)
                                 {
-                                    <tr>
-                                        <td>@item.NombreEmpresa</td>
-                                        <td><a class="button-a" asp-controller="Empresas" asp-action="Create" asp-route-RFC="@item.RFC" 
-                                               asp-route-Nombre="@item.NombreEmpresa" asp-route-Direccion="@item.Direccion" asp-route-Telefono="@item.Telefono">Registrar</a></td>
-                                    </tr>
+                                <tr>
+                                    <td>@item.NombreEmpresa</td>
+                                    @if (item.RFC != null)
+                                    {
+                                        <td>
+                                            <a class="button-a" asp-controller="Empresas" asp-action="Create" asp-route-RFC="@item.RFC"
+                                               asp-route-Nombre="@item.NombreEmpresa" asp-route-Direccion="@item.Direccion" asp-route-Telefono="@item.Telefono">Registrar</a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-danger">
+                                            No dispone de RFC
+                                        </td>
+                                    }
+                                </tr>
                                 }
                             </tbody>
                         </table>

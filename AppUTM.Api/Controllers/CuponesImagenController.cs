@@ -27,7 +27,7 @@ namespace AppUTM.Api.Controllers
             this._service = services;
             this._historialService = historial;
             this._mapper = mapper;
-            this._almacenarImagen = almacenarImagen; 
+            this._almacenarImagen = almacenarImagen;
         }
 
         [HttpGet]
@@ -98,9 +98,10 @@ namespace AppUTM.Api.Controllers
         [HttpGet("apply/empresa/{id:int}")]
         public async Task<ActionResult<IEnumerable<CuponImagen>>> ViewCoupons(int id)
         {
-            var cupones = _service.GetCuponesImagenEmpresa(id);
+            var cupones = _service.GetCuponesImagenEmpresa(id);           
             if (cupones != null)
             {
+                cupones = cupones.Where(e => e.FechaExpiracion > DateTime.Now);
                 for (int i = 0; i < cupones.Count(); i++)
                     cupones.ElementAt(i).CuponesVisitados++;
                 await _service.UpdateRangeCupones(cupones);

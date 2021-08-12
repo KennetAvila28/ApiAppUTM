@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -18,17 +19,17 @@ namespace AppUTM.Api.Controllers
     public class EmpresasController : ControllerBase
     {
         private readonly IEmpresaServices _service;
-        private readonly IMapper _mapper;
-        public readonly IAlmacenarImagen _almacenarImagen;
-        private readonly string contenedor = "Empresas";
-        private readonly IWebHostEnvironment _env;
+        private readonly ICuponGenericoServices _genericosService;
+        private readonly ICuponImagenServices _cuponImagenService;
+        private readonly IMapper _mapper;       
+        //private readonly string contenedor = "Empresas";
 
-        public EmpresasController(IEmpresaServices services, IMapper mapper, IAlmacenarImagen almacenarImagen, IWebHostEnvironment env)
+        public EmpresasController(IEmpresaServices services, IMapper mapper, ICuponGenericoServices generico, ICuponImagenServices cuponImagen)
         {
-            this._service = services;
+            this._service = services;            
             this._mapper = mapper;
-            this._almacenarImagen = almacenarImagen;
-            this._env = env;
+            this._genericosService = generico;
+            this._cuponImagenService = cuponImagen;
         }
 
         //EliminarEmpresa
@@ -41,10 +42,31 @@ namespace AppUTM.Api.Controllers
             return Ok(true);
         }
 
+        //Desactiva empresa
+        [HttpGet("Desactivar/{id:int}")]
+        public async Task<ActionResult> Desactivar(int id)
+        {
+            var empresa = await _service.GetEmpresa(id);
+            if (empresa == null) return NotFound();
+            empresa.Activa = false;
+            await _service.UpdateEmpresa(empresa);         
+            return Ok(empresa);
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmpresaReturn>>> Get()
         {
             var empresas = await _service.GetEmpresas();
+            empresas = empresas.Where(e => e.Activa == true);
+            var empresasDto = _mapper.Map<IEnumerable<Empresa>, IEnumerable<EmpresaReturn>>(empresas);
+            var empresasJson = JsonSerializer.Serialize(empresasDto);
+            return Ok(empresasJson);
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<EmpresaReturn>>> GetAll()
+        {
+            var empresas = await _service.GetEmpresas();      
             var empresasDto = _mapper.Map<IEnumerable<Empresa>, IEnumerable<EmpresaReturn>>(empresas);
             var empresasJson = JsonSerializer.Serialize(empresasDto);
             return Ok(empresasJson);
@@ -74,13 +96,28 @@ namespace AppUTM.Api.Controllers
         {
             var empresaData = await _service.GetEmpresa(id);
             if (empresaData == null) return NotFound();
-            if (empresaData.ImagenEmpresa != empresaDto.ImagenEmpresa)
-                await _almacenarImagen.BorraArchivo(empresaData.ImagenEmpresa, contenedor);
             var empresa = _mapper.Map(empresaDto, empresaData);
             await _service.UpdateEmpresa(empresa);
             return Ok(empresa);
         }
+       
 
+        //Devuelve los registros de la api externa con formato correcto   
+
+        [HttpGet("empresasUTM")]
+        public async Task<ActionResult> GetEmpresasUTM()
+        {
+            HttpClient client = new HttpClient();
+            var jsonEmpresas = await client.GetStringAsync("https://api.utmetropolitana.edu.mx/api/Empresas/Get");            
+            var empresas = Regex.Replace(jsonEmpresas, @"\s{2,}|//", " ").Substring(1); //Elimina caracteres // y []
+            //Elimina las comillas dobles en los campos.            
+            empresas = empresas.Remove(empresas.Length - 1).Replace(@"\", "").Replace("\u0022", "");
+            var empresasUTM = empresas.Replace("IdEmpresa:", "\u0022IdEmpresa\u0022:\u0022").Replace(",NombreEmpresa:", "\u0022,\u0022NombreEmpresa\u0022:\u0022").Replace(",Direccion:", "\u0022,\u0022Direccion\u0022:\u0022").Replace(",Telefono:", "\u0022,\u0022Telefono\u0022:\u0022")
+                .Replace(",Celular:", "\u0022,\u0022Celular\u0022:\u0022").Replace(",CorreoEmpresa:", "\u0022,\u0022CorreoEmpresa\u0022:\u0022").Replace(",RFC:", "\u0022,\u0022RFC\u0022:\u0022").Replace(",PersonaResponsable:", "\u0022,\u0022PersonaResponsable\u0022:\u0022").Replace("}", "\u0022}").Replace("\u0022\u0022", "null");
+            return Ok(empresasUTM);         
+        }
+
+        /*
         //Regresa la imagen de la empresa
         [HttpGet]
         [Route("image")]
@@ -98,34 +135,7 @@ namespace AppUTM.Api.Controllers
             }
         }
 
-
-        //Devuelve los registros de la api externa
-        //De ser posible Eliminar las comillas con una expresión regular.
-        //  La expresión inferior selecciona los valores de los campos, sería util si seleccionará unicamente los campos 
-        //  Expresión: (?<=PersonaResponsable\u0022:\u0022).*?(?=\u0022})|(?<=:\u0022).*?(?=\u0022,) 
-
-        [HttpGet("empresasUTM")]
-        public async Task<ActionResult> GetEmpresasUTM()
-        {
-            HttpClient client = new HttpClient();
-            var jsonEmpresas = await client.GetStringAsync("https://api.utmetropolitana.edu.mx/api/Empresas/Get");            
-            var empresas = Regex.Replace(jsonEmpresas, @"\s{2,}|//", " ").Substring(1); //Elimina caracteres // y []
-            //Elimina las comillas dobles en los campos.            
-            empresas = empresas.Remove(empresas.Length - 1).Replace(@"\", "").Replace("\u0022", "");
-            var empresasUTM = empresas.Replace("IdEmpresa:", "\u0022IdEmpresa\u0022:\u0022").Replace(",NombreEmpresa:", "\u0022,\u0022NombreEmpresa\u0022:\u0022").Replace(",Direccion:", "\u0022,\u0022Direccion\u0022:\u0022").Replace(",Telefono:", "\u0022,\u0022Telefono\u0022:\u0022")
-                .Replace(",Celular:", "\u0022,\u0022Celular\u0022:\u0022").Replace(",CorreoEmpresa:", "\u0022,\u0022CorreoEmpresa\u0022:\u0022").Replace(",RFC:", "\u0022,\u0022RFC\u0022:\u0022").Replace(",PersonaResponsable:", "\u0022,\u0022PersonaResponsable\u0022:\u0022").Replace("}", "\u0022}");                       
-            return Ok(empresasUTM);         
-        }
-
-        [HttpGet("domain")]
-        public ActionResult<string> Dominio()
-        {
-            string startupPath = Environment.CurrentDirectory;
-            var Domain = startupPath;
-            return Ok(Domain);
-        }
-
-
+        */
         //No aplica, Subir imagenes  multipart/form-data
         /*
         [HttpPost("agregarFoto")]

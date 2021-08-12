@@ -16,6 +16,7 @@ namespace AppUTM.Core.Models
         public int PorcentajeDescuento { get; set; }
         public int NumeroPorPersona { get; set; }
         public string Descripcion { get; set; }
+        public bool Activa { get; set; }
 
         [ForeignKey("Empresas")]
         public int EmpresaId { get; set; }

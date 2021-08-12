@@ -19,5 +19,6 @@ namespace AppUTM.Client.Models
         public string Descripcion { get; set; }
         public int EmpresaId { get; set; }
         public string NombreEmpresa {get;set;}
+        public bool Activa { get; set; }
     }
 }
