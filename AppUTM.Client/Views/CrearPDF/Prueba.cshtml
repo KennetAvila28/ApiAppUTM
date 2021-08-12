@@ -2,10 +2,21 @@
 @{
     ViewData["Title"] = "Reporte";
     Layout = null; }
+
 <html>
 <head>
+    @*link de prueba https://localhost:44301/ReporteEmpresa/Index/7*@
     <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css" crossorigin="anonymous">
+    <style>
+        .contenedor {
+            width: 100%;
+            height: auto;
+            display: flex !important;
+            /*/ ETIQUETA QUE POSICIONA UNO AL LADO DEL OTRO */ 
+            flex-wrap: wrap;
+        }
+    </style>
     <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
     <title>Reporte</title>
 </head>
@@ -30,7 +41,7 @@
                             <th scope="col">Núm. de cupones</th>
                             <th scope="col">Cupones usados</th>
                             <th scope="col">Cupones disponibles</th>
-                            <th scope="col">Visualizaciones|</th>
+                            <th scope="col">Visualizaciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,19 +80,33 @@
         <br />
         <br />
     </div>
-    <div class="card" style="width: 18rem;">
-        @foreach (var item in Model.cuponesImagen)
-        {
 
-            @*<img alt="Card image cap" class="qr; card-img-top" src="data:image/jpeg;base64, @item.Imagen" @item.EmpresaId">*@
-            <img style="width:200px; height:80px" class="card-img-top; qr" src="data:image/jpeg;base64, @item.Imagen" alt="Cupón">
-            <div class="card-body">
-                <h5 class="card-title">Cupón</h5>
-                <p class="card-text"></p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        }
+    <div style="padding: 20px">
+        <div class="col">
+            
+            <br />
+            @foreach (var item in Model.cuponesImagen)
+            {
+                <div class="contenedor">
+                    <div class="card" style="width: 18rem;">
+
+                        <p style="text-align:center; padding:10px"><img style="width:186px; height:180px;" class="card-img-top; qr" src="data:image/jpeg;base64, @item.Imagen" alt="Card image cap, Cupón"> </p>
+
+                        <div class="card-body">
+                            <h5 class="card-title">Cupón de imagen</h5>
+                            <p class="card-text">Vencimiento:  @Html.DisplayFor(x => item.FechaExpiracion)</p>
+                            <p class="card-text">Descripcion: @item.Descripcion</p>
+                            <p class="card-text">Cupones usados: @item.CuponesUsados</p>
+                            <p class="card-text">Cupones visitados: @item.CuponesVisitados</p>
+                        </div>
+
+                    </div>
+                </div>
+                
+            }
         </div>
+    </div>
+
 </body>
 </html>
 
