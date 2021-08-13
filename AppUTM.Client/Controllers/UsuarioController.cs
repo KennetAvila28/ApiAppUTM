@@ -1,4 +1,6 @@
-﻿using AppUTM.Client.Models.Roles;
+﻿
+using AppUTM.Api.DTOS.Users;
+using AppUTM.Client.Models.Roles;
 using AppUTM.Client.Models.Users;
 using AppUTM.Client.Responses;
 using AppUTM.Core.Models;
@@ -168,24 +170,31 @@ namespace AppUTM.Client.Controllers
         }
 
         // GET: UsuarioController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            HttpClient httpClient = new HttpClient();
+            var json = await httpClient.GetStringAsync("http://localhost:59131/api/Users/" + id);
+            var permisos = JsonConvert.DeserializeObject<ApiResponse<UserDelete>>(json);
+            return View(permisos.Data);
         }
 
         // POST: UsuarioController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(UserDelete userDelete, int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+
+
+            HttpClient httpClient = new HttpClient();
+
+            var putTask = httpClient.DeleteAsync("http://localhost:59131/api/Users/" + id); ;
+            putTask.Wait();
+            var result = putTask.Result;
+            if (result.IsSuccessStatusCode)
+                return RedirectToAction("Index");
+            else
+                return this.BadRequest();
+
         }
     }
 }

@@ -19,34 +19,11 @@
 
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+                <input asp-for="Nombre" class="form-control" required/>
                 <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-
-
-            <div class="form-group">
-                @*<label asp-for="UserRoles" class="control-label"></label>*@
-                <br />
-                <label>Roles para eliminar: </label>
-                @foreach (var u in Model.ModuleRoles)
-                {
-                    <input type="checkbox" name="roleDelete[]" value="@u.RoleId" /><label>@u.Role.Nombre </label>
-
-                }
-                <br />
-                <br />
-                <label>Roles para Añadir: </label>
-                @foreach (var item in roles)
-                {
-
-                    <input type="checkbox" name="roleAdd[]" value="@item.Id" /><label>@item.Nombre </label>
-
-
-
-                }
-
-
             </div><br /><br />
+
+
             <div class="form-group">
                 <a class="btn btn-dark btn-sm" asp-action="Index">Regresar</a>
                 <input type="submit" value="Save" class="btn btn-success btn-sm" />

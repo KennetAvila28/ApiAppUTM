@@ -22,13 +22,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nombre)
         </dd>
-        <dd class="col-sm-10">
-            @foreach (var u in Model.ModuleRoles)
-            {
-                <label value="@u.RoleId" /><label>@u.Role.Nombre  </label>
 
-            }
-        </dd>
     </dl>
 </div>
 <div>

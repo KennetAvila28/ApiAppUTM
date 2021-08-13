@@ -20,30 +20,11 @@
                 </div>*@
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+                <input asp-for="Nombre" class="form-control" required/>
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                @*<label asp-for="UserRoles" class="control-label"></label>*@
-                <br />
-                <label>Roles para eliminar: </label>
-                @foreach (var u in Model.RolePermissions)
-                {
-                    <input type="checkbox" name="permissionDelete[]" value="@u.PermissionId" /><label>@u.Permission.Module </label>
-                }
-                <br />
-                <br />
-                <label>Roles para Añadir: </label>
-                @foreach (var item in permisos)
-                {
 
-                    <input type="checkbox" name="permissionAdd[]" value="@item.Id" /><label>@item.Module </label>
-
-                }
-
-
-            </div>
             <br />
             <div class="form-group">
                 <a class="btn btn-secondary btn-sm" asp-action="Index">Regresar</a>

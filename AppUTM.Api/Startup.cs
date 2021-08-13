@@ -40,6 +40,7 @@ namespace AppUTM.Api
                         .AllowAnyHeader();
                 });
             });
+            services.AddScoped<IAuthorizationServices, AuthorizationServices>();
             services.AddAutoMapper(typeof(Startup));
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
             //services.AddAutoMapper(typeof(Startup));
@@ -50,11 +51,11 @@ namespace AppUTM.Api
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IPermissionService, PermissionService>();
             services.AddTransient<IModuleService, ModuleService>();
+            services.AddTransient<IModuleRoleService, ModuleRoleService>();
             services.AddTransient<IEmpresaServices, EmpresaService>();
             services.AddTransient<ICuponGenericoServices, CuponGenericoService>();
             services.AddTransient<ICuponImagenServices, CuponImagenService>();
-            services.AddTransient<IHistorialCuponesServices, HistorialCuponesService>();
-            services.AddTransient<IAlmacenarImagen, AlmacenarImagen>();           
+            services.AddTransient<IAlmacenarImagen, AlmacenarImagen>();
             services.AddControllers().AddNewtonsoftJson(opt =>
             {
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;

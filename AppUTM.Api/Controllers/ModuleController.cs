@@ -9,6 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppUTM.Api.Responses;
 using Microsoft.AspNetCore.Authorization;
+using AppUTM.Data.Repositories;
+using AppUTM.Data;
 
 namespace AppUTM.Api.Controllers
 {
@@ -20,16 +22,31 @@ namespace AppUTM.Api.Controllers
 
         private readonly IMapper _mapper;
 
-        public ModuleController(IMapper mapper, IModuleService ModuleService)
+        private readonly IAuthorizationServices _authorization;
+
+
+        public ModuleController(IMapper mapper, IModuleService ModuleService, IAuthorizationServices authorization)
         {
             _mapper = mapper;
             _Moduleservice = ModuleService;
+            _authorization = authorization;
+
         }
 
         // GET: api/<UserController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ModuleReturn>>> Get()
         {
+            Request.Headers.TryGetValue("UserUTM", out var userEmail);
+
+            Console.WriteLine(userEmail);
+
+            var result = _authorization.ValidateUser(userEmail, "Seguridad", false);
+            if (!result)
+            {
+                return NotFound();
+            }
+
             try
             {
                 var Module = await _Moduleservice.GetAllModules();
@@ -47,6 +64,16 @@ namespace AppUTM.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(int id)
         {
+            Request.Headers.TryGetValue("UserUTM", out var userEmail);
+
+            Console.WriteLine(userEmail);
+
+            var result = _authorization.ValidateUser(userEmail, "Seguridad", false);
+            if (!result)
+            {
+                return NotFound();
+            }
+
             try
             {
                 var module = await _Moduleservice.GetModuleById(id);
@@ -60,12 +87,23 @@ namespace AppUTM.Api.Controllers
             }
         }
 
-    
+
 
         // POST api/<UserController>
         [HttpPost]
         public async Task<ActionResult> Post(ModuleCreate moduleCreate)
         {
+
+            Request.Headers.TryGetValue("UserUTM", out var userEmail);
+
+            Console.WriteLine(userEmail);
+
+            var result = _authorization.ValidateUser(userEmail, "Seguridad", true);
+            if (!result)
+            {
+                return NotFound();
+            }
+
             try
             {
                 var module = _mapper.Map<ModuleCreate, Module>(moduleCreate);
@@ -84,6 +122,16 @@ namespace AppUTM.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, moduleToBeUpdated moduleToBeUpdated)
         {
+            Request.Headers.TryGetValue("UserUTM", out var userEmail);
+
+            Console.WriteLine(userEmail);
+
+            var result = _authorization.ValidateUser(userEmail, "Seguridad", true);
+            if (!result)
+            {
+                return NotFound();
+            }
+
             try
             {
                 var moduleToBeUpdate = await _Moduleservice.GetModuleById(id);
@@ -91,13 +139,32 @@ namespace AppUTM.Api.Controllers
                 if (moduleToBeUpdate == null)
                     return NotFound();
                 await _Moduleservice.UpdateModule(moduleToBeUpdate, moduleForUpdate);
-                var result = new ApiResponse<bool>(true);
-                return Ok(result);
+                var result2 = new ApiResponse<bool>(true);
+                return Ok(result2);
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            Request.Headers.TryGetValue("UserUTM", out var userEmail);
+
+            Console.WriteLine(userEmail);
+
+            var result = _authorization.ValidateUser(userEmail, "Seguridad", true);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            var module = await _Moduleservice.GetModuleById(id);
+            if (module == null) return NotFound();
+            await _Moduleservice.DeleteModule(module);
+            return Ok(true);
         }
     }
 }

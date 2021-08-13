@@ -11,6 +11,9 @@ namespace AppUTM.Api.DTOS.Modules
         public int Id { get; set; }
         public string Nombre { get; set; }
 
-        public IList<ModuleRole> ModuleRoles { get; set; }
+
+
+        public IList<ModuleRole> ModuleId { get; set; }
+        public IList<ModuleRole> RoleId { get; set; }
     }
 }

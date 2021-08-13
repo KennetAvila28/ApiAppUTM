@@ -20,5 +20,10 @@ namespace AppUTM.Core.Models
         public int RoleId { get; set; }
         [JsonIgnore]
         public Role Role { get; set; }
+
+
+        public bool Lectura { get; set; }
+
+        public bool Escritura { get; set; }
     }
 }

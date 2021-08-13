@@ -1,7 +1,7 @@
 ﻿using AppUTM.Api.DTOS.Cupones;
 using AppUTM.Api.DTOS.Empresas;
-using AppUTM.Api.DTOS.HistorialCupones;
 using AppUTM.Api.DTOS.Modules;
+using AppUTM.Api.DTOS.ModulesRoles;
 using AppUTM.Api.DTOS.Permissions;
 using AppUTM.Api.DTOS.Roles;
 using AppUTM.Api.DTOS.Users;
@@ -29,6 +29,8 @@ namespace AppUTM.Api.Mappings
             CreateMap<RoleReturn, Role>();
             //Users
             CreateMap<User, UserCreate>().ReverseMap();
+            CreateMap<User, UserDelete>().ReverseMap();
+
             CreateMap<User, UserReturn>().ReverseMap();
             CreateMap<User, UserForUpdateDto>().ReverseMap();
             CreateMap<UserCreate, User>().AfterMap(
@@ -59,18 +61,23 @@ namespace AppUTM.Api.Mappings
             CreateMap<Module, ModuleCreate>().ReverseMap();
             CreateMap<Module, ModuleReturn>().ReverseMap();
             CreateMap<Module, moduleToBeUpdated>().ReverseMap();
-            //Empresas
+
+            //ModuleROle
+            CreateMap<ModuleRole, ModuleRoleCreate>().ReverseMap();
+            //CreateMap<ModuleRole, ModuleRoleDelete>().ReverseMap();
+            CreateMap<ModuleRoleReturn, ModuleRole>().ReverseMap().ForMember(x => x.RoleName, y => y.MapFrom(z => z.Role.Nombre));
+            CreateMap<ModuleRoleReturn, ModuleRole>().ReverseMap().ForMember(x => x.ModuleName, y => y.MapFrom(z => z.Module.Nombre));
+            CreateMap<ModuleRole, ModuleRoleUpdate>().ReverseMap();
+
+            //empresas
             CreateMap<Empresa, EmpresaReturn>().ReverseMap();
             CreateMap<Empresa, EmpresaCreate>().ReverseMap();
-            //CuponGenerico
+            //cupongenerico
             CreateMap<CuponGenerico, CuponGenericoReturn>().ReverseMap();
             CreateMap<CuponGenerico, CuponGenericoCreate>().ReverseMap();
-            //CuponImagen
+            //cuponImagen
             CreateMap<CuponImagen, CuponImagenReturn>().ReverseMap();
             CreateMap<CuponImagen, CuponImagenCreate>().ReverseMap();
-            //HistorialCupones
-            CreateMap<HistorialCupones, HistorialCuponesReturn>().ReverseMap();
-            CreateMap<HistorialCupones, HistorialCuponesCreate>().ReverseMap();
         }
     }
 }

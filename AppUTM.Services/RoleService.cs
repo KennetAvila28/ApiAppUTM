@@ -33,10 +33,10 @@ namespace AppUTM.Services
             return newRole;
         }
 
-        public async Task<IEnumerable<Role>> GetAllRoles() => await _context.Roles.Include(x => x.RolePermissions).ToListAsync();
+        public async Task<IEnumerable<Role>> GetAllRoles() => await _context.Roles.Include(x => x.ModuleRoles).ThenInclude(y => y.Module).ToListAsync();
 
         public async Task<Role> GetRoleById(int id) =>
-            await _context.Roles.Include(x => x.RolePermissions).ThenInclude(y => y.Permission)
+            await _context.Roles.Include(x => x.ModuleRoles).ThenInclude(y => y.Module)
                 .SingleOrDefaultAsync(z => z.Id == id);
 
         public async Task UpdateRole(Role roleToBeUpdated, Role role)
@@ -64,7 +64,7 @@ namespace AppUTM.Services
 
         public async Task DeleteRole(Role role)
         {
-            _unitOfWork.RolePermission.RemoveRange(role.RolePermissions);
+            //_unitOfWork.RolePermission.RemoveRange(role.RolePermissions);
             _unitOfWork.Roles.Remove(role);
             await _unitOfWork.CommitAsync();
         }

@@ -11,9 +11,8 @@
 
 <h1>Usuarios</h1>
 <p>
-    <a class="btn btn-green btn-sm" asp-controller="Usuario" asp-action="Empleados" >Crear usuario</a>
-    @*<a class="btn btn-success btn-sm" asp-controller="Roles" asp-action="Index">Roles</a>
-    <a class="btn btn-dark btn-sm" asp-controller="Permissions" asp-action="Index">Permisos</a>*@
+    <a class="btn btn-green btn-sm" asp-controller="Usuario" asp-action="Empleados">Crear usuario</a>
+
 </p>
 <table class="table" style="margin:0;">
     <thead>
@@ -60,28 +59,21 @@
                     @Html.DisplayFor(modelItem => item.Correo)
                 </td>
                 <td>
-
                     @foreach (var r in roles)
                     {
                         if (item.UserRoles.Any(rol => rol.RoleId == r.Id))
                         {
 
+                            <label>@r.Nombre</label>
+                        }
 
-                            <input type="checkbox" checked="checked" readonly="readonly" onclick="javascript: return false;" /><label>@r.Nombre</label> <br />
-                        }
-                        else
-                        {
-                            <input type="checkbox" readonly="readonly" onclick="javascript: return false;" /><label>@r.Nombre</label><br />
-                        }
 
                     }
-
-
                 </td>
                 <td>
                     @Html.ActionLink("Editar", "Edit", new { id = item.Id })
                     @Html.ActionLink("Detalles", "Detalles", new { id = item.Id })
-                    @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 </td>
             </tr>
         }

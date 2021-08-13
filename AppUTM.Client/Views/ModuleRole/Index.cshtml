@@ -1,0 +1,68 @@
+﻿@model IEnumerable<AppUTM.Api.DTOS.ModulesRoles.ModuleRoleReturn>
+@using AppUTM.Client.Models.Roles;
+
+@{
+     List<RoleReturn> roles = ViewBag.Roles;
+    ViewData["Title"] = "Index";
+}
+
+<h1>Acceso a modulos</h1>
+
+<p>
+    <a asp-action="CreateAccess">Crear acceso</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <label>Modulo:</label>
+            </th>
+            <th>
+                <label>Rol:</label>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lectura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Escritura)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+
+
+                   
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModuleName)
+
+            </td>
+            <td>
+                @foreach (var r in roles)
+                {
+                    if (item.RoleId == r.Id)
+                    {
+
+                        <label>@r.Nombre</label>
+                    }
+
+
+                }
+            </td>
+            <td>
+                <input class="form-check-input" asp-for="@item.Lectura" readonly="readonly" onclick="javascript: return false;"/>
+            </td>
+            <td>
+                <input class="form-check-input" asp-for="@item.Escritura" readonly="readonly" onclick="javascript: return false;" />
+            </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { ModuleId = item.ModuleId, RoleId = item.RoleId}) 
+                    
+                    @Html.ActionLink("Eliminar", "Delete", new { ModuleId = item.ModuleId, RoleId = item.RoleId })
+                </td>
+            </tr>
+}
+    </tbody>
+</table>

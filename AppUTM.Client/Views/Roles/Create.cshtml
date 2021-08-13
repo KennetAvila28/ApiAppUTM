@@ -17,24 +17,35 @@
 
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+                <input asp-for="Nombre" class="form-control" required />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div><br />
+            @*<div class="form-group">
+                    <label asp-for="RolePermissions" class="control-label"></label>
+
+                    @foreach (var item in permisos)
+                    {
+
+                        if (item.Module == "Escritura")
+                        {
+
+                            <input type="checkbox" id="marcarTodo" name="permission[]" value="@item.Id" /> <label>@item.Module</label>
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="marcados" name="permission[]" value="@item.Id" /> <label>@item.Module</label>
+                        }
+
+                    }
+
+
+
+
+                </div><br /><br />*@
             <div class="form-group">
-                <label asp-for="RolePermissions" class="control-label"></label>
-
-                @foreach (var item in permisos)
-                {
-                    <input type="checkbox" name="permission[]" value="@item.Id" /> <label>@item.Module</label>
-                }
-
-
-            </div><br /><br />
-                        <div class="form-group">
-                            <input type="submit" value="Crear Rol" class="btn btn-green btn-sm" />
-                            <a class="btn btn-secondary btn-sm" asp-action="Index">Regresar</a>
-
-                        </div>
+                <a class="btn btn-dark btn-sm" asp-action="Index">Regresar</a>
+                <input type="submit" value="Create" class="btn btn-success btn-sm" />
+            </div>
         </form>
     </div>
 </div>
@@ -46,3 +57,23 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+@*<script type="text/javascript">
+        $(function () {
+            $("[id=marcarTodo]").bind("click", function () {
+                if ($(this).is(":checked")) {
+                    $("[id=marcados] input").attr("checked", "checked");
+                } else {
+                    $("[id=marcados] input").removeAttr("checked");
+                }
+            });
+            $("[id=marcados] input").bind("click", function () {
+                if ($("[id=marcados] input:checked").length == $("[id=marcados] input").length) {
+                    $("[id=marcarTodo]").attr("checked", "checked");
+                } else {
+                    $("[id=marcarTodo]").removeAttr("checked");
+                }
+            });
+        });
+    </script>*@

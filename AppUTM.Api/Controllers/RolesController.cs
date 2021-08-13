@@ -69,10 +69,13 @@ namespace AppUTM.Api.Controllers
             return Ok(result);
         }
 
-        //// DELETE api/<RolesController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var user = await _roleService.GetRoleById(id);
+            if (user == null) return NotFound();
+            await _roleService.DeleteRole(user);
+            return Ok(true);
+        }
     }
 }

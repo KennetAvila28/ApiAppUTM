@@ -7,10 +7,11 @@
     ViewData["Title"] = "Index";
 }
 
+
 <h1>Roles</h1>
 
 <p>
-    <a class="btn btn-green btn-sm" asp-action="Create">Crear Rol</a>
+    <a class="btn btn-primary btn-sm" asp-action="Create">Crear Rol</a>
 </p>
 <table class="table">
     <thead>
@@ -19,8 +20,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
-            <th>Permisos</th>
-            <th>Acciones</th>
+
         </tr>
     </thead>
     <tbody>
@@ -31,29 +31,29 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
-                <td>
+                @*<td>
 
-                    @foreach (var p in permisos)
-                    {
-                        if (item.RolePermissions.Any(r => r.PermissionId == p.Id))
+                        @foreach (var p in permisos)
                         {
+                            if (item.RolePermissions.Any(r => r.PermissionId == p.Id))
+                            {
 
 
-                            <input style="margin-right:5px;" type="checkbox" checked="checked" readonly="readonly" onclick="javascript: return false;" /><label>@p.Module</label>
+                                <input type="checkbox" checked="checked" readonly="readonly" onclick="javascript: return false;" /><label>@p.Module</label>
+                            }
+                            else
+                            {
+                                <input type="checkbox" readonly="readonly" onclick="javascript: return false;" /><label>@p.Module</label>
+                            }
+
                         }
-                        else
-                        {
-                            <input style="margin-right:5px;" type="checkbox" readonly="readonly" onclick="javascript: return false;" /><label>@p.Module</label>
-                        }
-
-                    }
 
 
-                </td>
+                    </td>*@
                 <td>
                     @Html.ActionLink("Editar", "Edit", new { id = item.Id })
-                    @Html.ActionLink("Detalles", "Details", new { id = item.Id })
-                    @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                    @Html.ActionLink("Detalle", "Details", new { id = item.Id })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 </td>
             </tr>
         }

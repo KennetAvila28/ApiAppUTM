@@ -1,4 +1,5 @@
 ﻿using AppUTM.Api.DTOS.Permissions;
+using AppUTM.Api.DTOS.Roles;
 using AppUTM.Client.Models.Roles;
 using AppUTM.Client.Responses;
 using AppUTM.Core.Models;
@@ -93,17 +94,17 @@ namespace AppUTM.Client.Controllers
         {
             HttpClient httpClient = new HttpClient();
             var json = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/" + id);
-            var jsonPer = await httpClient.GetStringAsync("http://localhost:59131/api/Permissions/");
-            var listpermisos = JsonConvert.DeserializeObject<ApiResponse<List<PermissionReturn>>>(jsonPer);
+            //var jsonPer = await httpClient.GetStringAsync("http://localhost:59131/api/Permissions/");
+            //var listpermisos = JsonConvert.DeserializeObject<ApiResponse<List<PermissionReturn>>>(jsonPer);
             var crear = JsonConvert.DeserializeObject<ApiResponse<RoleForUpdateDto>>(json);
 
-            foreach (var permi in crear.Data.RolePermissions)
-            {
-                listpermisos.Data.Remove(listpermisos.Data.Single(perm => perm.Id == permi.PermissionId));
+            //foreach (var permi in crear.Data.RolePermissions)
+            //{
+            //    listpermisos.Data.Remove(listpermisos.Data.Single(perm => perm.Id == permi.PermissionId));
 
-            }
+            //}
 
-            ViewBag.Permisos = listpermisos.Data;
+            //ViewBag.Permisos = listpermisos.Data;
 
             return View(crear.Data);
         }
@@ -141,24 +142,32 @@ namespace AppUTM.Client.Controllers
         }
 
         // GET: RolesController/Delete/5
-        public ActionResult Delete(int id)
+
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            HttpClient httpClient = new HttpClient();
+            var json = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/" + id);
+            var roles = JsonConvert.DeserializeObject<ApiResponse<RoleDelete>>(json);
+            return View(roles.Data);
         }
 
-        // POST: RolesController/Delete/5
+        // POST: UsuarioController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(RoleDelete roleDelete, int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+
+
+            HttpClient httpClient = new HttpClient();
+
+            var putTask = httpClient.DeleteAsync("http://localhost:59131/api/Roles/" + id); ;
+            putTask.Wait();
+            var result = putTask.Result;
+            if (result.IsSuccessStatusCode)
+                return RedirectToAction("Index");
+            else
+                return this.BadRequest();
+
         }
     }
 }

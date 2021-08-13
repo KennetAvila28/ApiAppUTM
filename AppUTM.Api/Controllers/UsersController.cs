@@ -126,5 +126,16 @@ namespace AppUTM.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var user = await _Userervice.GetUserById(id);
+            if (user == null) return NotFound();
+            await _Userervice.DeleteUser(user);
+            return Ok(true);
+        }
     }
 }
