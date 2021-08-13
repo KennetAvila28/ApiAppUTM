@@ -1,0 +1,45 @@
+﻿@model IEnumerable<AppUTM.Client.Models.Historial>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Usos por divisiones</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+              Matricula 
+            </th>
+            <th>
+               Departamento
+            </th>
+            <th>
+                Cupones Genéricos
+            </th>
+            <th>
+                Cupones de imagen
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Matricula)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Departamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CuponGeneridoId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CuponImagenId)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
