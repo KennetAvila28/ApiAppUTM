@@ -1,5 +1,4 @@
-﻿using AppUTM.Api.DTOS.Roles;
-using AppUTM.Api.Responses;
+﻿using AppUTM.Api.Responses;
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AppUTM.Api.DTOS.Roles;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,7 +32,6 @@ namespace AppUTM.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RoleReturn>>> Get()
         {
-
             var roles = await _roleService.GetAllRoles();
             var roleList = _mapper.Map<IEnumerable<Role>, IEnumerable<RoleReturn>>(roles);
             var response = new ApiResponse<IEnumerable<RoleReturn>>(roleList);
@@ -51,9 +50,9 @@ namespace AppUTM.Api.Controllers
 
         // POST api/<RolesController>
         [HttpPost]
-        public async Task<ActionResult> Post(RolesCreate rolesCreate)
+        public async Task<ActionResult> Post(RoleCreate rolesCreate)
         {
-            var role = _mapper.Map<RolesCreate, Role>(rolesCreate);
+            var role = _mapper.Map<RoleCreate, Role>(rolesCreate);
             await _roleService.CreateRole(role);
             var roleReturn = _mapper.Map<Role, RoleReturn>(role);
             var response = new ApiResponse<RoleReturn>(roleReturn);
@@ -88,5 +87,4 @@ namespace AppUTM.Api.Controllers
             }
         }
     }
-    
 }

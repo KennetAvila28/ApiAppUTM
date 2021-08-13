@@ -3,7 +3,7 @@ using AppUTM.Core.Models;
 
 namespace AppUTM.Api.DTOS.Roles
 {
-    public class RolesCreate
+    public class RoleCreate
     {
         public string Nombre { get; set; }
     }

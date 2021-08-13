@@ -99,7 +99,7 @@ namespace AppUTM.Extensions
 
         public static async Task<string> ImageToBase64(byte[] buffer)
         {
-            return Convert.ToBase64String(buffer);
+            return await Task.Run(() => Convert.ToBase64String(buffer));
         }
 
         public static byte[] ReadToEnd(Stream stream)

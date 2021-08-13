@@ -15,7 +15,7 @@ else
         <div class="d-flex mb-3">
             <h2 class="mx-auto">Lista de eventos</h2>
         </div>
-        <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Count="@_count" Data="_events" PageSize="10" TItem="EventReturn">
+        <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_events" PageSize="10" TItem="EventReturn">
             <Columns>
                 <RadzenDataGridColumn TItem="EventReturn" Property="Title" Title="Titulo">
                     <Template Context="data">
@@ -59,7 +59,6 @@ else
 
 @code
 {
-    int _count;
     IEnumerable<EventReturn> _events;
 
     protected override async Task OnInitializedAsync()

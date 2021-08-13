@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AppUTM.Models.Coordinations;
 using AppUTM.Models.Events;
 using AppUTM.Models.Modules;
+using AppUTM.Models.RoleModules;
 using AppUTM.Models.Roles;
 using AppUTM.Models.Users;
 using AppUTM.Responses;
@@ -102,6 +103,18 @@ namespace AppUTM.Extensions
         {
             var coordination = await http.GetFromJsonAsync<ApiResponse<CoordinationForUpdateDto>>("Coordinations/" + id);
             return coordination?.Data;
+        }
+
+        public static async Task<IList<RoleModuleForUpdateDto>> GetRoleModuleById(HttpClient http, int moduleId, int roleId)
+        {
+            var roleModules = await http.GetFromJsonAsync<ApiResponse<IList<RoleModuleForUpdateDto>>>("RoleModule/" + moduleId + "/" + roleId);
+            return roleModules?.Data;
+        }
+
+        public static async Task<IList<RoleModuleReturn>> GetRoleModuleByRoleId(HttpClient http, int id)
+        {
+            var roleModule = await http.GetFromJsonAsync<ApiResponse<IList<RoleModuleReturn>>>("RoleModule/" + id);
+            return roleModule?.Data;
         }
     }
 }

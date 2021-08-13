@@ -1,5 +1,4 @@
 ﻿using AppUTM.Api.DTOS.Modules;
-using AppUTM.Api.DTOS.Roles;
 using AppUTM.Api.DTOS.Users;
 using AppUTM.Core.Models;
 using AutoMapper;
@@ -7,6 +6,8 @@ using System;
 using AppUTM.Api.DTOS.Coordinations;
 using AppUTM.Api.DTOS.Events;
 using AppUTM.Api.DTOS.Favorites;
+using AppUTM.Api.DTOS.RoleModule;
+using AppUTM.Api.DTOS.Roles;
 
 namespace AppUTM.Api.Mappings
 {
@@ -15,11 +16,10 @@ namespace AppUTM.Api.Mappings
         public MappingProfile()
         {
             //Roles
-            CreateMap<Role, RolesCreate>().ReverseMap();
+            CreateMap<Role, RoleCreate>().ReverseMap();
             CreateMap<Role, RoleReturn>().ReverseMap();
             CreateMap<Role, RoleForUpdateDto>().ReverseMap();
-
-            CreateMap<RolesCreate, Role>().AfterMap(
+            CreateMap<RoleCreate, Role>().AfterMap(
                 ((source, destination) =>
                 {
                     destination.CreateAt = DateTime.Now;
@@ -49,6 +49,11 @@ namespace AppUTM.Api.Mappings
                     destination.Status = true;
                 }));
             CreateMap<ModuleReturn, Module>();
+            //Roles
+            CreateMap<RoleModule, RoleModuleCreate>().ReverseMap();
+            CreateMap<RoleModule, RoleModuleReturn>().ReverseMap();
+            CreateMap<RoleModule, RoleModuleForUpdateDto>().ReverseMap();
+            CreateMap<RoleModuleReturn, RoleModule>();
             //Events
             CreateMap<Event, EventCreate>().ReverseMap();
             CreateMap<Event, EventReturn>().ReverseMap();

@@ -9,12 +9,14 @@ namespace AppUTM.Core.Interfaces
 {
     public interface IRoleModuleService
     {
-        Task<IEnumerable<RoleModule>> GetAllRoleModule();
-
         Task<RoleModule> GetRoleModuleById(int moduleId, int roleId);
 
-        Task<RoleModule> CreateRoleModule(RoleModule newRoleModule);
+        Task<List<RoleModule>> CreateRoleModule(List<RoleModule> newRoleModule);
+
+        Task UpdateRoleModule(List<RoleModule> roleModuleToBeUpdate);
 
         Task DeleteRoleModule(RoleModule roleModule);
+
+        Task<List<RoleModule>> GetRoleModulesByRoleId(int roleId);
     }
 }

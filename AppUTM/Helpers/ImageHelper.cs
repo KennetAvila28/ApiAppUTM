@@ -24,7 +24,7 @@ namespace AppUTM.Helpers
                 await imgFile.OpenReadStream().ReadAsync(buffers);
                 return Convert.ToBase64String(buffers);
             }
-            catch (Exception exception)
+            catch
             {
                 throw new ArgumentException("La imagen supera el tamaño maximo, selecciona otra imagen (512kb)");
             }

@@ -1,7 +1,6 @@
 ﻿@page "/Roles"
 @using Microsoft.AspNetCore.Authorization
 @using System.Linq
-@using AppUTM.Models.Modules
 @attribute [Authorize]
 @inject HttpClient _http
 @inject NavigationManager navigation
@@ -14,40 +13,42 @@
             <h1 class="mx-auto">Lista de roles</h1>
             <RadzenButton class="mx-auto" Text="Agregar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Roles/Create")) />
         </div>
-        <table class="table">
-            <thead class="bg-light text-center">
-                <tr>
-                    <th scope="col">Nombre</th>
-                    @foreach (var module in _modules)
-                    {
-                        <th scope="col">@module.Name</th>
-                    }
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody class="text-center">
-                @foreach (var role in _roles)
-                {
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="bg-light text-center">
                     <tr>
-                        <td>@role.Nombre</td>
+                        <th scope="col">Nombre</th>
                         @foreach (var module in _modules)
                         {
-                            if (role.RoleModules.Any(r => r.ModuleId == module.Id))
-                            {
-                                <td><input class="form-check-input" type="checkbox" checked="checked" onclick="javascript: return false;" /></td>
-
-                            }
-                            else
-                            {
-                                <td><input class="form-check-input" type="checkbox" onclick="javascript: return false;" /></td>
-                            }
-
+                            <th scope="col">@module.Name</th>
                         }
-                        <td> <RadzenButton class="mx-auto" Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Roles/Edit/{role.Id}")) /></td>
+                        <th scope="col">Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var role in _roles)
+                    {
+                        <tr>
+                            <td>@role.Nombre</td>
+                            @foreach (var module in _modules)
+                            {
+                                if (role.RoleModules.Any(r => r.ModuleId == module.Id))
+                                {
+                                    <td><RadzenCheckBox TValue="bool" Value="true" Disabled="true" /></td>
+
+                                }
+                                else
+                                {
+                                    <td><RadzenCheckBox TValue="bool" Value="false" Disabled="true" /></td>
+                                }
+
+                            }
+                            <td> <RadzenButton class="mx-auto" Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Roles/Edit/{role.Id}")) /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 
 }
@@ -58,12 +59,11 @@ else
 
 @code
 {
-    private IList<ModuleReturn> _modules;
+    private IEnumerable<ModuleReturn> _modules;
     private IList<RoleReturn> _roles;
     protected override async Task OnInitializedAsync()
     {
         _modules = await GetExtensions.GetAllModules(_http);
         _roles = await GetExtensions.GetAllRoles(_http);
-        await Task.Delay(1000);
     }
 }

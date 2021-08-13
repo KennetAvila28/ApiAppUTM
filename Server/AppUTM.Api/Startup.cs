@@ -49,6 +49,7 @@ namespace AppUTM.Api
             services.AddTransient<IModuleService, ModuleService>();
             services.AddTransient<ICoordinationService, CoordinationService>();
             services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IRoleModuleService, RoleModuleService>();
             services.AddTransient<IFavoriteService, FavoriteService>();
             services.AddControllers().AddNewtonsoftJson(opt =>
             {

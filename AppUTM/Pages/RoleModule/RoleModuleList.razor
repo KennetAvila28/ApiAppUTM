@@ -1,0 +1,65 @@
+﻿@inject NavigationManager navigation
+@inject HttpClient Http
+@inject NotificationService NotificationService
+<div class="form-group ">
+    <div class="form-group">
+        <button class="btn btn-success" type="button" @onclick="@(Add)">Nuevo acceso <i class="oi oi-plus"></i></button>
+    </div>
+    @for (int i = 0; i < roleModuleList.Count; i++)
+    {
+        index = i;
+        var rolemodule = roleModuleList[index];
+        rolemodule.RoleId = Id;
+        <h5>Acceso @(i + 1)</h5>
+        <div class="row mb-3 mt-3">
+            <div class="col-sm">
+                <RadzenDropDown Data="_module" Placeholder="selecciona un modulo" TValue="int" TextProperty="@nameof(ModuleReturn.Name)" ValueProperty="@nameof(ModuleReturn.Id)" @bind-Value="rolemodule.ModuleId" />
+            </div>
+            <div class="col-sm">
+                <RadzenCheckBox TValue="bool" @bind-Value="rolemodule.Read" /><RadzenLabel Text="Lectura" />
+            </div>
+            <div class="col-sm">
+                <RadzenCheckBox TValue="bool" @bind-Value="rolemodule.Write" /><RadzenLabel Text="Escritura" />
+            </div>
+            <div class="col-sm">
+                <button class="btn btn-success" type="button" @onclick="@(()=>roleModuleList.RemoveAt(index))"><i class="oi oi-minus"></i></button>
+            </div>
+        </div>
+    }
+</div>
+<div class="form-group">
+    <button class="btn btn-success" type="button" @onclick="@(Post)">Agregar accesos</button>
+</div>
+@code {
+    int index;
+    [Parameter]
+    public int Id { get; set; }
+    IList<RoleModuleCreate> roleModuleList = new List<RoleModuleCreate>();
+    IEnumerable<ModuleReturn> _module;
+    IList<RoleReturn> _role;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _module = await GetExtensions.GetAllModules(Http);
+        _role = await GetExtensions.GetAllRoles(Http);
+    }
+
+    void Add()
+    {
+
+        roleModuleList.Add(new RoleModuleCreate());
+    }
+
+    public async Task Post()
+    {
+        if (roleModuleList != null)
+        {
+            var role = await Http.PostAsJsonAsync("RoleModule", roleModuleList);
+            navigation.NavigateTo("/Roles");
+            NotificationExtensions.ShowNotification(NotificationService, role.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Rol Actualizado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo actualizar el rol", Duration = 3000 });
+        }
+        else
+            NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "permiso no seleccionado", Detail = "selecciona un permiso", Duration = 3000 });
+    }
+
+}

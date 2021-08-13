@@ -1,5 +1,4 @@
 @page "/Roles/Create"
-@using AppUTM.Models.Users
 @inject NavigationManager navigation
 @inject HttpClient Http
 @inject NotificationService NotificationService
@@ -10,9 +9,6 @@
         <RadzenTextBox ShowUpDown="false" TValue="int" @bind-Value="@_oRoleCreate.Nombre" Style="width: auto;"></RadzenTextBox>
     </div>
     <div class="form-group">
-        <RadzenDropDown Multiple="false" Placeholder="Selecciona un modulo..." Data=@_permissions TextProperty="@nameof(RoleModule.Name)" TValue="RoleModule" Change=@(_selectPermission) Style="width:auto;" />
-    </div>
-    <div class="form-group">
         <div class="form-group mt-4">
             <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Crear rol</button>
             <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
@@ -21,30 +17,12 @@
 </div>
 
 @code {
-    IList<RoleModule> _permissions;
-    IEnumerable<RoleModule> _RoleModules;
     readonly RolesCreate _oRoleCreate = new();
-
-    protected override async Task OnInitializedAsync()
-    {
-        _permissions = await ModulesToRoleModuleExtensions.Convert(Http);
-    }
-
-    void _selectPermission(object permission)
-    {
-        _RoleModules = (IEnumerable<RoleModule>)permission;
-    }
 
     public async Task Post()
     {
         if (_oRoleCreate != null)
         {
-            var RoleModulescast = new List<RoleModule>();
-            foreach (var permission in _RoleModules)
-            {
-                RoleModulescast.Add(permission);
-            }
-            _oRoleCreate.RoleModules = RoleModulescast;
             var role = await Http.PostAsJsonAsync("Roles", _oRoleCreate);
             NotificationExtensions.ShowNotification(NotificationService, role.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Rol creado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear el rol", Duration = 3000 });
             navigation.NavigateTo("/Roles");
