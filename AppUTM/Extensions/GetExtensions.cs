@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using AppUTM.Models.Coordinations;
+﻿using AppUTM.Models.Coordinations;
 using AppUTM.Models.Events;
 using AppUTM.Models.Modules;
 using AppUTM.Models.RoleModules;
 using AppUTM.Models.Roles;
 using AppUTM.Models.Users;
 using AppUTM.Responses;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace AppUTM.Extensions
 {
@@ -35,7 +34,7 @@ namespace AppUTM.Extensions
 
         public static async Task<string> GetWorkers(HttpClient http, string email)
         {
-            var workers = await http.GetFromJsonAsync<string>("Users/Empleado/" + email);
+            var workers = await http.GetFromJsonAsync<string>("Users/worker/" + email);
             return workers;
         }
 

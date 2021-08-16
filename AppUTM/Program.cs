@@ -1,15 +1,12 @@
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+using AppUTM.Extensions;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using AppUTM.Extensions;
-using AppUTM.Helpers;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Radzen;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace AppUTM
 {

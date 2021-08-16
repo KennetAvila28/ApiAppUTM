@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using AppUTM.Core.Models;
-
-namespace AppUTM.Api.DTOS.Favorites
+﻿namespace AppUTM.Api.DTOS.Favorites
 {
     public class FavoriteCreate
     {

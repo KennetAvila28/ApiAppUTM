@@ -1,21 +1,18 @@
-﻿using System;
+﻿using AppUTM.Api.DTOS;
+using AppUTM.Api.DTOS.Users;
+using AppUTM.Api.Responses;
+using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using AppUTM.Api.DTOS;
-using AppUTM.Api.DTOS.Users;
-using AppUTM.Api.Responses;
-using AppUTM.Core.Interfaces;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Newtonsoft.Json.Linq;
 
 namespace AppUTM.Api.Controllers
 {

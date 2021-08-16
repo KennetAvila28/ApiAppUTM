@@ -1,5 +1,5 @@
-﻿using System;
-using AppUTM.Models.Coordinations;
+﻿using AppUTM.Models.Coordinations;
+using System;
 
 namespace AppUTM.Models.Events
 {

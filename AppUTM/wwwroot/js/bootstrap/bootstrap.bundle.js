@@ -77,7 +77,6 @@
 
       return [];
     }
-
   };
 
   /**
@@ -104,7 +103,6 @@
    * --------------------------------------------------------------------------
    */
 
-
   const getUID = prefix => {
     do {
       prefix += Math.floor(Math.random() * MAX_UID);
@@ -125,7 +123,6 @@
       if (!hrefAttr || !hrefAttr.includes('#') && !hrefAttr.startsWith('.')) {
         return null;
       } // Just in case some CMS puts out a full URL with the anchor appended
-
 
       if (hrefAttr.includes('#') && !hrefAttr.startsWith('#')) {
         hrefAttr = `#${hrefAttr.split('#')[1]}`;
@@ -157,7 +154,6 @@
       return 0;
     } // Get transition-duration of the element
 
-
     let {
       transitionDuration,
       transitionDelay
@@ -168,7 +164,6 @@
     if (!floatTransitionDuration && !floatTransitionDelay) {
       return 0;
     } // If multiple durations are defined, take the first
-
 
     transitionDuration = transitionDuration.split(',')[0];
     transitionDelay = transitionDelay.split(',')[0];
@@ -245,7 +240,6 @@
       return null;
     } // Can find the shadow root otherwise it'll return the document
 
-
     if (typeof element.getRootNode === 'function') {
       const root = element.getRootNode();
       return root instanceof ShadowRoot ? root : null;
@@ -254,7 +248,6 @@
     if (element instanceof ShadowRoot) {
       return element;
     } // when we don't find a shadow root
-
 
     if (!element.parentNode) {
       return null;
@@ -362,7 +355,6 @@
    * @return {Element|elem} The proper element
    */
 
-
   const getNextActiveElement = (list, activeElement, shouldGetNext, isCycleAllowed) => {
     let index = list.indexOf(activeElement); // if the element does not exist in the list return an element depending on the direction and if cycle is allowed
 
@@ -454,7 +446,6 @@
         }
       } // To please ESLint
 
-
       return null;
     };
   }
@@ -496,7 +487,6 @@
       delegationFn = null;
     } // in case of mouseenter or mouseleave wrap the handler within a function that checks for its DOM position
     // this prevents the handler from being dispatched the same way as mouseover or mouseout does
-
 
     if (customEventsRegex.test(originalTypeEvent)) {
       const wrapFn = fn => {
@@ -640,14 +630,12 @@
         });
       } // merge custom information in our event
 
-
       if (typeof args !== 'undefined') {
         Object.keys(args).forEach(key => {
           Object.defineProperty(evt, key, {
             get() {
               return args[key];
             }
-
           });
         });
       }
@@ -666,7 +654,6 @@
 
       return evt;
     }
-
   };
 
   /**
@@ -720,7 +707,6 @@
         elementMap.delete(element);
       }
     }
-
   };
 
   /**
@@ -762,7 +748,6 @@
     }
     /** Static */
 
-
     static getInstance(element) {
       return Data.get(element, this.DATA_KEY);
     }
@@ -786,7 +771,6 @@
     static get EVENT_KEY() {
       return `.${this.DATA_KEY}`;
     }
-
   }
 
   /**
@@ -824,7 +808,6 @@
       return NAME$c;
     } // Public
 
-
     close(element) {
       const rootElement = element ? this._getRootElement(element) : this._element;
 
@@ -836,7 +819,6 @@
 
       this._removeElement(rootElement);
     } // Private
-
 
     _getRootElement(element) {
       return getElementFromSelector(element) || element.closest(`.${CLASS_NAME_ALERT}`);
@@ -858,7 +840,6 @@
       EventHandler.trigger(element, EVENT_CLOSED);
     } // Static
 
-
     static jQueryInterface(config) {
       return this.each(function () {
         const data = Alert.getOrCreateInstance(this);
@@ -878,14 +859,12 @@
         alertInstance.close(this);
       };
     }
-
   }
   /**
    * ------------------------------------------------------------------------
    * Data Api implementation
    * ------------------------------------------------------------------------
    */
-
 
   EventHandler.on(document, EVENT_CLICK_DATA_API$7, SELECTOR_DISMISS, Alert.handleDismiss(new Alert()));
   /**
@@ -928,12 +907,10 @@
       return NAME$b;
     } // Public
 
-
     toggle() {
       // Toggle class and sync the `aria-pressed` attribute with the return value of the `.toggle()` method
       this._element.setAttribute('aria-pressed', this._element.classList.toggle(CLASS_NAME_ACTIVE$3));
     } // Static
-
 
     static jQueryInterface(config) {
       return this.each(function () {
@@ -944,14 +921,12 @@
         }
       });
     }
-
   }
   /**
    * ------------------------------------------------------------------------
    * Data Api implementation
    * ------------------------------------------------------------------------
    */
-
 
   EventHandler.on(document, EVENT_CLICK_DATA_API$6, SELECTOR_DATA_TOGGLE$5, event => {
     event.preventDefault();
@@ -1039,7 +1014,6 @@
         left: element.offsetLeft
       };
     }
-
   };
 
   /**
@@ -1144,7 +1118,6 @@
       this._addEventListeners();
     } // Getters
 
-
     static get Default() {
       return Default$9;
     }
@@ -1152,7 +1125,6 @@
     static get NAME() {
       return NAME$a;
     } // Public
-
 
     next() {
       this._slide(ORDER_NEXT);
@@ -1225,7 +1197,6 @@
 
       this._slide(order, this._items[index]);
     } // Private
-
 
     _getConfig(config) {
       config = { ...Default$9,
@@ -1502,7 +1473,6 @@
       return order === ORDER_PREV ? DIRECTION_RIGHT : DIRECTION_LEFT;
     } // Static
 
-
     static carouselInterface(element, config) {
       const data = Carousel.getOrCreateInstance(element, config);
       let {
@@ -1561,14 +1531,12 @@
 
       event.preventDefault();
     }
-
   }
   /**
    * ------------------------------------------------------------------------
    * Data Api implementation
    * ------------------------------------------------------------------------
    */
-
 
   EventHandler.on(document, EVENT_CLICK_DATA_API$5, SELECTOR_DATA_SLIDE, Carousel.dataApiClickHandler);
   EventHandler.on(window, EVENT_LOAD_DATA_API$2, () => {
@@ -1661,7 +1629,6 @@
       }
     } // Getters
 
-
     static get Default() {
       return Default$8;
     }
@@ -1669,7 +1636,6 @@
     static get NAME() {
       return NAME$9;
     } // Public
-
 
     toggle() {
       if (this._element.classList.contains(CLASS_NAME_SHOW$8)) {
@@ -1820,7 +1786,6 @@
       this._isTransitioning = isTransitioning;
     } // Private
 
-
     _getConfig(config) {
       config = { ...Default$8,
         ...config
@@ -1866,7 +1831,6 @@
       });
     } // Static
 
-
     static collapseInterface(element, config) {
       let data = Collapse.getInstance(element);
       const _config = { ...Default$8,
@@ -1896,14 +1860,12 @@
         Collapse.collapseInterface(this, config);
       });
     }
-
   }
   /**
    * ------------------------------------------------------------------------
    * Data Api implementation
    * ------------------------------------------------------------------------
    */
-
 
   EventHandler.on(document, EVENT_CLICK_DATA_API$4, SELECTOR_DATA_TOGGLE$4, function (event) {
     // preventDefault only for <a> elements (which change the URL) not inside the collapsible element
@@ -2026,7 +1988,6 @@
       // effective way to apply styles to an HTMLElement
       // $FlowFixMe[cannot-write]
 
-
       Object.assign(element.style, style);
       Object.keys(attributes).forEach(function (name) {
         var value = attributes[name];
@@ -2083,7 +2044,6 @@
       });
     };
   } // eslint-disable-next-line import/no-unused-modules
-
 
   var applyStyles$1 = {
     name: 'applyStyles',
@@ -2151,11 +2111,9 @@
             return true;
           } // $FlowFixMe[prop-missing]: need a better way to handle this...
 
-
           next = next.parentNode || next.host;
         } while (next);
       } // Give up, the result is false
-
 
     return false;
   }
@@ -2201,7 +2159,6 @@
   } // `.offsetParent` reports `null` for fixed elements, while absolute elements
   // return the containing block
 
-
   function getContainingBlock(element) {
     var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') !== -1;
     var isIE = navigator.userAgent.indexOf('Trident') !== -1;
@@ -2232,7 +2189,6 @@
     return null;
   } // Gets the closest ancestor positioned element. Handles some edge cases,
   // such as table ancestors and cross browser bugs.
-
 
   function getOffsetParent(element) {
     var window = getWindow(element);
@@ -2335,7 +2291,6 @@
       return;
     } // CSS selector
 
-
     if (typeof arrowElement === 'string') {
       arrowElement = state.elements.popper.querySelector(arrowElement);
 
@@ -2345,13 +2300,11 @@
     }
 
     if (!contains(state.elements.popper, arrowElement)) {
-
       return;
     }
 
     state.elements.arrow = arrowElement;
   } // eslint-disable-next-line import/no-unused-modules
-
 
   var arrow$1 = {
     name: 'arrow',
@@ -2420,7 +2373,6 @@
           widthProp = 'scrollWidth';
         }
       } // $FlowFixMe[incompatible-cast]: force type refinement, we compare offsetParent with window above, but Flow doesn't detect it
-
 
       offsetParent = offsetParent;
 
@@ -2492,7 +2444,6 @@
     });
   } // eslint-disable-next-line import/no-unused-modules
 
-
   var computeStyles$1 = {
     name: 'computeStyles',
     enabled: true,
@@ -2538,7 +2489,6 @@
       }
     };
   } // eslint-disable-next-line import/no-unused-modules
-
 
   var eventListeners = {
     name: 'eventListeners',
@@ -2729,7 +2679,6 @@
   // clipping (or hiding) overflowing elements with a position different from
   // `initial`
 
-
   function getClippingParents(element) {
     var clippingParents = listScrollParents(getParentNode(element));
     var canEscapeClipping = ['absolute', 'fixed'].indexOf(getComputedStyle$1(element).position) >= 0;
@@ -2739,13 +2688,11 @@
       return [];
     } // $FlowFixMe[incompatible-return]: https://github.com/facebook/flow/issues/1414
 
-
     return clippingParents.filter(function (clippingParent) {
       return isElement(clippingParent) && contains(clippingParent, clipperElement) && getNodeName(clippingParent) !== 'body';
     });
   } // Gets the maximum area that the element is visible in due to any number of
   // clipping parents
-
 
   function getClippingRect(element, boundary, rootBoundary) {
     var mainClippingParents = boundary === 'clippingParents' ? getClippingParents(element) : [].concat(boundary);
@@ -2915,7 +2862,6 @@
       allowedPlacements = placements$1;
     } // $FlowFixMe[incompatible-type]: Flow seems to have problems with two array unions...
 
-
     var overflows = allowedPlacements.reduce(function (acc, placement) {
       acc[placement] = detectOverflow(state, {
         placement: placement,
@@ -3058,7 +3004,6 @@
     }
   } // eslint-disable-next-line import/no-unused-modules
 
-
   var flip$1 = {
     name: 'flip',
     enabled: true,
@@ -3120,7 +3065,6 @@
     });
   } // eslint-disable-next-line import/no-unused-modules
 
-
   var hide$1 = {
     name: 'hide',
     enabled: true,
@@ -3172,7 +3116,6 @@
     state.modifiersData[name] = data;
   } // eslint-disable-next-line import/no-unused-modules
 
-
   var offset$1 = {
     name: 'offset',
     enabled: true,
@@ -3195,7 +3138,6 @@
       placement: state.placement
     });
   } // eslint-disable-next-line import/no-unused-modules
-
 
   var popperOffsets$1 = {
     name: 'popperOffsets',
@@ -3311,7 +3253,6 @@
 
     state.modifiersData[name] = data;
   } // eslint-disable-next-line import/no-unused-modules
-
 
   var preventOverflow$1 = {
     name: 'preventOverflow',
@@ -3533,10 +3474,8 @@
           // anymore
 
           if (!areValidElements(reference, popper)) {
-
             return;
           } // Store the reference and popper rects to be read by modifiers
-
 
           state.rects = {
             reference: getCompositeRect(reference, getOffsetParent(popper), state.options.strategy === 'fixed'),
@@ -3558,7 +3497,6 @@
           });
 
           for (var index = 0; index < state.orderedModifiers.length; index++) {
-
             if (state.reset === true) {
               state.reset = false;
               index = -1;
@@ -3596,7 +3534,6 @@
       };
 
       if (!areValidElements(reference, popper)) {
-
         return instance;
       }
 
@@ -3776,7 +3713,6 @@
       this._addEventListeners();
     } // Getters
 
-
     static get Default() {
       return Default$7;
     }
@@ -3788,7 +3724,6 @@
     static get NAME() {
       return NAME$8;
     } // Public
-
 
     toggle() {
       if (isDisabled(this._element)) {
@@ -3820,7 +3755,6 @@
         return;
       } // Totally disable Popper for Dropdowns in Navbar
 
-
       if (this._inNavbar) {
         Manipulator.setDataAttribute(this._menu, 'popper', 'none');
       } else {
@@ -3850,7 +3784,6 @@
       // empty mouseover listeners to the body's immediate children;
       // only needed because of broken event delegation on iOS
       // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
-
 
       if ('ontouchstart' in document.documentElement && !parent.closest(SELECTOR_NAVBAR_NAV)) {
         [].concat(...document.body.children).forEach(elem => EventHandler.on(elem, 'mouseover', noop));
@@ -3895,7 +3828,6 @@
       }
     } // Private
 
-
     _addEventListeners() {
       EventHandler.on(this._element, EVENT_CLICK, event => {
         event.preventDefault();
@@ -3910,7 +3842,6 @@
         return;
       } // If this is a touch-enabled device we remove the extra
       // empty mouseover listeners we added for iOS support
-
 
       if ('ontouchstart' in document.documentElement) {
         [].concat(...document.body.children).forEach(elem => EventHandler.off(elem, 'mouseover', noop));
@@ -3959,7 +3890,6 @@
       if (parentDropdown.classList.contains(CLASS_NAME_DROPSTART)) {
         return PLACEMENT_LEFT;
       } // We need to trim the value because custom properties can also include spaces
-
 
       const isEnd = getComputedStyle(this._menu).getPropertyValue('--bs-position').trim() === 'end';
 
@@ -4029,10 +3959,8 @@
       } // if target isn't included in items (e.g. when expanding the dropdown)
       // allow cycling to get the last item in case key equals ARROW_UP_KEY
 
-
       getNextActiveElement(items, target, key === ARROW_DOWN_KEY, !items.includes(target)).focus();
     } // Static
-
 
     static dropdownInterface(element, config) {
       const data = Dropdown.getOrCreateInstance(element, config);
@@ -4081,7 +4009,6 @@
           if (composedPath.includes(context._element) || context._config.autoClose === 'inside' && !isMenuTarget || context._config.autoClose === 'outside' && isMenuTarget) {
             continue;
           } // Tab navigation through the dropdown menu or events from contained inputs shouldn't close the menu
-
 
           if (context._menu.contains(event.target) && (event.type === 'keyup' && event.key === TAB_KEY || /input|select|option|textarea|form/i.test(event.target.tagName))) {
             continue;
@@ -4147,14 +4074,12 @@
         Dropdown.clearMenus();
       }
     }
-
   }
   /**
    * ------------------------------------------------------------------------
    * Data Api implementation
    * ------------------------------------------------------------------------
    */
-
 
   EventHandler.on(document, EVENT_KEYDOWN_DATA_API, SELECTOR_DATA_TOGGLE$3, Dropdown.dataApiKeydownHandler);
   EventHandler.on(document, EVENT_KEYDOWN_DATA_API, SELECTOR_MENU, Dropdown.dataApiKeydownHandler);
@@ -4198,9 +4123,7 @@
 
       this._disableOverFlow(); // give padding to element to balance the hidden scrollbar width
 
-
       this._setElementAttributes(this._element, 'paddingRight', calculatedValue => calculatedValue + width); // trick: We adjust positive paddingRight and negative marginRight to sticky-top elements to keep showing fullwidth
-
 
       this._setElementAttributes(SELECTOR_FIXED_CONTENT, 'paddingRight', calculatedValue => calculatedValue + width);
 
@@ -4274,7 +4197,6 @@
     isOverflowing() {
       return this.getWidth() > 0;
     }
-
   }
 
   /**
@@ -4343,7 +4265,6 @@
       });
     } // Private
 
-
     _getElement() {
       if (!this._element) {
         const backdrop = document.createElement('div');
@@ -4397,7 +4318,6 @@
     _emulateAnimation(callback) {
       executeAfterTransition(callback, this._getElement(), this._config.isAnimated);
     }
-
   }
 
   /**
@@ -4465,7 +4385,6 @@
       this._scrollBar = new ScrollBarHelper();
     } // Getters
 
-
     static get Default() {
       return Default$5;
     }
@@ -4473,7 +4392,6 @@
     static get NAME() {
       return NAME$6;
     } // Public
-
 
     toggle(relatedTarget) {
       return this._isShown ? this.hide() : this.show(relatedTarget);
@@ -4575,7 +4493,6 @@
     handleUpdate() {
       this._adjustDialog();
     } // Private
-
 
     _initializeBackDrop() {
       return new Backdrop({
@@ -4761,7 +4678,6 @@
     // the following methods are used to handle overflowing modals
     // ----------------------------------------------------------------------
 
-
     _adjustDialog() {
       const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
 
@@ -4783,7 +4699,6 @@
       this._element.style.paddingRight = '';
     } // Static
 
-
     static jQueryInterface(config, relatedTarget) {
       return this.each(function () {
         const data = Modal.getOrCreateInstance(this, config);
@@ -4799,14 +4714,12 @@
         data[config](relatedTarget);
       });
     }
-
   }
   /**
    * ------------------------------------------------------------------------
    * Data Api implementation
    * ------------------------------------------------------------------------
    */
-
 
   EventHandler.on(document, EVENT_CLICK_DATA_API$2, SELECTOR_DATA_TOGGLE$2, function (event) {
     const target = getElementFromSelector(this);
@@ -4895,7 +4808,6 @@
       this._addEventListeners();
     } // Getters
 
-
     static get NAME() {
       return NAME$5;
     }
@@ -4903,7 +4815,6 @@
     static get Default() {
       return Default$4;
     } // Public
-
 
     toggle(relatedTarget) {
       return this._isShown ? this.hide() : this.show(relatedTarget);
@@ -4997,7 +4908,6 @@
       EventHandler.off(document, EVENT_FOCUSIN$1);
     } // Private
 
-
     _getConfig(config) {
       config = { ...Default$4,
         ...Manipulator.getDataAttributes(this._element),
@@ -5036,7 +4946,6 @@
       });
     } // Static
 
-
     static jQueryInterface(config) {
       return this.each(function () {
         const data = Offcanvas.getOrCreateInstance(this, config);
@@ -5052,14 +4961,12 @@
         data[config](this);
       });
     }
-
   }
   /**
    * ------------------------------------------------------------------------
    * Data Api implementation
    * ------------------------------------------------------------------------
    */
-
 
   EventHandler.on(document, EVENT_CLICK_DATA_API$1, SELECTOR_DATA_TOGGLE$1, function (event) {
     const target = getElementFromSelector(this);
@@ -5321,7 +5228,6 @@
       this._setListeners();
     } // Getters
 
-
     static get Default() {
       return Default$3;
     }
@@ -5337,7 +5243,6 @@
     static get DefaultType() {
       return DefaultType$3;
     } // Public
-
 
     enable() {
       this._isEnabled = true;
@@ -5453,7 +5358,6 @@
       // only needed because of broken event delegation on iOS
       // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
 
-
       if ('ontouchstart' in document.documentElement) {
         [].concat(...document.body.children).forEach(element => {
           EventHandler.on(element, 'mouseover', noop);
@@ -5533,7 +5437,6 @@
       }
     } // Protected
 
-
     isWithContent() {
       return Boolean(this.getTitle());
     }
@@ -5607,7 +5510,6 @@
 
       return attachment;
     } // Private
-
 
     _initializeOnDelegatedTarget(event, context) {
       const dataKey = this.constructor.DATA_KEY;
@@ -5872,7 +5774,6 @@
       this._addAttachmentClass(this._getAttachment(state.placement));
     } // Static
 
-
     static jQueryInterface(config) {
       return this.each(function () {
         const data = Tooltip.getOrCreateInstance(this, config);
@@ -5886,7 +5787,6 @@
         }
       });
     }
-
   }
   /**
    * ------------------------------------------------------------------------
@@ -5894,7 +5794,6 @@
    * ------------------------------------------------------------------------
    * add .Tooltip to jQuery only if jQuery is present
    */
-
 
   defineJQueryPlugin(Tooltip);
 
@@ -5965,7 +5864,6 @@
       return DefaultType$2;
     } // Overrides
 
-
     isWithContent() {
       return this.getTitle() || this._getContent();
     }
@@ -6003,7 +5901,6 @@
       tip.classList.remove(CLASS_NAME_FADE$2, CLASS_NAME_SHOW$2);
     } // Private
 
-
     _addAttachmentClass(attachment) {
       this.getTipElement().classList.add(`${CLASS_PREFIX}-${this.updateAttachment(attachment)}`);
     }
@@ -6021,7 +5918,6 @@
       }
     } // Static
 
-
     static jQueryInterface(config) {
       return this.each(function () {
         const data = Popover.getOrCreateInstance(this, config);
@@ -6035,7 +5931,6 @@
         }
       });
     }
-
   }
   /**
    * ------------------------------------------------------------------------
@@ -6043,7 +5938,6 @@
    * ------------------------------------------------------------------------
    * add .Popover to jQuery only if jQuery is present
    */
-
 
   defineJQueryPlugin(Popover);
 
@@ -6109,7 +6003,6 @@
       this._process();
     } // Getters
 
-
     static get Default() {
       return Default$1;
     }
@@ -6117,7 +6010,6 @@
     static get NAME() {
       return NAME$2;
     } // Public
-
 
     refresh() {
       const autoMethod = this._scrollElement === this._scrollElement.window ? METHOD_OFFSET : METHOD_POSITION;
@@ -6151,7 +6043,6 @@
       EventHandler.off(this._scrollElement, EVENT_KEY$2);
       super.dispose();
     } // Private
-
 
     _getConfig(config) {
       config = { ...Default$1,
@@ -6261,7 +6152,6 @@
       SelectorEngine.find(this._selector).filter(node => node.classList.contains(CLASS_NAME_ACTIVE$1)).forEach(node => node.classList.remove(CLASS_NAME_ACTIVE$1));
     } // Static
 
-
     static jQueryInterface(config) {
       return this.each(function () {
         const data = ScrollSpy.getOrCreateInstance(this, config);
@@ -6277,14 +6167,12 @@
         data[config]();
       });
     }
-
   }
   /**
    * ------------------------------------------------------------------------
    * Data Api implementation
    * ------------------------------------------------------------------------
    */
-
 
   EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
     SelectorEngine.find(SELECTOR_DATA_SPY).forEach(spy => new ScrollSpy(spy));
@@ -6342,7 +6230,6 @@
       return NAME$1;
     } // Public
 
-
     show() {
       if (this._element.parentNode && this._element.parentNode.nodeType === Node.ELEMENT_NODE && this._element.classList.contains(CLASS_NAME_ACTIVE)) {
         return;
@@ -6387,7 +6274,6 @@
         complete();
       }
     } // Private
-
 
     _activate(element, container, callback) {
       const activeElements = container && (container.nodeName === 'UL' || container.nodeName === 'OL') ? SelectorEngine.find(SELECTOR_ACTIVE_UL, container) : SelectorEngine.children(container, SELECTOR_ACTIVE);
@@ -6452,7 +6338,6 @@
       }
     } // Static
 
-
     static jQueryInterface(config) {
       return this.each(function () {
         const data = Tab.getOrCreateInstance(this);
@@ -6466,14 +6351,12 @@
         }
       });
     }
-
   }
   /**
    * ------------------------------------------------------------------------
    * Data Api implementation
    * ------------------------------------------------------------------------
    */
-
 
   EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
     if (['A', 'AREA'].includes(this.tagName)) {
@@ -6552,7 +6435,6 @@
       this._setListeners();
     } // Getters
 
-
     static get DefaultType() {
       return DefaultType;
     }
@@ -6564,7 +6446,6 @@
     static get NAME() {
       return NAME;
     } // Public
-
 
     show() {
       const showEvent = EventHandler.trigger(this._element, EVENT_SHOW);
@@ -6630,7 +6511,6 @@
       super.dispose();
     } // Private
 
-
     _getConfig(config) {
       config = { ...Default,
         ...Manipulator.getDataAttributes(this._element),
@@ -6695,7 +6575,6 @@
       this._timeout = null;
     } // Static
 
-
     static jQueryInterface(config) {
       return this.each(function () {
         const data = Toast.getOrCreateInstance(this, config);
@@ -6709,7 +6588,6 @@
         }
       });
     }
-
   }
   /**
    * ------------------------------------------------------------------------
@@ -6717,7 +6595,6 @@
    * ------------------------------------------------------------------------
    * add .Toast to jQuery only if jQuery is present
    */
-
 
   defineJQueryPlugin(Toast);
 
@@ -6743,6 +6620,5 @@
   };
 
   return index_umd;
-
 })));
 //# sourceMappingURL=bootstrap.bundle.js.map

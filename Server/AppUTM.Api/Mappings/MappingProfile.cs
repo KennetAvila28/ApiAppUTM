@@ -1,13 +1,13 @@
-﻿using AppUTM.Api.DTOS.Modules;
+﻿using AppUTM.Api.DTOS.Coordinations;
+using AppUTM.Api.DTOS.Events;
+using AppUTM.Api.DTOS.Favorites;
+using AppUTM.Api.DTOS.Modules;
+using AppUTM.Api.DTOS.RoleModule;
+using AppUTM.Api.DTOS.Roles;
 using AppUTM.Api.DTOS.Users;
 using AppUTM.Core.Models;
 using AutoMapper;
 using System;
-using AppUTM.Api.DTOS.Coordinations;
-using AppUTM.Api.DTOS.Events;
-using AppUTM.Api.DTOS.Favorites;
-using AppUTM.Api.DTOS.RoleModule;
-using AppUTM.Api.DTOS.Roles;
 
 namespace AppUTM.Api.Mappings
 {

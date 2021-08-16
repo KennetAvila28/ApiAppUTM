@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using AppUTM.Core.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace AppUTM.Api.DTOS.Events
 {

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AppUTM.Core.Models;
+﻿using AppUTM.Core.Models;
 
 namespace AppUTM.Api.DTOS.RoleModule
 {

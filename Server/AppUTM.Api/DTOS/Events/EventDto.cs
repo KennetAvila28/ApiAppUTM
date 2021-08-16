@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppUTM.Api.DTOS.Coordinations;
+﻿using AppUTM.Api.DTOS.Coordinations;
+using System;
 
 namespace AppUTM.Api.DTOS.Events
 {

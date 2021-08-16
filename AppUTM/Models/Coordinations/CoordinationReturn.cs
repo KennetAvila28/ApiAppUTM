@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using AppUTM.Models.Events;
+﻿using AppUTM.Models.Events;
+using System.Collections.Generic;
 
 namespace AppUTM.Models.Coordinations
 {

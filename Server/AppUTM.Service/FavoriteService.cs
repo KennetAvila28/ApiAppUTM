@@ -5,7 +5,6 @@ using AppUTM.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AppUTM.Data.Migrations;
 
 namespace AppUTM.Services
 {

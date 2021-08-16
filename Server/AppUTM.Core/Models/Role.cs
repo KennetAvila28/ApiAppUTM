@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection;
 
 namespace AppUTM.Core.Models
 {

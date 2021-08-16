@@ -1,9 +1,8 @@
-﻿using System;
+﻿using AppUTM.Models.Users;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using AppUTM.Models.Users;
 
 namespace AppUTM.Extensions
 {

@@ -3,38 +3,38 @@
 @inject NavigationManager navigation
 @inject HttpClient Http
 @inject NotificationService NotificationService
-    <div style="text-align: center;">
-        <h1>Crear una coordinacion</h1>
+<div style="text-align: center;">
+    <h1>Crear una coordinacion</h1>
+</div>
+<div class="container-fluid">
+    <div class="form-group">
+        <RadzenLabel Text="Nombre:"></RadzenLabel>
+        <RadzenTextBox ShowUpDown="false" @bind-Value="@_oCoordinationCreate.Nombre" Style="width: auto;"></RadzenTextBox>
     </div>
-    <div class="container-fluid">
-        <div class="form-group">
-            <RadzenLabel Text="Nombre:"></RadzenLabel>
-            <RadzenTextBox ShowUpDown="false" @bind-Value="@_oCoordinationCreate.Nombre" Style="width: auto;"></RadzenTextBox>
-        </div>
-        <div class="form-group">
-            <div class="form-group mt-4">
-                <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Crear coordinacion</button>
-                <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
-            </div>
+    <div class="form-group">
+        <div class="form-group mt-4">
+            <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Crear coordinacion</button>
+            <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
         </div>
     </div>
+</div>
 
-    @code {
-        readonly CoordinationCreate _oCoordinationCreate = new();
+@code {
+    readonly CoordinationCreate _oCoordinationCreate = new();
 
-        public async Task Post()
+    public async Task Post()
+    {
+        if (!string.IsNullOrEmpty(_oCoordinationCreate.Nombre))
         {
-            if (!string.IsNullOrEmpty(_oCoordinationCreate.Nombre))
-            {
-                var permission = await Http.PostAsJsonAsync("Coordinations", _oCoordinationCreate);
-                NotificationExtensions.ShowNotification(NotificationService, permission.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Coordinacion creada", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear la coordinacion", Duration = 3000 });
-                navigation.NavigateTo("/Coordinations");
-            }
-            else
-                NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Ingresa un nombe", Duration = 3000 });
-        }
-        void Cancel()
-        {
+            var permission = await Http.PostAsJsonAsync("Coordinations", _oCoordinationCreate);
+            NotificationExtensions.ShowNotification(NotificationService, permission.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Coordinacion creada", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear la coordinacion", Duration = 3000 });
             navigation.NavigateTo("/Coordinations");
         }
+        else
+            NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Ingresa un nombe", Duration = 3000 });
     }
+    void Cancel()
+    {
+        navigation.NavigateTo("/Coordinations");
+    }
+}

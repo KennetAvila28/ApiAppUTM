@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AppUTM.Api.DTOS.Modules;
+﻿using AppUTM.Api.DTOS.Modules;
 using AppUTM.Api.Responses;
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AppUTM.Api.Controllers
 {

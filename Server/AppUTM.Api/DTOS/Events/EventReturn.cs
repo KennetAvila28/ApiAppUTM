@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using AppUTM.Api.DTOS.Coordinations;
+﻿using AppUTM.Api.DTOS.Coordinations;
 using AppUTM.Api.DTOS.Favorites;
-using AppUTM.Core.Models;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace AppUTM.Api.DTOS.Events
 {

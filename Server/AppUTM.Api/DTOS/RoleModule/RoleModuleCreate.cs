@@ -1,6 +1,4 @@
-﻿using AppUTM.Core.Models;
-
-namespace AppUTM.Api.DTOS.RoleModule
+﻿namespace AppUTM.Api.DTOS.RoleModule
 {
     public class RoleModuleCreate
     {

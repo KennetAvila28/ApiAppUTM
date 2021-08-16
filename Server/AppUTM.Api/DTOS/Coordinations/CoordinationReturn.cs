@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppUTM.Core.Models;
-
-namespace AppUTM.Api.DTOS.Coordinations
+﻿namespace AppUTM.Api.DTOS.Coordinations
 {
     public class CoordinationReturn
     {

@@ -1,8 +1,5 @@
-﻿using System;
+﻿using AppUTM.Core.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppUTM.Core.Models;
 
 namespace AppUTM.Api.DTOS.Users
 {

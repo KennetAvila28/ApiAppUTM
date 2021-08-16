@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace AppUTM.Extensions
 {
+    using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+    using Microsoft.Authentication.WebAssembly.Msal.Models;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Graph;
     using System;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-    using Microsoft.Authentication.WebAssembly.Msal.Models;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Graph;
 
     internal static class GraphClientExtensions
     {

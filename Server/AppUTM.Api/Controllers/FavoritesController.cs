@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AppUTM.Api.DTOS.Favorites;
+﻿using AppUTM.Api.DTOS.Favorites;
 using AppUTM.Api.Responses;
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AppUTM.Api.Controllers
 {

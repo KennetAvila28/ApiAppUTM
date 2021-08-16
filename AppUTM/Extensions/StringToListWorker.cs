@@ -1,9 +1,9 @@
+using AppUTM.Models.Users;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using AppUTM.Models.Users;
 using static System.Int32;
 
 namespace AppUTM.Extensions

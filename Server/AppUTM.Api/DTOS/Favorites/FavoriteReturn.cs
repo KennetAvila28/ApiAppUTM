@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using AppUTM.Api.DTOS.Events;
-using AppUTM.Core.Models;
+﻿using AppUTM.Api.DTOS.Events;
+using System.Collections.Generic;
 
 namespace AppUTM.Api.DTOS.Favorites
 {

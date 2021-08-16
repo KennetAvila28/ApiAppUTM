@@ -1,14 +1,12 @@
-﻿using AppUTM.Api.Responses;
+﻿using AppUTM.Api.DTOS.Roles;
+using AppUTM.Api.Responses;
 using AppUTM.Core.Interfaces;
 using AppUTM.Core.Models;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AppUTM.Api.DTOS.Roles;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

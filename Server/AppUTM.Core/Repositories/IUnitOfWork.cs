@@ -1,5 +1,4 @@
-﻿using AppUTM.Core.Models;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace AppUTM.Core.Repositories
