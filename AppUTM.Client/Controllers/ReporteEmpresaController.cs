@@ -44,7 +44,7 @@ namespace AppUTM.Client.Controllers
         {
             await PrepareAuthenticatedClient();
             string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
-            //ViewBag.image = await GetPhoto(_httpClient);
+            ViewBag.image = await GetPhoto(_httpClient);
 
             HttpClient httpClient = new HttpClient();
             Cupones cupones = new Cupones();

@@ -58,11 +58,11 @@ namespace AppUTM.Client.Controllers
             return View(listEmpresas);
         }
         [HttpGet]
-        public async Task<IActionResult> Reporte1()
+        public async Task<IActionResult> EmpresasDesactivadas()
         {
             await PrepareAuthenticatedClient();
             string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
-            //ViewBag.image = await GetPhoto(_httpClient);
+            ViewBag.image = await GetPhoto(_httpClient);
 
             HttpClient httpClient = new HttpClient();
             //http://api.utmetropolitana.edu.mx/api/Empresas/Get
@@ -150,6 +150,11 @@ namespace AppUTM.Client.Controllers
             string base64String = Convert.ToBase64String(byteArray);
 
             return base64String;
+        }
+
+        public IActionResult Empresa()
+        {
+            return View();
         }
     }
 }

@@ -6,26 +6,14 @@
 }
 <html>
 <head>
-    @*<style type="text/css">
-        html, body, div, iframe {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
 
-        iframe {
-            display: block;
-            width: 100%;
-            border: none;
-        }
-    </style>*@
      @*links para exportar a excel*@ 
     <script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
     <script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
     <script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
 </head>
 <body>
-    @*<iframe src="https://localhost:44301/ReporteEmpresa.html"></iframe>*@
+   
     <div class="d-flex">
 
         <h2 class="mt-2 mb-3">Cupones de la empresa: @Model.Empresa.Nombre</h2>

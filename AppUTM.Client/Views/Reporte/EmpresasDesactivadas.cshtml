@@ -1,0 +1,54 @@
+﻿@model AppUTM.Client.Models.ListEmpresas;
+@{
+    ViewData["Title"] = "Reporte";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<html>
+<head>
+    <script src="~/js/filter.js"></script>
+</head>
+<body>
+    <h4>Empresas sin cupones</h4>
+    <div class="container mt-3">
+        <div class="mb-4 d-flex">
+            <input class="form-control me-3" type="search" id="inputTable" onkeyup="searchInTable()" aria-label="Search" placeholder="Buscar empresa...">
+        </div>
+        <table style="text-align: center" class="table mt-3">
+            <thead>
+
+                <tr>
+                    <th scope="col">Nombre de empresa</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Teléfono</th>
+
+                </tr>
+
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model.empresasRegistradas)
+                {
+
+                if (item.Activa == false)
+                {
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td>@item.Direccion</td>
+                    <td>@item.Telefono</td>
+
+                </tr>
+                }
+
+                }
+            </tbody>
+        </table>
+
+
+    </div>
+    <div>
+        <a class="btn btn-danger myButton" target="_blank" asp-controller="CrearPDF" asp-action="EmpresasSinCupones">Crear PDF</a>
+
+    </div>
+</body>
+</html>
+
+
