@@ -57,6 +57,7 @@ namespace AppUTM.Api.Mappings
             //Events
             CreateMap<Event, EventCreate>().ReverseMap();
             CreateMap<Event, EventReturn>().ReverseMap();
+            CreateMap<Event, EventDto>().ReverseMap();
             CreateMap<Event, EventForUpdateDto>().ReverseMap();
             CreateMap<EventCreate, Event>().AfterMap(
                 ((source, destination) =>
@@ -79,6 +80,7 @@ namespace AppUTM.Api.Mappings
 
             CreateMap<Favorites, FavoriteCreate>().ReverseMap();
             CreateMap<Favorites, FavoriteReturn>().ReverseMap();
+            CreateMap<Favorites, FavoriteDto>().ReverseMap();
             CreateMap<FavoriteReturn, Favorites>();
         }
     }

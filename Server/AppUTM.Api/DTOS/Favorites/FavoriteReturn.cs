@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using AppUTM.Api.DTOS.Events;
 using AppUTM.Core.Models;
 
 namespace AppUTM.Api.DTOS.Favorites
@@ -8,6 +9,6 @@ namespace AppUTM.Api.DTOS.Favorites
     {
         public int Id { get; set; }
         public string Clave { get; set; }
-        public List<Event> Events { get; set; }
+        public List<EventDto> Events { get; set; }
     }
 }

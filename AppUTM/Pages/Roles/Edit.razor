@@ -8,15 +8,15 @@
         <RadzenLabel Text="Nombre:" />
         <RadzenTextBox ShowUpDown="false" TValue="int" @bind-Value="@_oRoleForUpdateDto.Nombre" Style="width: auto;"></RadzenTextBox>
     </div>
-    <RoleModuleList Id="@Id" ORoleForUpdateDto="@_oRoleForUpdateDto" />
     <div class="form-group">
         <div class="form-group mt-4">
-            <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Editar rol</button>
+            <button class="btn btn-success" @onclick="Post" role="button" type="submit">Editar rol</button>
             <button class="btn btn-danger ml-2" @onclick="Delete" role="button">Eliminar</button>
             <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
         </div>
     </div>
 </div>
+<RoleModuleList Id="@Id" />
 
 <div class="container mt-3">
     <div class="d-flex mb-3">
@@ -31,12 +31,12 @@
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="RoleModule" Property="Lectura" Title="Lectura">
                 <Template Context="data">
-                    <RadzenCheckBox TValue="bool" Value="@(data.Read)" Disabled="true" />
+                    <RadzenCheckBox TValue="bool" Value="@(data.Read)" Change="(args =>UpdateRead(args,data.Write,data.ModuleId,Id)) " />
                 </Template>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="RoleModule" Property="Escritura" Title="Escritura">
                 <Template Context="data">
-                    <RadzenCheckBox TValue="bool" Value="@(data.Write)" Disabled="true" />
+                    <RadzenCheckBox TValue="bool" Value="@(data.Write)" Change="(args =>UpdateWrite(args,data.ModuleId,Id))" />
                 </Template>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="RoleModule" Title="Acciones">
@@ -67,13 +67,13 @@
     async Task Remove(int moduleId)
     {
         var user = await Http.DeleteAsync("RoleModule/" + moduleId + "/" + Id);
-        NotificationExtensions.ShowNotification(NotificationService, user.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Rol eliminado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo eliminar el rol", Duration = 3000 });
-        await OnInitializedAsync();
+        NotificationExtensions.ShowNotification(NotificationService, user.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "acceso eliminado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo eliminar el acceso", Duration = 3000 });
+        navigation.NavigateTo("/Roles");
     }
 
     public async Task Post()
     {
-        if (_oRoleForUpdateDto != null)
+        if (!string.IsNullOrEmpty(_oRoleForUpdateDto.Nombre))
         {
             var role = await Http.PutAsJsonAsync("Roles/" + Id, _oRoleForUpdateDto);
             NotificationExtensions.ShowNotification(NotificationService, role.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Rol Actualizado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo actualizar el rol", Duration = 3000 });
@@ -82,6 +82,41 @@
         else
             NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "permiso no seleccionado", Detail = "selecciona un permiso", Duration = 3000 });
     }
+
+    async Task UpdateRead(bool value, bool write, int moduleId, int roleId)
+    {
+        if (value)
+        {
+            var roleModuleForUpdate = new RoleModule
+            {
+                Read = true,
+                Write = write
+
+            };
+
+            var role = await Http.PutAsJsonAsync("RoleModule/" + moduleId + "/" + roleId, roleModuleForUpdate);
+            NotificationExtensions.ShowNotification(NotificationService, role.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Permiso actualizado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo actualizar el permiso", Duration = 3000 });
+            await OnInitializedAsync();
+        }
+        else
+            await Remove(moduleId);
+    }
+
+    async Task UpdateWrite(bool value, int moduleId, int roleId)
+    {
+        var roleModuleForUpdate = new RoleModule
+        {
+            Read = true,
+            Write = value
+
+        };
+
+        var role = await Http.PutAsJsonAsync("RoleModule/" + moduleId + "/" + roleId, roleModuleForUpdate);
+        NotificationExtensions.ShowNotification(NotificationService, role.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Permiso actualizado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo actualizar el permiso", Duration = 3000 });
+        await OnInitializedAsync();
+
+    }
+
     void Cancel()
     {
         navigation.NavigateTo("/Roles");

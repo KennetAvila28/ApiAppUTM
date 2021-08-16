@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AppUTM.Api.DTOS.Coordinations;
-using AppUTM.Api.DTOS.Favorites;
-using AppUTM.Core.Models;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 
 namespace AppUTM.Api.DTOS.Events
 {
-    public class EventReturn
+    public class EventDto
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -23,6 +21,5 @@ namespace AppUTM.Api.DTOS.Events
         public bool IsPublished { get; set; }
         public bool IsRechazed { get; set; }
         public bool IsRevised { get; set; }
-        public List<FavoriteDto> Favorites { get; set; }
     }
 }

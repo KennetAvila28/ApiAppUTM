@@ -1,65 +1,110 @@
-﻿@inject NavigationManager navigation
+﻿@using MoreLinq
+@inject NavigationManager navigation
 @inject HttpClient Http
 @inject NotificationService NotificationService
-<div class="form-group ">
-    <div class="form-group">
-        <button class="btn btn-success" type="button" @onclick="@(Add)">Nuevo acceso <i class="oi oi-plus"></i></button>
-    </div>
-    @for (int i = 0; i < roleModuleList.Count; i++)
-    {
-        index = i;
-        var rolemodule = roleModuleList[index];
-        rolemodule.RoleId = Id;
-        <h5>Acceso @(i + 1)</h5>
-        <div class="row mb-3 mt-3">
-            <div class="col-sm">
-                <RadzenDropDown Data="_module" Placeholder="selecciona un modulo" TValue="int" TextProperty="@nameof(ModuleReturn.Name)" ValueProperty="@nameof(ModuleReturn.Id)" @bind-Value="rolemodule.ModuleId" />
-            </div>
-            <div class="col-sm">
-                <RadzenCheckBox TValue="bool" @bind-Value="rolemodule.Read" /><RadzenLabel Text="Lectura" />
-            </div>
-            <div class="col-sm">
-                <RadzenCheckBox TValue="bool" @bind-Value="rolemodule.Write" /><RadzenLabel Text="Escritura" />
-            </div>
-            <div class="col-sm">
-                <button class="btn btn-success" type="button" @onclick="@(()=>roleModuleList.RemoveAt(index))"><i class="oi oi-minus"></i></button>
-            </div>
+@if (_modulesCount > _roleModuleCount)
+{
+    <div class="form-group mt-3 ">
+        <div class="form-group mb-3">
+            <button class="btn btn-success" type="button" @onclick="@(Add)">Nuevo acceso <i class="oi oi-plus"></i></button>
         </div>
-    }
-</div>
-<div class="form-group">
-    <button class="btn btn-success" type="button" @onclick="@(Post)">Agregar accesos</button>
-</div>
+        @for (var i = 0; i < _roleModuleList.Count && _modulesMaxCount != i; i++)
+        {
+            _index = i;
+            var rolemodule = _roleModuleList[_index];
+            rolemodule.RoleId = Id;
+            <h5>Acceso @(i+1)</h5>
+            <div class="row mb-3 mt-3">
+                <div class="col-sm">
+                    <RadzenDropDown @bind-Value="rolemodule.ModuleId" Data="_module" Placeholder="selecciona un modulo" TextProperty="@nameof(ModuleReturn.Name)" TValue="int" Change="RemoveList " ValueProperty="@nameof(ModuleReturn.Id)" />
+                </div>
+                <div class="col-sm">
+                    <RadzenCheckBox TValue="bool" @bind-Value="rolemodule.Read" /><RadzenLabel Text="Lectura" />
+                </div>
+                <div class="col-sm">
+                    <RadzenCheckBox TValue="bool" @bind-Value="rolemodule.Write" Change="() => { if (rolemodule.Write){ rolemodule.Read = true; }
+                                                                                         }" /><RadzenLabel Text="Escritura" />
+                </div>
+                <div class="col-sm">
+                    <button class="btn btn-success" type="button" @onclick="@(()=>_roleModuleList.RemoveAt(_index))"><i class="oi oi-minus"></i></button>
+                </div>
+            </div>
+        }
+        @if (_roleModuleList.Count > 0)
+        {
+            <div class="form-group">
+                <button class="btn btn-success mt-3" type="button" @onclick="@(Post)">Agregar accesos</button>
+            </div>
+        }
+    </div>
+}
+
 @code {
-    int index;
+    int _index;
     [Parameter]
     public int Id { get; set; }
-    IList<RoleModuleCreate> roleModuleList = new List<RoleModuleCreate>();
+
+    int _modulesCount;
+    int _roleModuleCount;
+    int _modulesMaxCount;
+    IList<RoleModuleCreate> _roleModuleList = new List<RoleModuleCreate>();
     IEnumerable<ModuleReturn> _module;
     IList<RoleReturn> _role;
 
     protected override async Task OnInitializedAsync()
     {
-        _module = await GetExtensions.GetAllModules(Http);
+        var oRoleForUpdateDto = await GetExtensions.GetRoleById(Http, Id);
+        var modules = await GetExtensions.GetAllModules(Http);
+        _modulesCount = modules.Count;
+        _roleModuleCount = oRoleForUpdateDto.RoleModules.Count;
+        if (_roleModuleCount > 0)
+        {
+            foreach (var module in oRoleForUpdateDto.RoleModules)
+            {
+                var moduleReturnCast = modules.First(x => x.Id.Equals(module.Module.Id));
+                modules.Remove(moduleReturnCast);
+            }
+            _module = modules;
+            _modulesMaxCount = modules.Count;
+
+        }
+        else
+        {
+            _module = await GetExtensions.GetAllModules(Http);
+            _modulesMaxCount = _modulesCount;
+
+        }
         _role = await GetExtensions.GetAllRoles(Http);
+
     }
 
     void Add()
     {
 
-        roleModuleList.Add(new RoleModuleCreate());
+        _roleModuleList.Add(new RoleModuleCreate());
+    }
+
+    void RemoveList()
+    {
+        _roleModuleList = _roleModuleList.DistinctBy(x => x.ModuleId).ToList();
     }
 
     public async Task Post()
     {
-        if (roleModuleList != null)
+
+        if (IsValid())
         {
-            var role = await Http.PostAsJsonAsync("RoleModule", roleModuleList);
+            var role = await Http.PostAsJsonAsync("RoleModule", _roleModuleList);
             navigation.NavigateTo("/Roles");
-            NotificationExtensions.ShowNotification(NotificationService, role.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Rol Actualizado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo actualizar el rol", Duration = 3000 });
+            NotificationExtensions.ShowNotification(NotificationService, role.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "accesos agregados", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudieron agregar los accesos", Duration = 3000 });
         }
         else
             NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "permiso no seleccionado", Detail = "selecciona un permiso", Duration = 3000 });
+    }
+
+    bool IsValid()
+    {
+        return !_roleModuleList.Any(roleModule => roleModule.Read == false & roleModule.Write == false || roleModule.ModuleId == 0);
     }
 
 }

@@ -13,7 +13,7 @@ namespace AppUTM.Core.Interfaces
 
         Task<List<RoleModule>> CreateRoleModule(List<RoleModule> newRoleModule);
 
-        Task UpdateRoleModule(List<RoleModule> roleModuleToBeUpdate);
+        Task UpdateRoleModule(RoleModule roleModuleToBeUpdate);
 
         Task DeleteRoleModule(RoleModule roleModule);
 

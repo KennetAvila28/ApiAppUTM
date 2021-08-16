@@ -80,24 +80,37 @@ namespace AppUTM.Api.Controllers
 
         // PUT api/<RoleModuleController>/5
         [HttpPut("{moduleId:int}/{roleId:int}")]
-        public void Put(int moduleId, int roleId, List<RoleModuleForUpdateDto> roleModuleDto)
+        public async Task<ActionResult> Put(int moduleId, int roleId, RoleModuleForUpdateDto roleModuleDto)
         {
-            //TODO:ADD CODE TO UPDATE ROLEMODULES
+            try
+            {
+                roleModuleDto.ModuleId = moduleId;
+                roleModuleDto.RoleId = roleId;
+                var entitie = _mapper.Map<RoleModuleForUpdateDto, RoleModule>(roleModuleDto);
+                await _service.UpdateRoleModule(entitie);
+                var response = new ApiResponse<bool>(true);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.InnerException);
+            }
         }
 
         // DELETE api/<RoleModuleController>/5
         [HttpDelete("{moduleId:int}/{roleId:int}")]
-        public async Task Delete(int moduleId, int roleId)
+        public async Task<ActionResult> Delete(int moduleId, int roleId)
         {
             try
             {
                 var rolemodule = await _service.GetRoleModuleById(moduleId, roleId);
                 await _service.DeleteRoleModule(rolemodule);
+                var response = new ApiResponse<bool>(true);
+                return Ok(response);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                return BadRequest(e.InnerException);
             }
         }
     }

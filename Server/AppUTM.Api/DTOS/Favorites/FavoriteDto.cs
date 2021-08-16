@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppUTM.Core.Models;
 
-namespace AppUTM.Api.DTOS.Coordinations
+namespace AppUTM.Api.DTOS.Favorites
 {
-    public class CoordinationReturn
+    public class FavoriteDto
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
+        public string Clave { get; set; }
     }
 }

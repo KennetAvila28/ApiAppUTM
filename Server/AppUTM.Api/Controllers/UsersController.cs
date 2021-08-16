@@ -4,13 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AppUTM.Api.DTOS;
 using AppUTM.Api.DTOS.Users;
 using AppUTM.Api.Responses;
 using AppUTM.Core.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json.Linq;
 
 namespace AppUTM.Api.Controllers
 {
@@ -63,7 +68,7 @@ namespace AppUTM.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("empleado/")]
+        [HttpPost("student/")]
         public async Task<ActionResult> GetGraphUser(Token token)
         {
             const string url = "https://graph.microsoft.com/v1.0/me";
@@ -89,7 +94,25 @@ namespace AppUTM.Api.Controllers
             {
                 var Url = "http://api.utmetropolitana.edu.mx/api/Empleados/Get?correoinstitucional=";
                 var Client = new HttpClient();
-                var json = await Client.GetStringAsync(Url + correo);
+                var jsonString = await Client.GetFromJsonAsync<string>(Url + correo);
+                var json = JObject.Parse(jsonString.Replace("[", "").Replace("]", ""));
+                return Ok(json);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("worker/{correo}")]
+        public async Task<ActionResult> GetWorker(string correo)
+        {
+            try
+            {
+                var Url = "http://api.utmetropolitana.edu.mx/api/Empleados/Get?correoinstitucional=";
+                var Client = new HttpClient();
+                var json = await Client.GetFromJsonAsync<string>(Url + correo);
                 return Ok(json);
             }
             catch (Exception e)

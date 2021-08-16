@@ -33,9 +33,9 @@ namespace AppUTM.Services
             return newRoleModule;
         }
 
-        public async Task UpdateRoleModule(List<RoleModule> roleModuleToBeUpdate)
+        public async Task UpdateRoleModule(RoleModule roleModuleToBeUpdate)
         {
-            _context.RoleModules.UpdateRange(roleModuleToBeUpdate);
+            _context.RoleModules.Update(roleModuleToBeUpdate);
             await _unitOfWork.CommitAsync();
         }
 
