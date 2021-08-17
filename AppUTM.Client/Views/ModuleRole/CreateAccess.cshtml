@@ -8,9 +8,10 @@
     List<SelectListItem> modulo = ViewBag.Modulos;
     List<SelectListItem> roles = ViewBag.Roles;
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Acceso a modulos:</h1>
+<h1>Acceso a módulos:</h1>
 
 
 
@@ -21,10 +22,10 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="col-md-4">
 
-                
+
 
                 <label><b>Modulos:</b></label><br />
-            <div class="col-md-12">
+                <div class="col-md-12">
 
                     @Html.DropDownListFor(model => model.ModuleId, modulo, new { htmlAttributes = new { @class = "form-control" } })
 
@@ -34,7 +35,7 @@
             </div><br /><br />
             <div class="col-md-4">
 
-                
+
                 <label><b>Roles:</b></label>   <div class="col-md-12">
 
                     @Html.DropDownListFor(model => model.RoleId, roles, new { htmlAttributes = new { @class = "form-control" } })
@@ -43,16 +44,16 @@
 
             </div><br /><br />
 
-        
+
             <div>
                 <input type="checkbox" asp-for="Lectura" id="Lectura" /> <label>Lectura</label>
                 <input type="checkbox" asp-for="Escritura" id="Escritura" /> <label>Escritura</label>
 
-             </div>   <br /><br />
-     
+            </div>   <br /><br />
+
 
             <div class="form-group">
-                <input type="submit" value="Crear Rol" class="btn btn-green btn-sm" />
+                <input type="submit" value="Agregar acceso" class="btn btn-green btn-sm" />
                 <a class="btn btn-secondary btn-sm" asp-action="Index">Regresar</a>
 
             </div>
@@ -66,24 +67,24 @@
 </div>
 
 @section Scripts {
-  
-  @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script>
-    $(document).ready(function () {
-        $('#Escritura').click(function () {
-            if ($('#Escritura').is(':checked')) {
-                $('#Lectura').prop("checked", true);
-            }
-            //} else {
-            //    $('#Lectura').prop("checked", false);
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-            //}
-           
-        })
+    <script>
+        $(document).ready(function () {
+            $('#Escritura').click(function () {
+                if ($('#Escritura').is(':checked')) {
+                    $('#Lectura').prop("checked", true);
+                }
+                //} else {
+                //    $('#Lectura').prop("checked", false);
 
-    });
-</script>
+                //}
+
+            })
+
+        });
+    </script>
 }
 
 

@@ -56,9 +56,6 @@ namespace AppUTM.Api.Mappings
 
             CreateMap<PermissionReturn, Permission>();
 
-
-
-
             CreateMap<Module, ModuleCreate>().ReverseMap();
             CreateMap<Module, ModuleReturn>().ReverseMap();
             CreateMap<Module, moduleToBeUpdated>().ReverseMap();
@@ -79,7 +76,6 @@ namespace AppUTM.Api.Mappings
             //cuponImagen
             CreateMap<CuponImagen, CuponImagenReturn>().ReverseMap();
             CreateMap<CuponImagen, CuponImagenCreate>().ReverseMap();
-            //historialCupones
             CreateMap<HistorialCupones, HistorialCuponesReturn>().ReverseMap();
             CreateMap<HistorialCupones, HistorialCuponesCreate>().ReverseMap();
         }

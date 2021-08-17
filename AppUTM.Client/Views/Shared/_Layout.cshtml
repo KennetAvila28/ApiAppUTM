@@ -56,7 +56,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
                                 <li><a class="dropdown-item" aria-current="page" asp-controller="Reporte" asp-action="Index">Empresas con cupones</a></li>
-                                <li><a class="dropdown-item" aria-current="page" asp-controller="Reporte" asp-action="Reporte1">Empresas desactivadas</a></li>
+                                <li><a class="dropdown-item" aria-current="page" asp-controller="Reporte" asp-action="EmpresasDesactivadas">Empresas sin cupones</a></li>
                                 <li><a class="dropdown-item" aria-current="page" asp-controller="HistorialCupones" asp-action="Index">Usos por divisiones</a></li>
                             </ul>
 
@@ -94,7 +94,11 @@
                         <p class="nav-item"></p>
                         <a class="nav-item pe-0" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="avatar avatar-48">
+<<<<<<< HEAD
                                 <img style="width: 52px; height: auto;" class="rounded-circle" src="data:image/png;base64,@ViewBag.image" alt="">
+=======
+                                <img style="width:48px; height:48px;"class="rounded-circle" src="data:image/png;base64,@ViewBag.image" alt="">
+>>>>>>> 530a52b9a93e64bf07046ed49b0a8b2a26a3a411
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">

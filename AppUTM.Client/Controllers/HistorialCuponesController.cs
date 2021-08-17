@@ -38,7 +38,10 @@ namespace AppUTM.Client.Controllers
             HttpClient httpClient = new HttpClient();
             await PrepareAuthenticatedClient();
             string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
-            //ViewBag.image = await GetPhoto(_httpClient);
+            ViewBag.image = await GetPhoto(_httpClient);
+
+            Dashboard listempresa = new Dashboard();
+
             Historial historial = new Historial();
             var jsonEmpresas = await httpClient.GetStringAsync("http://localhost:59131/api/HistorialCupon");
             var jsonResult = JsonConvert.DeserializeObject(jsonEmpresas).ToString();

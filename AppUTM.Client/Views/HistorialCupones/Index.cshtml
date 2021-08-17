@@ -2,44 +2,69 @@
 
 @{
     ViewData["Title"] = "Index";
+    int i = 1;
+    int i2 = 1;
 }
 
 <h1>Usos por divisiones</h1>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th>
+                    Departamento
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.Departamento == "Tecnologías de la Información")
+                {
+                    <tr>
+                        <th scope="row">
+                            @(i++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departamento)
+                        </td>
+                    </tr>
+                }
+            }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-              Matricula 
-            </th>
-            <th>
-               Departamento
-            </th>
-            <th>
-                Cupones Genéricos
-            </th>
-            <th>
-                Cupones de imagen
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Matricula)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Departamento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CuponGeneridoId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CuponImagenId)
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        </tbody>
+    </table>
+
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th>
+                    Departamento
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.Departamento == "Gastronomía 2018")
+                {
+                    <tr>
+                        <th scope="row">
+                            @(i2++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departamento)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+</div>
+

@@ -37,15 +37,15 @@ namespace AppUTM.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ModuleReturn>>> Get()
         {
-            Request.Headers.TryGetValue("UserUTM", out var userEmail);
+            //Request.Headers.TryGetValue("UserUTM", out var userEmail);
 
-            Console.WriteLine(userEmail);
+            //Console.WriteLine(userEmail);
 
-            var result = _authorization.ValidateUser(userEmail, "Seguridad", false);
-            if (!result)
-            {
-                return NotFound();
-            }
+            //var result = _authorization.ValidateUser(userEmail, "Seguridad", false);
+            //if (!result)
+            //{
+            //    return NotFound();
+            //}
 
             try
             {
@@ -64,15 +64,15 @@ namespace AppUTM.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(int id)
         {
-            Request.Headers.TryGetValue("UserUTM", out var userEmail);
+            //Request.Headers.TryGetValue("UserUTM", out var userEmail);
 
-            Console.WriteLine(userEmail);
+            //Console.WriteLine(userEmail);
 
-            var result = _authorization.ValidateUser(userEmail, "Seguridad", false);
-            if (!result)
-            {
-                return NotFound();
-            }
+            //var result = _authorization.ValidateUser(userEmail, "Seguridad", false);
+            //if (!result)
+            //{
+            //    return NotFound();
+            //}
 
             try
             {
@@ -94,15 +94,15 @@ namespace AppUTM.Api.Controllers
         public async Task<ActionResult> Post(ModuleCreate moduleCreate)
         {
 
-            Request.Headers.TryGetValue("UserUTM", out var userEmail);
+            //Request.Headers.TryGetValue("UserUTM", out var userEmail);
 
-            Console.WriteLine(userEmail);
+            //Console.WriteLine(userEmail);
 
-            var result = _authorization.ValidateUser(userEmail, "Seguridad", true);
-            if (!result)
-            {
-                return NotFound();
-            }
+            //var result = _authorization.ValidateUser(userEmail, "Seguridad", true);
+            //if (!result)
+            //{
+            //    return NotFound();
+            //}
 
             try
             {
@@ -122,15 +122,15 @@ namespace AppUTM.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, moduleToBeUpdated moduleToBeUpdated)
         {
-            Request.Headers.TryGetValue("UserUTM", out var userEmail);
+            //Request.Headers.TryGetValue("UserUTM", out var userEmail);
 
-            Console.WriteLine(userEmail);
+            //Console.WriteLine(userEmail);
 
-            var result = _authorization.ValidateUser(userEmail, "Seguridad", true);
-            if (!result)
-            {
-                return NotFound();
-            }
+            //var result = _authorization.ValidateUser(userEmail, "Seguridad", true);
+            //if (!result)
+            //{
+            //    return NotFound();
+            //}
 
             try
             {
@@ -151,15 +151,15 @@ namespace AppUTM.Api.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            Request.Headers.TryGetValue("UserUTM", out var userEmail);
+            //Request.Headers.TryGetValue("UserUTM", out var userEmail);
 
-            Console.WriteLine(userEmail);
+            //Console.WriteLine(userEmail);
 
-            var result = _authorization.ValidateUser(userEmail, "Seguridad", true);
-            if (!result)
-            {
-                return NotFound();
-            }
+            //var result = _authorization.ValidateUser(userEmail, "Seguridad", true);
+            //if (!result)
+            //{
+            //    return NotFound();
+            //}
 
             var module = await _Moduleservice.GetModuleById(id);
             if (module == null) return NotFound();

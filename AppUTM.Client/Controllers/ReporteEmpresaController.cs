@@ -40,11 +40,11 @@ namespace AppUTM.Client.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(int id, string sortOrder)
         {
             await PrepareAuthenticatedClient();
             string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
-            //ViewBag.image = await GetPhoto(_httpClient);
+            ViewBag.image = await GetPhoto(_httpClient);
 
             HttpClient httpClient = new HttpClient();
             Cupones cupones = new Cupones();
@@ -60,7 +60,9 @@ namespace AppUTM.Client.Controllers
             cupones.cuponesImagen = listCuponesImagen;
 
             CuponG.CuponesDisponibles = CuponG.NumeroPorPersona - CuponG.CuponesUsados;
-            
+            //ViewData["NombreSortParm"] = string.IsNullOrEmpty(sortOrder) ? "NOMBRE_DESC":"";
+            //ViewData["DescripcionSortParm"] = sortOrder == "descripcion_asc" ? "descripcion_desc" : "descripcion_asc";
+            //var categorias = from s in cupones.cuponesGenericos
             
             return View(cupones);
            

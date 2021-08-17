@@ -3,29 +3,17 @@
 @{
     ViewData["Title"] = "Información de la empresa";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 1;
 }
 <html>
 <head>
-    @*<style type="text/css">
-        html, body, div, iframe {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-
-        iframe {
-            display: block;
-            width: 100%;
-            border: none;
-        }
-    </style>*@
      @*links para exportar a excel*@ 
     <script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
     <script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
     <script src="https://unpkg.com/tableexport@latest/dist/js/tableexport.min.js"></script>
 </head>
 <body>
-    @*<iframe src="https://localhost:44301/ReporteEmpresa.html"></iframe>*@
+   
     <div class="d-flex">
 
         <h2 class="mt-2 mb-3">Cupones de la empresa: @Model.Empresa.Nombre</h2>
@@ -41,6 +29,7 @@
 
                         <thead>
                             <tr>
+                                <th scope="col">#</th>
                                 <th scope="col">Descripción</th>
                                 <th scope="col">Vencimiento</th>
                                 <th scope="col">Descuento</th>
@@ -54,6 +43,9 @@
                             @foreach (var item in Model.cuponesGenericos)
                             {
                                 <tr>
+                                    <th scope="row">
+                                        @(i++)
+                                    </th>
                                     <td>
                                         @Html.DisplayFor(x => item.Descripcion)
                                     </td>
@@ -86,6 +78,7 @@
                 </div>
 
             </div>
+            <p style="display:none">@(i=1)</p>
             <div>
                 <div class="col">
                     <div class="d-flex">
@@ -94,6 +87,7 @@
                     <table id="tabla2" style="text-align: center" class="table mt-3">
                         <thead>
                             <tr>
+                                <th scope="col">#</th>
                                 <th scope="col">Descripción</th>
                                 <th scope="col">Vencimiento</th>
                                 <th scope="col">Cupones usados</th>
@@ -108,7 +102,9 @@
                             @foreach (var item in Model.cuponesImagen)
                             {
                                 <tr>
-
+                                    <th scope="row">
+                                        @(i++)
+                                    </th>
                                     <td>
                                         @Html.DisplayFor(x => item.Descripcion)
                                     </td>

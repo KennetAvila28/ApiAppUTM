@@ -11,5 +11,7 @@ namespace AppUTM.Client.Models
         public List<CuponGenerico> CuponesGenericos { get; set; }
         public List<CuponImagen> CuponesImagenes { get; set; }
         public int CuponesTotales { get; set; }
+
+        //public List<Historial> CuponHistorial {get;set;}
     }
 }
