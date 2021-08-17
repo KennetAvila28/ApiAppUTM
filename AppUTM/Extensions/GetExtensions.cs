@@ -1,4 +1,5 @@
-﻿using AppUTM.Models.Coordinations;
+﻿using System;
+using AppUTM.Models.Coordinations;
 using AppUTM.Models.Events;
 using AppUTM.Models.Modules;
 using AppUTM.Models.RoleModules;
@@ -9,10 +10,11 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.Graph;
 
 namespace AppUTM.Extensions
 {
-    internal static class GetExtensions
+    internal class GetExtensions
     {
         public static async Task<IList<RoleReturn>> GetAllRoles(HttpClient http)
         {
@@ -36,6 +38,12 @@ namespace AppUTM.Extensions
         {
             var workers = await http.GetFromJsonAsync<string>("Users/worker/" + email);
             return workers;
+        }
+
+        public static async Task<UserReturn> GetUserByEmail(HttpClient http, string email)
+        {
+            var user = await http.GetFromJsonAsync<ApiResponse<UserReturn>>("Users/ByEmail/" + email);
+            return user?.Data;
         }
 
         public static async Task<UserForUpdateDto> GetUserById(HttpClient http, int id)

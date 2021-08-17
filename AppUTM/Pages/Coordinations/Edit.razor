@@ -2,26 +2,41 @@
 @inject NavigationManager navigation
 @inject HttpClient Http
 @inject NotificationService NotificationService
-<h1>Editar una Coordinacion</h1>
-<div class="container-fluid">
-    <div class="form-group">
-        <RadzenLabel Text="Modulo:"></RadzenLabel>
-        <RadzenTextBox ShowUpDown="false" @bind-Value="@_oCoordinationUpdateDto.Nombre" Style="width: auto;"></RadzenTextBox>
-    </div>
-    <div class="form-group">
-        <div class="form-group mt-4">
-            <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Actualizar coordinacion</button>
-            <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+@if (Authorize)
+{
+    <h1>Editar una Coordinacion</h1>
+    <div class="container-fluid">
+        <div class="form-group">
+            <RadzenLabel Text="Modulo:"></RadzenLabel>
+            <RadzenTextBox ShowUpDown="false" @bind-Value="@_oCoordinationUpdateDto.Nombre" Style="width: auto;"></RadzenTextBox>
+        </div>
+        <div class="form-group">
+            <div class="form-group mt-4">
+                <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Actualizar coordinacion</button>
+                <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+            </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <Unauthorized />
+}
 
 @code {
     [Parameter]
     public int Id { get; set; }
     CoordinationForUpdateDto _oCoordinationUpdateDto = new();
+    public bool Authorize;
+
     protected override async Task OnInitializedAsync()
     {
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(module => module.ModuleId == 4 && module.Write)))
+        {
+            Authorize = true;
+        }
+
         _oCoordinationUpdateDto = await GetExtensions.GetCoordinationById(Http, Id);
     }
 

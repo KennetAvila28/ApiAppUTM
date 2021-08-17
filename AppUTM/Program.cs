@@ -7,6 +7,8 @@ using Radzen;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AppUTM.Helpers;
+using AppUTM.Interfaces;
 
 namespace AppUTM
 {
@@ -29,6 +31,7 @@ namespace AppUTM
                 options.ProviderOptions.DefaultAccessTokenScopes
                 .Add("https://graph.microsoft.com/User.Read");
             });
+            builder.Services.AddScoped<ILocalStorage, LocalStorage>();
             builder.Services.AddScoped<DialogService>();
             builder.Services.AddScoped<NotificationService>();
             builder.Services.AddScoped<TooltipService>();

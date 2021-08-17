@@ -11,7 +11,7 @@ namespace AppUTM.Extensions
         public static async Task<IList<UserRole>> Convert(HttpClient http)
         {
             var roles = await GetExtensions.GetAllRoles(http);
-            return roles.Select(role => new UserRole { Nombre = role.Nombre, RoleId = role.Id, }).ToList();
+            return roles.Select(role => new UserRole { Nombre = role.Nombre, RoleId = role.Id }).ToList();
         }
     }
 }

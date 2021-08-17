@@ -15,70 +15,85 @@
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <span class="oi oi-home" aria-hidden="true"></span> Inicio
             </NavLink>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" @onclick="() => _security = !_security">
-                <span class="oi oi-lock-locked" aria-hidden="true"></span> Seguridad
-            </NavLink>
-        </li>
-        @if (_security)
+        @if (_securityStack)
         {
-            <li class="nav-item px-4">
-                <NavLink class="nav-link" href="Users">
-                    <span class="oi oi-people" aria-hidden="true"></span> Usuarios
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" @onclick="() => _security = !_security">
+                    <span class="oi oi-lock-locked" aria-hidden="true"></span> Seguridad
                 </NavLink>
             </li>
-            <li class="nav-item px-4">
-                <NavLink class="nav-link" href="Roles">
-                    <span class="oi oi-shield" aria-hidden="true"></span> Roles
-                </NavLink>
-            </li>
-            <li class="nav-item px-4">
-                <NavLink class="nav-link" href="Modules">
-                    <span class="oi oi-lock-unlocked" aria-hidden="true"></span> Permisos
+            @if (_security)
+            {
+                <li class="nav-item px-4">
+                    <NavLink class="nav-link" href="Users">
+                        <span class="oi oi-people" aria-hidden="true"></span> Usuarios
+                    </NavLink>
+                </li>
+                <li class="nav-item px-4">
+                    <NavLink class="nav-link" href="Roles">
+                        <span class="oi oi-shield" aria-hidden="true"></span> Roles
+                    </NavLink>
+                </li>
+                <li class="nav-item px-4">
+                    <NavLink class="nav-link" href="Modules">
+                        <span class="oi oi-lock-unlocked" aria-hidden="true"></span> Módulos
+                    </NavLink>
+                </li>
+            }
+
+        }
+        @if (_events)
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="Events">
+                    <span class="oi oi-task" aria-hidden="true"></span> Eventos-Actividades
                 </NavLink>
             </li>
         }
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Events">
-                <span class="oi oi-task" aria-hidden="true"></span> Eventos-Actividades
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" @onclick="() => _activities = !_activities">
-                <span class="oi oi-clipboard" aria-hidden="true"></span>Estado de eventos
-            </NavLink>
-        </li>
-        @if (_activities)
+        @if (_activitiesStack)
         {
-            <li class="nav-item px-4">
-                <NavLink class="nav-link" href="/Events/Revised">
-                    <span class="oi oi-bell" aria-hidden="true"></span> Eventos en revision
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" @onclick="() => _activities = !_activities">
+                    <span class="oi oi-clipboard" aria-hidden="true"></span>Estado de eventos
                 </NavLink>
             </li>
-            <li class="nav-item px-4">
-                <NavLink class="nav-link" href="/Events/Passed">
-                    <span class="oi oi-check" aria-hidden="true"></span> Eventos Aprobados
-                </NavLink>
-            </li>
-            <li class="nav-item px-4">
-                <NavLink class="nav-link" href="/Events/Rechazed">
-                    <span class="oi oi-ban" aria-hidden="true"></span> Eventos Rechazados
-                </NavLink>
-            </li>
-            <li class="nav-item px-4">
-                <NavLink class="nav-link" href="/Events/Published">
-                    <span class="oi oi-bullhorn" aria-hidden="true"></span> Eventos publicados
+
+            @if (_activities)
+            {
+                <li class="nav-item px-4">
+                    <NavLink class="nav-link" href="/Events/Revised">
+                        <span class="oi oi-bell" aria-hidden="true"></span> Eventos en revision
+                    </NavLink>
+                </li>
+                <li class="nav-item px-4">
+                    <NavLink class="nav-link" href="/Events/Passed">
+                        <span class="oi oi-check" aria-hidden="true"></span> Eventos Aprobados
+                    </NavLink>
+                </li>
+                <li class="nav-item px-4">
+                    <NavLink class="nav-link" href="/Events/Rechazed">
+                        <span class="oi oi-ban" aria-hidden="true"></span> Eventos Rechazados
+                    </NavLink>
+                </li>
+                <li class="nav-item px-4">
+                    <NavLink class="nav-link" href="/Events/Published">
+                        <span class="oi oi-bullhorn" aria-hidden="true"></span> Eventos publicados
+                    </NavLink>
+                </li>
+            }
+
+        }
+        @if (_coordinations)
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="Coordinations">
+                    <span class="oi oi-briefcase" aria-hidden="true"></span> Coordinaciones
                 </NavLink>
             </li>
         }
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Coordinations">
-                <span class="oi oi-briefcase" aria-hidden="true"></span> Coordinaciones
-            </NavLink>
-        </li>
     </ul>
 </div>
 
@@ -87,9 +102,51 @@
     private bool _security;
     private bool _activities;
     private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
-
+    private bool _securityStack = false;
+    private bool _events = false;
+    private bool _coordinations = false;
+    private bool _activitiesStack = false;
     private void ToggleNavMenu()
     {
         _collapseNavMenu = !_collapseNavMenu;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        var stream = await _graphServiceClient.Me.Photo.Content
+            .Request()
+            .GetAsync();
+
+        var user = await _graphServiceClient.Me.Request().GetAsync();
+        await _localStorage.SetValue(ValueKeys.UserGraph, user);
+        await _localStorage.SetValue(ValueKeys.Avatar, await GraphClientExtensions.ImageToBase64(GraphClientExtensions.ReadToEnd(stream)));
+        var isUser = await _http.GetAsync("Users/Authorize/" + user.Mail);
+        if (isUser.StatusCode != HttpStatusCode.Unauthorized)
+        {
+            var userBd = await GetExtensions.GetUserByEmail(_http, user.Mail);
+            await _localStorage.SetValue(ValueKeys.User, userBd);
+        }
+        else
+        {
+            await _localStorage.ClearAll();
+            await _signOutManager.SetSignOutState();
+            _navigation.NavigateTo("authentication/logout");
+        }
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(roleModule => roleModule.ModuleId == 1)))
+        {
+            _events = true;
+        }
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 2)))
+        {
+            _securityStack = true;
+        }
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 3)))
+        {
+            _activitiesStack = true;
+        }
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 4)))
+        {
+            _coordinations = true;
+        }
     }
 }

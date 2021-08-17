@@ -1,6 +1,4 @@
 ﻿@page "/Events/Revised"
-@using Microsoft.AspNetCore.Authorization
-@using AppUTM.Models.Events
 @attribute [Authorize]
 @inject HttpClient _http
 @inject NavigationManager navigation
@@ -12,58 +10,77 @@
 }
 else
 {
-    <div class="container mt-3">
-        <div class="d-flex mb-3">
-            <h2 class="mx-auto">Lista de eventos publicados</h2>
+    @if (Authorize)
+    {
+        <div class="container mt-3">
+            <div class="d-flex mb-3">
+                <h2 class="mx-auto">Lista de eventos en revisión</h2>
+            </div>
+            <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_events" PageSize="10" TItem="EventReturn">
+                <Columns>
+                    <RadzenDataGridColumn TItem="EventReturn" Property="Title" Title="Titulo">
+                        <Template Context="data">
+                            @($"{data.Title}")
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="EventReturn" Property="Author.Nombre" Title="Author">
+                        <Template Context="data">
+                            @($"{data.Author.Nombre}")
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="EventReturn" Property="StartDate" Title="Fecha de inico">
+                        <Template Context="data">
+                            @($"{data.StartDate:d}")
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="EventReturn" Property="EndDate" Title="Fecha de terminacion">
+                        <Template Context="data">
+                            @($"{data.EndDate:d}")
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="EventReturn" Property="IsSuggest" Title="Sugerido">
+                        <Template Context="data">
+                            <RadzenCheckBox @bind-Value="@data.IsSuggest" TValue="bool" Disabled="true" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="EventReturn" Property="IsActivity" Title="Actividad">
+                        <Template Context="data">
+                            <RadzenCheckBox @bind-Value="@data.IsActivity" TValue="bool" Disabled="true" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="EventReturn" Title="Acciones">
+                        <Template Context="data">
+                            <RadzenButton Text="Revisar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Events/Review/{data.Id}")) Disabled="!Write" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
         </div>
-        <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_events" PageSize="10" TItem="EventReturn">
-            <Columns>
-                <RadzenDataGridColumn TItem="EventReturn" Property="Title" Title="Titulo">
-                    <Template Context="data">
-                        @($"{data.Title}")
-                    </Template>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="EventReturn" Property="Author.Nombre" Title="Author">
-                    <Template Context="data">
-                        @($"{data.Author.Nombre}")
-                    </Template>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="EventReturn" Property="StartDate" Title="Fecha de inico">
-                    <Template Context="data">
-                        @($"{data.StartDate:d}")
-                    </Template>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="EventReturn" Property="EndDate" Title="Fecha de terminacion">
-                    <Template Context="data">
-                        @($"{data.EndDate:d}")
-                    </Template>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="EventReturn" Property="IsSuggest" Title="Sugerido">
-                    <Template Context="data">
-                        <RadzenCheckBox @bind-Value="@data.IsSuggest" TValue="bool" Disabled="true" />
-                    </Template>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="EventReturn" Property="IsActivity" Title="Actividad">
-                    <Template Context="data">
-                        <RadzenCheckBox @bind-Value="@data.IsActivity" TValue="bool" Disabled="true" />
-                    </Template>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="EventReturn" Title="Acciones">
-                    <Template Context="data">
-                        <RadzenButton Text="Revisar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Events/Review/{data.Id}")) />
-                    </Template>
-                </RadzenDataGridColumn>
-            </Columns>
-        </RadzenDataGrid>
-    </div>
+    }
+    else
+    {
+        <Unauthorized />
+    }
+
 }
 
 @code
 {
     IEnumerable<EventReturn> _events;
 
+    public bool Write;
+    public bool Authorize;
     protected override async Task OnInitializedAsync()
     {
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 3 && x.Write)))
+        {
+            Write = true;
+        }
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 3 && x.Read)))
+        {
+            Authorize = true;
+        }
         _events = await GetExtensions.GetAllEventsRevised(_http);
     }
 }

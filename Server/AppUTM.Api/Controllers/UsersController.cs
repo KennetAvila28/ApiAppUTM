@@ -13,6 +13,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using AppUTM.Api.Helpers;
+using IAuthorizationService = AppUTM.Core.Interfaces.IAuthorizationService;
 
 namespace AppUTM.Api.Controllers
 {
@@ -20,14 +22,15 @@ namespace AppUTM.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserService _Userervice;
-
+        private readonly IUserService _userService;
+        private readonly IAuthorizationService _authorization;
         private readonly IMapper _mapper;
 
-        public UsersController(IMapper mapper, IUserService Userervice)
+        public UsersController(IMapper mapper, IUserService userService, IAuthorizationService authorization)
         {
             _mapper = mapper;
-            _Userervice = Userervice;
+            _userService = userService;
+            _authorization = authorization;
         }
 
         // GET: api/<UserController>
@@ -36,7 +39,7 @@ namespace AppUTM.Api.Controllers
         {
             try
             {
-                var User = await _Userervice.GetAllUsers();
+                var User = await _userService.GetAllUsers();
                 var UserList = _mapper.Map<IEnumerable<User>, IEnumerable<UserReturn>>(User);
                 var response = new ApiResponse<IEnumerable<UserReturn>>(UserList);
                 return Ok(response);
@@ -53,7 +56,7 @@ namespace AppUTM.Api.Controllers
         {
             try
             {
-                var user = await _Userervice.GetUserById(id);
+                var user = await _userService.GetUserById(id);
                 var Userdto = _mapper.Map<User, UserReturn>(user);
                 var response = new ApiResponse<UserReturn>(Userdto);
                 return Ok(response);
@@ -65,7 +68,7 @@ namespace AppUTM.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("student/")]
+        [HttpPost("student")]
         public async Task<ActionResult> GetGraphUser(Token token)
         {
             const string url = "https://graph.microsoft.com/v1.0/me";
@@ -109,7 +112,7 @@ namespace AppUTM.Api.Controllers
             {
                 var Url = "http://api.utmetropolitana.edu.mx/api/Empleados/Get?correoinstitucional=";
                 var Client = new HttpClient();
-                var json = await Client.GetFromJsonAsync<string>(Url + correo);
+                var json = await Client.GetStringAsync(Url + correo);
                 return Ok(json);
             }
             catch (Exception e)
@@ -125,7 +128,7 @@ namespace AppUTM.Api.Controllers
             try
             {
                 var user = _mapper.Map<UserCreate, User>(userCreate);
-                await _Userervice.CreateUser(user);
+                await _userService.CreateUser(user);
                 var userReturn = _mapper.Map<User, UserReturn>(user);
                 var response = new ApiResponse<UserReturn>(userReturn);
                 return Ok(response);
@@ -136,6 +139,27 @@ namespace AppUTM.Api.Controllers
             }
         }
 
+        // POST api/<UserController>
+        [AllowAnonymous]
+        [HttpGet("Authorize/{correo}")]
+        public ActionResult Authorize(string correo)
+        {
+            if (!_authorization.Login(correo))
+                return Unauthorized();
+            return Ok();
+        }
+
+        // POST api/<UserController>
+        [AllowAnonymous]
+        [HttpGet("ByEmail/{correo}")]
+        public ActionResult GetByEmail(string correo)
+        {
+            var user = _authorization.GetUserByEmail(correo);
+            var mapper = _mapper.Map<User, UserReturn>(user);
+            var response = new ApiResponse<UserReturn>(mapper);
+            return Ok(response);
+        }
+
         //// PUT api/<UserController>/5
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, UserForUpdateDto userForUpdateDto)
@@ -144,9 +168,7 @@ namespace AppUTM.Api.Controllers
             {
                 var userForUpdate = _mapper.Map<User>(userForUpdateDto);
                 userForUpdate.Id = id;
-                if (userForUpdate == null)
-                    return NotFound();
-                await _Userervice.UpdateUser(userForUpdate);
+                await _userService.UpdateUser(userForUpdate);
                 var result = new ApiResponse<bool>(true);
                 return Ok(result);
             }
@@ -162,7 +184,7 @@ namespace AppUTM.Api.Controllers
         {
             try
             {
-                await _Userervice.DeleteUser(await _Userervice.GetUserById(id));
+                await _userService.DeleteUser(await _userService.GetUserById(id));
                 var result = new ApiResponse<bool>(true);
                 return Ok(result);
             }

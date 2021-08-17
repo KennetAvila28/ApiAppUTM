@@ -29,6 +29,7 @@ namespace AppUTM.Api.Mappings
             //Users
             CreateMap<User, UserCreate>().ReverseMap();
             CreateMap<User, UserReturn>().ReverseMap();
+            CreateMap<UserRole, UserRoleDto>();
             CreateMap<User, UserForUpdateDto>().ReverseMap();
             CreateMap<UserCreate, User>().AfterMap(
                 ((source, destination) =>

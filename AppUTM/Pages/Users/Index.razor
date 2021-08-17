@@ -1,67 +1,100 @@
 ﻿@page "/Users"
-@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
-@inject HttpClient _http
-@inject NotificationService NotificationService
 
 @if (_users != null)
 {
-    <div class="container mt-3">
-        <div class="d-flex">
-            <h4>Lista de usuarios</h4>
-            <a class="btn btn-success text-white mx-4 mb-3" href="/Users/Create">Agregar</a>
-        </div>
-        <table class="table">
-            <thead class="bg-light text-center">
-                <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Correo</th>
-                    <th scope="col">Admin</th>
-                    <th scope="col">Editor</th>
-                    <th scope="col">Publicador</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody class="text-center">
-                @foreach (var user in _users)
+    @if (Authorize)
+    {
+
+        <div class="container mt-3">
+            <div class="d-flex">
+                <h4>Lista de usuarios</h4>
+
+                @if (Write)
+                {<a class="btn btn-success text-white mx-4 mb-3" href="/Users/Create">Agregar</a>}
+                else
                 {
+                    <a class="btn btn-danger text-white mx-4 mb-3" aria-disabled="True" title="No tienes permisos">Agregar</a>
+                }
+            </div>
+            <table class="table">
+                <thead class="bg-light text-center">
                     <tr>
-                        <td>@user.Nombres @user.ApellidoPaterno @user.ApellidoMaterno</td>
-                        <td>@user.Correo</td>
-                        @foreach (var role in _roles)
-                        {
-                            if (user.UserRoles.Any(r => r.RoleId == role.Id))
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Admin</th>
+                        <th scope="col">Editor</th>
+                        <th scope="col">Publicador</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var user in _users)
+                    {
+                        <tr>
+                            <td>@user.Nombres @user.ApellidoPaterno @user.ApellidoMaterno</td>
+                            <td>@user.Correo</td>
+                            @foreach (var role in _roles)
                             {
-                                <td><input class="form-check-input" type="checkbox" checked="checked" onclick="javascript: return false;" /></td>
+                                if (user.UserRoles.Any(r => r.Role.Id == role.Id))
+                                {
+                                    <td><input class="form-check-input" type="checkbox" checked="checked" onclick="javascript: return false;" /></td>
+
+                                }
+                                else
+                                {
+                                    <td><input class="form-check-input" type="checkbox" onclick="javascript: return false;" /></td>
+                                }
+
+                            }
+                            @if (Write)
+                            {
+                                <td><a class="btn btn-success text-white" href="/Users/Edit/@user.Id">Editar</a></td>
 
                             }
                             else
                             {
-                                <td><input class="form-check-input" type="checkbox" onclick="javascript: return false;" /></td>
+                                <td><a class="btn btn-danger text-white" aria-disabled="True" title="No tienes permisos">Editar</a></td>
                             }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-                        }
-                        <td><a class="btn btn-success text-white" href="/Users/Edit/@user.Id">Editar</a></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
+    }
+    else
+    {
+        <Unauthorized />
+    }
 }
 else
 {
     <Spinner />
 }
-
 @code
 {
     private IList<UserReturn> _users;
     private IList<RoleReturn> _roles;
+    public bool Write;
+    public bool Read;
+    public bool Authorize;
     protected override async Task OnInitializedAsync()
     {
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(module => module.ModuleId == 2 && module.Write)))
+        {
+            Write = true;
+        }
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 2 && x.Read)))
+        {
+            Read = true;
+            Authorize = true;
+        }
         _users = await GetExtensions.GetAllUsers(_http);
         _roles = await GetExtensions.GetAllRoles(_http);
         await Task.Delay(1000);
+
     }
+
 }

@@ -39,8 +39,8 @@
                 <RadzenButton Text="Cancelar" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Light" Click="@(Cancel)" />
                 @if (Review)
                 {
-                    <RadzenButton ButtonStyle="ButtonStyle.Success" ButtonType="ButtonType.Button" Click="@(Passed)" Text="Aprobar evento" />
-                    <RadzenButton ButtonStyle="ButtonStyle.Danger" ButtonType="ButtonType.Button" Click="@(Rechazed)" Text="Rechazar evento" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" ButtonType="ButtonType.Button" Click="@(Passed)" Text="Aprobar evento" Disabled="Disabled" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" ButtonType="ButtonType.Button" Click="@(Rechazed)" Text="Rechazar evento" Disabled="Disabled" />
                 }
             </div>
         </div>
@@ -51,6 +51,8 @@
     public int Id { get; set; }
     [Parameter]
     public bool Review { get; set; }
+    [Parameter]
+    public bool Disabled { get; set; }
     EventForUpdateDto _oEventForUpdateDto = new();
     IEnumerable<CoordinationReturn> _coordinations;
     string _imgUrl = string.Empty;

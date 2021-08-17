@@ -23,3 +23,16 @@
 @using Radzen.Blazor
 @using Microsoft.AspNetCore.Http;
 @using AppUTM.Helpers
+@using Microsoft.Graph
+@using AppUTM.Interfaces
+@using AppUTM.Enum
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using AppUTM.Models
+@using System.Net
+@using Microsoft.AspNetCore.Authorization
+@inject ILocalStorage _localStorage
+@inject HttpClient _http
+@inject NotificationService _notificationService
+@inject GraphServiceClient _graphServiceClient
+@inject NavigationManager _navigation
+@inject SignOutSessionStateManager _signOutManager

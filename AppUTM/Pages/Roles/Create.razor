@@ -2,22 +2,37 @@
 @inject NavigationManager navigation
 @inject HttpClient Http
 @inject NotificationService NotificationService
-<h1>Crear un Rol</h1>
-<div class="container-fluid">
-    <div class="form-group">
-        <RadzenLabel Text="Nombre:"></RadzenLabel>
-        <RadzenTextBox ShowUpDown="false" TValue="int" @bind-Value="@_oRoleCreate.Nombre" Style="width: auto;"></RadzenTextBox>
-    </div>
-    <div class="form-group">
-        <div class="form-group mt-4">
-            <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Crear rol</button>
-            <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+@if (Authorize)
+{
+    <h1>Crear un Rol</h1>
+    <div class="container-fluid">
+        <div class="form-group">
+            <RadzenLabel Text="Nombre:"></RadzenLabel>
+            <RadzenTextBox ShowUpDown="false" TValue="int" @bind-Value="@_oRoleCreate.Nombre" Style="width: auto;"></RadzenTextBox>
+        </div>
+        <div class="form-group">
+            <div class="form-group mt-4">
+                <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Crear rol</button>
+                <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+            </div>
         </div>
     </div>
-</div>
-
+}
+else
+{
+    <Unauthorized />
+}
 @code {
     readonly RolesCreate _oRoleCreate = new();
+    public bool Authorize;
+    protected override async Task OnInitializedAsync()
+    {
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(module => module.ModuleId == 2 && module.Write)))
+        {
+            Authorize = true;
+        }
+    }
 
     public async Task Post()
     {

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace AppUTM.Core.Models
@@ -8,13 +9,12 @@ namespace AppUTM.Core.Models
         [ForeignKey("Modules")]
         public int ModuleId { get; set; }
 
-        [JsonIgnore]
         public Module Module { get; set; }
 
         [ForeignKey("Roles")]
         public int RoleId { get; set; }
 
-        [JsonIgnore]
+        [IgnoreDataMember]
         public Role Role { get; set; }
 
         public bool Read { get; set; }

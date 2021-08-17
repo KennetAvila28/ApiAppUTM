@@ -23,7 +23,7 @@ namespace AppUTM.Api
             Configuration = configuration;
         }
 
-        private readonly string MiCors = "MiCors";
+        private const string MiCors = "MiCors";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -51,6 +51,7 @@ namespace AppUTM.Api
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IRoleModuleService, RoleModuleService>();
             services.AddTransient<IFavoriteService, FavoriteService>();
+            services.AddTransient<IAuthorizationService, AuthorizationServices>();
             services.AddControllers().AddNewtonsoftJson(opt =>
             {
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;

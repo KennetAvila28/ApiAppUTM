@@ -28,14 +28,13 @@ namespace AppUTM.Services
         public async Task<User> CreateUser(User newUser)
         {
             await _unitOfWork.Users.Add(newUser);
-            await _unitOfWork.UserRoles.AddRange(newUser.UserRoles);
             await _unitOfWork.CommitAsync();
             return newUser;
         }
 
         /// <summary>Return all users with their roles</summary>
         /// <returns>Array of users</returns>
-        public async Task<IEnumerable<User>> GetAllUsers() => await _context.Users.Include(x => x.UserRoles).ToListAsync();
+        public async Task<IEnumerable<User>> GetAllUsers() => await _context.Users.Include(x => x.UserRoles).ThenInclude(y => y.Role).ThenInclude(z => z.RoleModules).ThenInclude(w => w.Module).ToListAsync();
 
         /// <summary>Get a user with his roles</summary>
         /// <param name="id"></param>

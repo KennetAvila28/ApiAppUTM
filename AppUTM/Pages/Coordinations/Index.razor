@@ -1,45 +1,61 @@
 ﻿@page "/Coordinations"
-@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
 @inject HttpClient _http
 @inject NavigationManager navigation
 @inject NotificationService NotificationService
 
-@if (_coordinations != null)
+@if (Authorize)
 {
-    <div class="container mt-3">
-        <div class="d-flex mb-3">
-            <h1 class="mx-auto">Lista de Coordinaciones</h1>
-            <RadzenButton Text="Agregar" ButtonStyle="ButtonStyle.Success" class="mx-auto" Click=@(() => navigation.NavigateTo($"/Coordinations/Create")) />
+    @if (_coordinations != null)
+    {
+        <div class="container mt-3">
+            <div class="d-flex mb-3">
+                <h1 class="mx-auto">Lista de Coordinaciones</h1>
+                <RadzenButton Text="Agregar" ButtonStyle="ButtonStyle.Success" class="mx-auto" Click=@(() => navigation.NavigateTo($"/Coordinations/Create")) Disabled="!Write" />
+            </div>
+            <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_coordinations" PageSize="10" TItem="CoordinationReturn">
+                <Columns>
+                    <RadzenDataGridColumn TItem="CoordinationReturn" Property="Nombre" Title="Nombre">
+                        <Template Context="data">
+                            @($"{data.Nombre}")
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="CoordinationReturn" Title="Acciones">
+                        <Template Context="data">
+                            <RadzenButton Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Coordinations/Edit/{data.Id}")) Disabled="!Write" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
         </div>
-        <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_coordinations" PageSize="10" TItem="CoordinationReturn">
-            <Columns>
-                <RadzenDataGridColumn TItem="CoordinationReturn" Property="Nombre" Title="Nombre">
-                    <Template Context="data">
-                        @($"{data.Nombre}")
-                    </Template>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="CoordinationReturn" Title="Acciones">
-                    <Template Context="data">
-                        <RadzenButton Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Coordinations/Edit/{data.Id}")) />
-                    </Template>
-                </RadzenDataGridColumn>
-            </Columns>
-        </RadzenDataGrid>
-    </div>
 
+    }
+    else
+    {
+        <Spinner />
+    }
 }
 else
 {
-    <Spinner />
+    <Unauthorized />
 }
-
 @code
 {
     private IEnumerable<CoordinationReturn> _coordinations;
+    public bool Write;
+    public bool Authorize;
     protected override async Task OnInitializedAsync()
     {
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 4 && x.Write)))
+        {
+            Write = true;
+        }
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 4 && x.Read)))
+        {
+            Authorize = true;
+        }
         _coordinations = await GetExtensions.GetAllCoordinations(_http);
-        await Task.Delay(1000);
+
     }
 }

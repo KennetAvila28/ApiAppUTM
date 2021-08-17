@@ -1,8 +1,31 @@
 ﻿@page "/Events/Review/{Id:int}"
-<DetailsEvent Id="@Id" Review="true" />
+@attribute [Authorize]
+@if (Authorize)
+{
+    <DetailsEvent Id="@Id" Review="true" Disabled="@(!Write)" />
+}
+else
+{
+    <Unauthorized />
+}
 
 @code
 {
     [Parameter]
     public int Id { get; set; }
+    public bool Write;
+    public bool Authorize;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 3 && x.Write)))
+        {
+            Write = true;
+        }
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 3 && x.Read)))
+        {
+            Authorize = true;
+        }
+    }
 }

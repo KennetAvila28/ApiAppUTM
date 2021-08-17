@@ -10,7 +10,7 @@ namespace AppUTM.Core.Models
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
         public string Correo { get; set; }
-        public List<UserRole> UserRoles { get; set; }
+        public IList<UserRole> UserRoles { get; set; }
 
         [NotMapped]
         public int[] RolesToBeDelete { get; set; }

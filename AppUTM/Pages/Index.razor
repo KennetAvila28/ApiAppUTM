@@ -1,8 +1,6 @@
 ﻿@page "/"
 <AuthorizeView>
     <Authorized>
-        @using Radzen.Blazor.Rendering
-        @inject HttpClient http
         @if (_events == null)
         {
             <Spinner />
@@ -12,7 +10,7 @@
             <div class="container">
                 <h2 class="mx-auto">BIENVENIDO @context.User.Identity?.Name</h2>
                 <hr />
-                <RadzenScheduler Data="_events" TItem="EventReturn" StartProperty="@nameof(EventReturn.StartDate)" EndProperty="@nameof(EventReturn.EndDate)" TextProperty="@nameof(EventReturn.Title)">
+                <RadzenScheduler Data="_events" TItem="EventReturn" StartProperty="@nameof(EventReturn.StartDate)" EndProperty="@nameof(EventReturn.EndDate)" TextProperty="@nameof(EventReturn.Title)" style="height: 768px;">
                     <Template Context="data">
                         <strong>@data.Title</strong>
                     </Template>
@@ -28,9 +26,11 @@
         @code
         {
             IEnumerable<EventReturn> _events;
+
             protected override async Task OnInitializedAsync()
             {
-                _events = await GetExtensions.GetAllEventsPublished(http);
+
+                _events = await GetExtensions.GetAllEventsPublished(_http);
 
             }
 

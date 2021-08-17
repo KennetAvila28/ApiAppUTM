@@ -1,6 +1,4 @@
-﻿@using Microsoft.Graph
-@inject GraphServiceClient GraphClient
-<style>
+﻿<style>
     .avatar {
         vertical-align: middle;
         width: 96px;
@@ -9,23 +7,21 @@
     }
 </style>
 <div style="text-align: center;">
-    <img src="data:image/jpeg;base64,@_imgurl" alt="Avatar" class="avatar mb-2">
+    <img src="data:image/jpeg;base64,@(_imgUrl)" alt="Avatar" class="avatar mb-2">
     <p>
-        @name
+        @_name
     </p>
 </div>
 
 @code{
-    string _imgurl;
-    string name;
+    string _imgUrl;
+    string _name;
     protected override async Task OnInitializedAsync()
     {
-        var stream = await GraphClient.Me.Photo.Content
-            .Request()
-            .GetAsync();
-        var user = await GraphClient.Me.Request().GetAsync();
-        name = user.DisplayName;
-        _imgurl = await GraphClientExtensions.ImageToBase64(GraphClientExtensions.ReadToEnd(stream));
+
+        var user = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<User>(ValueKeys.UserGraph));
+        _name = user.DisplayName;
+        _imgUrl = await _localStorage.GetValue<string>(ValueKeys.Avatar);
     }
 
 }

@@ -3,24 +3,41 @@
 @inject NavigationManager navigation
 @inject HttpClient Http
 @inject NotificationService NotificationService
-<div style="text-align: center;">
-    <h1>Crear una coordinacion</h1>
-</div>
-<div class="container-fluid">
-    <div class="form-group">
-        <RadzenLabel Text="Nombre:"></RadzenLabel>
-        <RadzenTextBox ShowUpDown="false" @bind-Value="@_oCoordinationCreate.Nombre" Style="width: auto;"></RadzenTextBox>
+@if (Authorize)
+{
+    <div style="text-align: center;">
+        <h1>Crear una coordinacion</h1>
     </div>
-    <div class="form-group">
-        <div class="form-group mt-4">
-            <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Crear coordinacion</button>
-            <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+    <div class="container-fluid">
+        <div class="form-group">
+            <RadzenLabel Text="Nombre:"></RadzenLabel>
+            <RadzenTextBox ShowUpDown="false" @bind-Value="@_oCoordinationCreate.Nombre" Style="width: auto;"></RadzenTextBox>
+        </div>
+        <div class="form-group">
+            <div class="form-group mt-4">
+                <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Crear coordinacion</button>
+                <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+            </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <Unauthorized />
+}
 
 @code {
     readonly CoordinationCreate _oCoordinationCreate = new();
+    public bool Authorize;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(module => module.ModuleId == 4 && module.Write)))
+        {
+            Authorize = true;
+        }
+    }
 
     public async Task Post()
     {

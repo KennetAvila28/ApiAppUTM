@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace AppUTM.Core.Models
@@ -9,11 +10,11 @@ namespace AppUTM.Core.Models
         public int UserId { get; set; }
 
         [JsonIgnore]
+        [IgnoreDataMember]
         public User User { get; set; }
 
         [ForeignKey("Roles")]
         public int RoleId { get; set; }
-
         [JsonIgnore]
         public Role Role { get; set; }
     }

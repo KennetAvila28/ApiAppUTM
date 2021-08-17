@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace AppUTM.Core.Models
@@ -7,7 +8,7 @@ namespace AppUTM.Core.Models
     {
         public string Name { get; set; }
 
-        [JsonIgnore]
-        public List<RoleModule> RoleModules { get; set; }
+        [IgnoreDataMember]
+        public IList<RoleModule> RoleModules { get; set; }
     }
 }

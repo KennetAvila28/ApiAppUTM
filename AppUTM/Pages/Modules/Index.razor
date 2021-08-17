@@ -1,33 +1,37 @@
 ﻿@page "/Modules"
-@using Microsoft.AspNetCore.Authorization
-@using AppUTM.Models.Modules
 @attribute [Authorize]
-@inject HttpClient _http
-@inject NavigationManager navigation
 @inject NotificationService NotificationService
 
 @if (_modules != null)
 {
-    <div class="container mt-3">
-        <div class="d-flex mb-3">
-            <h1 class="mx-auto">Lista de modulos</h1>
-            <RadzenButton Text="Agregar" ButtonStyle="ButtonStyle.Success" class="mx-auto" Click=@(() => navigation.NavigateTo($"/Modules/Create")) />
+    @if (Authorize)
+    {
+        <div class="container mt-3">
+            <div class="d-flex mb-3">
+                <h1 class="mx-auto">Lista de modulos</h1>
+                <RadzenButton Text="Agregar" ButtonStyle="ButtonStyle.Success" class="mx-auto" Click=@(() => _navigation.NavigateTo($"/Modules/Create")) Disabled="!Write" />
+            </div>
+            <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_modules" PageSize="10" TItem="ModuleReturn">
+                <Columns>
+                    <RadzenDataGridColumn TItem="ModuleReturn" Property="Module" Title="Modulo">
+                        <Template Context="data">
+                            @($"{data.Name}")
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="ModuleReturn" Title="Acciones">
+                        <Template Context="data">
+
+                            <RadzenButton Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => _navigation.NavigateTo($"/Modules/Edit/{data.Id}")) Disabled="!Write" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
         </div>
-        <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_modules" PageSize="10" TItem="ModuleReturn">
-            <Columns>
-                <RadzenDataGridColumn TItem="ModuleReturn" Property="Module" Title="Modulo">
-                    <Template Context="data">
-                        @($"{data.Name}")
-                    </Template>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="ModuleReturn" Title="Acciones">
-                    <Template Context="data">
-                        <RadzenButton Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Modules/Edit/{data.Id}")) />
-                    </Template>
-                </RadzenDataGridColumn>
-            </Columns>
-        </RadzenDataGrid>
-    </div>
+    }
+    else
+    {
+        <Unauthorized />
+    }
 
 }
 else
@@ -37,10 +41,22 @@ else
 
 @code
 {
+
     private IEnumerable<ModuleReturn> _modules;
     private IList<RoleReturn> _roles;
+    public bool Write;
+    public bool Authorize;
     protected override async Task OnInitializedAsync()
     {
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 2 && x.Write)))
+        {
+            Write = true;
+        }
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 2 && x.Read)))
+        {
+            Authorize = true;
+        }
         _modules = await GetExtensions.GetAllModules(_http);
         _roles = await GetExtensions.GetAllRoles(_http);
     }

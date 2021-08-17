@@ -2,58 +2,71 @@
 @inject NavigationManager navigation
 @inject HttpClient Http
 @inject NotificationService NotificationService
-<h1>Editar un Rol</h1>
-<div class="container-fluid">
-    <div class="form-group mb-5">
-        <RadzenLabel Text="Nombre:" />
-        <RadzenTextBox ShowUpDown="false" TValue="int" @bind-Value="@_oRoleForUpdateDto.Nombre" Style="width: auto;"></RadzenTextBox>
-    </div>
-    <div class="form-group">
-        <div class="form-group mt-4">
-            <button class="btn btn-success" @onclick="Post" role="button" type="submit">Editar rol</button>
-            <button class="btn btn-danger ml-2" @onclick="Delete" role="button">Eliminar</button>
-            <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+@if (Authorize)
+{
+    <h1>Editar un Rol</h1>
+    <div class="container-fluid">
+        <div class="form-group mb-5">
+            <RadzenLabel Text="Nombre:" />
+            <RadzenTextBox ShowUpDown="false" TValue="int" @bind-Value="@_oRoleForUpdateDto.Nombre" Style="width: auto;"></RadzenTextBox>
+        </div>
+        <div class="form-group">
+            <div class="form-group mt-4">
+                <button class="btn btn-success" @onclick="Post" role="button" type="submit">Editar rol</button>
+                <button class="btn btn-danger ml-2" @onclick="Delete" role="button">Eliminar</button>
+                <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+            </div>
         </div>
     </div>
-</div>
-<RoleModuleList Id="@Id" />
+    <RoleModuleList Id="@Id" />
 
-<div class="container mt-3">
-    <div class="d-flex mb-3">
-        <h1 class="mx-auto">Lista de modulos</h1>
+    <div class="container mt-3">
+        <div class="d-flex mb-3">
+            <h1 class="mx-auto">Lista de modulos</h1>
+        </div>
+        <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_oRoleForUpdateDto.RoleModules.AsEnumerable()" PageSize="10" TItem="RoleModule">
+            <Columns>
+                <RadzenDataGridColumn TItem="RoleModule" Property="Module" Title="Modulo">
+                    <Template Context="data">
+                        @($"{data.Module.Name}")
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="RoleModule" Property="Lectura" Title="Lectura">
+                    <Template Context="data">
+                        <RadzenCheckBox TValue="bool" Value="@(data.Read)" Change="(args =>UpdateRead(args,data.Write,data.ModuleId,Id)) " />
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="RoleModule" Property="Escritura" Title="Escritura">
+                    <Template Context="data">
+                        <RadzenCheckBox TValue="bool" Value="@(data.Write)" Change="(args =>UpdateWrite(args,data.ModuleId,Id))" />
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="RoleModule" Title="Acciones">
+                    <Template Context="data">
+                        <RadzenButton Text="Eliminar" ButtonStyle="ButtonStyle.Danger" Click="() => Remove(data.ModuleId)" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
     </div>
-    <RadzenDataGrid AllowColumnResize="true" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowPaging="true" AllowSorting="true" Data="_oRoleForUpdateDto.RoleModules.AsEnumerable()" PageSize="10" TItem="RoleModule">
-        <Columns>
-            <RadzenDataGridColumn TItem="RoleModule" Property="Module" Title="Modulo">
-                <Template Context="data">
-                    @($"{data.Module.Name}")
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="RoleModule" Property="Lectura" Title="Lectura">
-                <Template Context="data">
-                    <RadzenCheckBox TValue="bool" Value="@(data.Read)" Change="(args =>UpdateRead(args,data.Write,data.ModuleId,Id)) " />
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="RoleModule" Property="Escritura" Title="Escritura">
-                <Template Context="data">
-                    <RadzenCheckBox TValue="bool" Value="@(data.Write)" Change="(args =>UpdateWrite(args,data.ModuleId,Id))" />
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="RoleModule" Title="Acciones">
-                <Template Context="data">
-                    <RadzenButton Text="Eliminar" ButtonStyle="ButtonStyle.Danger" Click="() => Remove(data.ModuleId)" />
-                </Template>
-            </RadzenDataGridColumn>
-        </Columns>
-    </RadzenDataGrid>
-</div>
+}
+else
+{
+    <Unauthorized />
+}
 
 @code {
     RoleForUpdateDto _oRoleForUpdateDto = new();
     [Parameter]
     public int Id { get; set; }
+    public bool Authorize;
     protected override async Task OnInitializedAsync()
     {
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(module => module.ModuleId == 2 && module.Write)))
+        {
+            Authorize = true;
+        }
         _oRoleForUpdateDto = await GetExtensions.GetRoleById(Http, Id);
     }
 

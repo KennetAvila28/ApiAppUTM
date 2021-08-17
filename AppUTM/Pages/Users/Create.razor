@@ -1,26 +1,33 @@
 @page "/Users/Create"
-@using AppUTM.Models.Users
 @inject NavigationManager navigation
 @inject HttpClient Http
+@inject GraphServiceClient client
 @inject NotificationService NotificationService
-<h1>Crear un Usuario</h1>
-<EditForm Model="@searchWorker">
-    <div class="form-group">
-        <label>Correo Institucional</label>
-        <InputText class="form-control col-md-5" @bind-Value="searchWorker.Email" required></InputText>
-        <button type="submit" @onclick="_searchWorker" class="btn btn-primary mt-3" role="button">Buscar</button>
-    </div>
-</EditForm>
-@if (_normalizedUser != null)
+@if (Authorize)
 {
-    <div class="row form-group">
-        <RadzenDropDown Change="@(_selectUser)" Data="@_normalizedUser" Placeholder="Selecciona un empleado" Style="width: auto;" TextProperty="@nameof(UserCreate.Correo)" TValue="@UserCreate" />
-        <RadzenDropDown Multiple="true" Placeholder="Selecciona un rol..." Data=@_roles TextProperty="@nameof(UserRole.Nombre)" TValue="IEnumerable<UserRole>" Change=@(_selectRol) Style="width:auto;" />
-        <div class="form-group mt-4">
-            <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Crear Usuario</button>
-            <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+    <h1>Crear un Usuario</h1>
+    <EditForm Model="@searchWorker">
+        <div class="form-group">
+            <label>Correo Institucional</label>
+            <InputText class="form-control col-md-5" @bind-Value="searchWorker.Email" required></InputText>
+            <button type="submit" @onclick="_searchWorker" class="btn btn-primary mt-3" role="button">Buscar</button>
         </div>
-    </div>
+    </EditForm>
+    @if (_normalizedUser != null)
+    {
+        <div class="row form-group">
+            <RadzenDropDown Change="@(_selectUser)" Data="@_normalizedUser" Placeholder="Selecciona un empleado" Style="width: auto;" TextProperty="@nameof(UserCreate.Correo)" TValue="@UserCreate" />
+            <RadzenDropDown Multiple="true" Placeholder="Selecciona un rol..." Data=@_roles TextProperty="@nameof(UserRole.Nombre)" TValue="IEnumerable<UserRole>" Change=@(_selectRol) Style="width:auto;" />
+            <div class="form-group mt-4">
+                <button class="btn btn-success ml-2" @onclick="Post" role="button" type="submit">Crear Usuario</button>
+                <button class="btn btn-secondary ml-2" @onclick="Cancel" role="button">Cancelar</button>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <Unauthorized />
 }
 
 @code {
@@ -30,8 +37,14 @@
     SearchWorker searchWorker = new();
     UserCreate _oUserCreate;
 
+    public bool Authorize;
     protected override async Task OnInitializedAsync()
     {
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(module => module.ModuleId == 2 && module.Write)))
+        {
+            Authorize = true;
+        }
         _roles = await RolesToUserRoleExtension.Convert(Http);
     }
 
@@ -72,13 +85,9 @@
     {
         if (_oUserCreate != null)
         {
-            var rolecast = new List<UserRole>();
-            foreach (var role in userRole)
-            {
-                rolecast.Add(role);
-            }
-            _oUserCreate.UserRoles = rolecast;
-            var user = await Http.PostAsJsonAsync<UserCreate>("Users", _oUserCreate);
+            _oUserCreate.UserRoles = userRole.ToList();
+            var user = await Http.PostAsJsonAsync("Users", _oUserCreate);
+            Console.WriteLine(user);
             NotificationExtensions.ShowNotification(NotificationService, user.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Usuario creado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear al usuario", Duration = 3000 });
             navigation.NavigateTo("/Users");
         }

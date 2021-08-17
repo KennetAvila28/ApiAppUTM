@@ -1,68 +1,82 @@
 ﻿@page "/Roles"
-@using Microsoft.AspNetCore.Authorization
 @using System.Linq
 @attribute [Authorize]
 @inject HttpClient _http
 @inject NavigationManager navigation
 @inject NotificationService NotificationService
 
-@if (_roles != null)
+@if (Authorize)
 {
-    <div class="container mt-3">
-        <div class="d-flex">
-            <h1 class="mx-auto">Lista de roles</h1>
-            <RadzenButton class="mx-auto" Text="Agregar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Roles/Create")) />
-        </div>
-        <div class="table-responsive">
-            <table class="table">
-                <thead class="bg-light text-center">
-                    <tr>
-                        <th scope="col">Nombre</th>
-                        @foreach (var module in _modules)
-                        {
-                            <th scope="col">@module.Name</th>
-                        }
-                        <th scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="text-center">
-                    @foreach (var role in _roles)
-                    {
+    @if (_roles != null)
+    {
+        <div class="container mt-3">
+            <div class="d-flex">
+                <h1 class="mx-auto">Lista de roles</h1>
+                <RadzenButton class="mx-auto" Text="Agregar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Roles/Create")) />
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="bg-light text-center">
                         <tr>
-                            <td>@role.Nombre</td>
+                            <th scope="col">Nombre</th>
                             @foreach (var module in _modules)
                             {
-                                if (role.RoleModules.Any(r => r.ModuleId == module.Id))
-                                {
-                                    <td><RadzenCheckBox TValue="bool" Value="true" Disabled="true" /></td>
-
-                                }
-                                else
-                                {
-                                    <td><RadzenCheckBox TValue="bool" Value="false" Disabled="true" /></td>
-                                }
-
+                                <th scope="col">@module.Name</th>
                             }
-                            <td> <RadzenButton class="mx-auto" Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Roles/Edit/{role.Id}")) /></td>
+                            <th scope="col">Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+                    </thead>
+                    <tbody class="text-center">
+                        @foreach (var role in _roles)
+                        {
+                            <tr>
+                                <td>@role.Nombre</td>
+                                @foreach (var module in _modules)
+                                {
+                                    if (role.RoleModules.Any(r => r.ModuleId == module.Id))
+                                    {
+                                        <td><RadzenCheckBox TValue="bool" Value="true" Disabled="true" /></td>
 
+                                    }
+                                    else
+                                    {
+                                        <td><RadzenCheckBox TValue="bool" Value="false" Disabled="true" /></td>
+                                    }
+
+                                }
+                                <td> <RadzenButton class="mx-auto" Text="Editar" ButtonStyle="ButtonStyle.Success" Click=@(() => navigation.NavigateTo($"/Roles/Edit/{role.Id}")) /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <Spinner />
+    }
 }
 else
 {
-    <Spinner />
+    <Unauthorized />
 }
 
 @code
 {
     private IEnumerable<ModuleReturn> _modules;
     private IList<RoleReturn> _roles;
+    public bool Write;
+    public bool Authorize;
     protected override async Task OnInitializedAsync()
     {
+        var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(module => module.ModuleId == 2 && module.Write)))
+        {
+            Write = true;
+            Authorize = true;
+        }
         _modules = await GetExtensions.GetAllModules(_http);
         _roles = await GetExtensions.GetAllRoles(_http);
     }
