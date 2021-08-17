@@ -1,17 +1,21 @@
 ﻿using AppUTM.Api.DTOS.Permissions;
 using AppUTM.Api.DTOS.Roles;
+using AppUTM.Client.Models;
 using AppUTM.Client.Models.Roles;
 using AppUTM.Client.Responses;
 using AppUTM.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -19,19 +23,32 @@ namespace AppUTM.Client.Controllers
 {
     public class RolesController : Controller
     {
+        private readonly ILogger<RolesController> _logger;
         private readonly IConfiguration _configuration;
-        private readonly ITokenAcquisition _tokenAcquisicion;
+        private readonly string _scope;
+        private readonly ITokenAcquisition _tokenAcquisition;
+        private readonly HttpClient _httpClient;
 
-        public RolesController(IConfiguration configuration, ITokenAcquisition tokenAcquisition)
+        public RolesController(ILogger<RolesController> logger, ITokenAcquisition tokenAcquisition, HttpClient httpClient, IConfiguration configuration)
         {
+            _logger = logger;
+            _tokenAcquisition = tokenAcquisition;
+            _httpClient = httpClient;
             _configuration = configuration;
-            _tokenAcquisicion = tokenAcquisition;
+            _scope = "user.read";
         }
         // GET: RolesController
+
+        [HttpGet]
         public async Task<ActionResult> Index()
         {
             HttpClient httpClient = new HttpClient();
-            var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Roles");
+
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
+
+            var jsonUser = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Roles");
             var jsonPermissions = await httpClient.GetStringAsync("http://localhost:59131/api/Permissions/");
             var listPermissions = JsonConvert.DeserializeObject<ApiResponse<List<PermissionReturn>>>(jsonPermissions);
             ViewBag.Permisos = listPermissions.Data;
@@ -43,7 +60,12 @@ namespace AppUTM.Client.Controllers
         public async Task<ActionResult> Details(int id)
         {
             HttpClient httpClient = new HttpClient();
-            var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/" + id);
+
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
+
+            var jsonUser = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Roles/" + id);
             var listRoles = JsonConvert.DeserializeObject<ApiResponse<RoleReturn>>(jsonUser);
 
             return View(listRoles.Data);
@@ -55,11 +77,16 @@ namespace AppUTM.Client.Controllers
         public async Task<ActionResult> Create()
         {
             HttpClient httpClient = new HttpClient();
-            var json = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/");
+
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
+
+            var jsonRol = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Roles");
             var jsonPermissions = await httpClient.GetStringAsync("http://localhost:59131/api/Permissions/");
             var listPermissions = JsonConvert.DeserializeObject<ApiResponse<List<PermissionReturn>>>(jsonPermissions);
             ViewBag.Permisos = listPermissions.Data;
-            var crear = JsonConvert.DeserializeObject<RolesCreate>(json);
+            var crear = JsonConvert.DeserializeObject<RolesCreate>(jsonRol);
             return View(crear);
         }
 
@@ -79,7 +106,7 @@ namespace AppUTM.Client.Controllers
             }
             rolesCreate.RolePermissions = listaPermisos;
 
-            var CrearRol = httpClient.PostAsJsonAsync<RolesCreate>("http://localhost:59131/api/Roles", rolesCreate);
+            var CrearRol = httpClient.PostAsJsonAsync<RolesCreate>(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Roles", rolesCreate);
             CrearRol.Wait();
 
             var CreaResult = CrearRol.Result;
@@ -90,13 +117,17 @@ namespace AppUTM.Client.Controllers
         }
 
         // GET: RolesController/Edit/5
+        [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
             HttpClient httpClient = new HttpClient();
-            var json = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/" + id);
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
+            var jsonRol = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Roles/" + id);
             //var jsonPer = await httpClient.GetStringAsync("http://localhost:59131/api/Permissions/");
             //var listpermisos = JsonConvert.DeserializeObject<ApiResponse<List<PermissionReturn>>>(jsonPer);
-            var crear = JsonConvert.DeserializeObject<ApiResponse<RoleForUpdateDto>>(json);
+            var crear = JsonConvert.DeserializeObject<ApiResponse<RoleForUpdateDto>>(jsonRol);
 
             //foreach (var permi in crear.Data.RolePermissions)
             //{
@@ -134,7 +165,7 @@ namespace AppUTM.Client.Controllers
                 }
 
             }
-            var updateClient = await httpClient.PutAsJsonAsync<RoleForUpdateDto>("http://localhost:59131/api/Roles/" + roleForUpdateDto.Id, roleForUpdateDto);
+            var updateClient = await httpClient.PutAsJsonAsync<RoleForUpdateDto>(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Roles/" + roleForUpdateDto.Id, roleForUpdateDto);
             if (updateClient.IsSuccessStatusCode)
                 return RedirectToAction("Index");
             else
@@ -142,12 +173,15 @@ namespace AppUTM.Client.Controllers
         }
 
         // GET: RolesController/Delete/5
-
+        [HttpGet]
         public async Task<ActionResult> Delete(int id)
         {
             HttpClient httpClient = new HttpClient();
-            var json = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/" + id);
-            var roles = JsonConvert.DeserializeObject<ApiResponse<RoleDelete>>(json);
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
+            var jsonRol = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Roles/"+ id);
+            var roles = JsonConvert.DeserializeObject<ApiResponse<RoleDelete>>(jsonRol);
             return View(roles.Data);
         }
 
@@ -168,6 +202,30 @@ namespace AppUTM.Client.Controllers
             else
                 return this.BadRequest();
 
+        }
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        private async Task PrepareAuthenticatedClient()
+        {
+            var accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(new[] { _scope });
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        }
+
+        private async Task<string> GetPhoto(HttpClient client)
+        {
+            var resp = await client.GetAsync(_configuration["photouser"]);
+            var buffer = await resp.Content.ReadAsByteArrayAsync();
+            var byteArray = buffer.ToArray();
+
+            string base64String = Convert.ToBase64String(byteArray);
+
+            return base64String;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 using AppUTM.Api.DTOS.Users;
+using AppUTM.Client.Models;
 using AppUTM.Client.Models.Roles;
 using AppUTM.Client.Models.Users;
 using AppUTM.Client.Responses;
@@ -7,12 +8,15 @@ using AppUTM.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -20,21 +24,38 @@ namespace AppUTM.Client.Controllers
 {
     public class UsuarioController : Controller
     {
+        private readonly ILogger<UsuarioController> _logger;
+        private readonly ITokenAcquisition _tokenAcquisition;
+        private readonly string _scope;
         private readonly IConfiguration _configuration;
-        private readonly ITokenAcquisition _tokenAcquisicion;
+        private readonly HttpClient _httpClient;
 
-        public UsuarioController(IConfiguration configuration, ITokenAcquisition tokenAcquisition)
+        public UsuarioController(ILogger<UsuarioController> logger, ITokenAcquisition tokenAcquisition, HttpClient httpClient, IConfiguration configuration)
         {
+            _logger = logger;
+            _tokenAcquisition = tokenAcquisition;
+            _httpClient = httpClient;
             _configuration = configuration;
-            _tokenAcquisicion = tokenAcquisition;
+            _scope = "user.read";
         }
+
+
         //_Configuration["CouponAdmin:CouponAdminBaseAddress"] + ""
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             HttpClient httpClient = new HttpClient();
-            var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Users");
-            var jsonRoles = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/");
+
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
+
+
+            var jsonUser = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users");
+            var jsonRoles = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Roles");
+
+            //var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Users");
+            // var jsonRoles = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/");
             var listRoles = JsonConvert.DeserializeObject<ApiResponse<List<RoleReturn>>>(jsonRoles);
             ViewBag.Roles = listRoles.Data;
             var listUsuario = JsonConvert.DeserializeObject<ApiResponse<List<UserReturn>>>(jsonUser);
@@ -53,10 +74,19 @@ namespace AppUTM.Client.Controllers
         public async Task<IActionResult> EmpleadoConsulta(string correo)
         {
             HttpClient httpClient = new HttpClient();
+
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
+
             List<EmpleadoUTM> listemp = new List<EmpleadoUTM>();
             //string extension = "@utmetropolitana.edu.mx";
             //Muestra las empresas que proporciona la API de la UTM
-            var jsonEmpleado = await httpClient.GetStringAsync("http://localhost:59131/api/Users/empleado/" + correo);
+
+            var jsonEmpleado = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users/" + "empleado/" + correo);
+
+
+            // var jsonEmpleado = await httpClient.GetStringAsync("http://localhost:59131/api/Users/empleado/" + correo);
             var jsonlist = JsonConvert.DeserializeObject<List<EmpleadoUTM>>(jsonEmpleado);
             ViewBag.listemp = jsonlist;
             return View(jsonlist);
@@ -67,7 +97,16 @@ namespace AppUTM.Client.Controllers
         public async Task<ActionResult> Detalles(int id)
         {
             HttpClient httpClient = new HttpClient();
-            var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Users/" + id);
+
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
+
+
+            var jsonUser = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users/" + id);
+
+
+            //var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Users/" + id);
             var listUsuario = JsonConvert.DeserializeObject<ApiResponse<UserReturn>>(jsonUser);
             return View(listUsuario.Data);
         }
@@ -75,24 +114,40 @@ namespace AppUTM.Client.Controllers
         public async Task<ActionResult> Create(int ClaveEmpleado, string Nombres, string ApellidoPaterno, string ApellidoMaterno, string Correo)
         {
             HttpClient httpClient = new HttpClient();
+
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
+
             User empleado = new User();
             empleado.ClaveEmpleado = ClaveEmpleado;
             empleado.Nombres = Nombres;
             empleado.ApellidoPaterno = ApellidoPaterno;
             empleado.ApellidoMaterno = ApellidoMaterno;
             empleado.Correo = Correo;
-            var json = await httpClient.GetStringAsync("http://localhost:59131/api/Users/");
-            var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/");
+
+            var json2 = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users");
+
+            var jsonUser = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Roles");
+
+
+
+            //var json = await httpClient.GetStringAsync("http://localhost:59131/api/Users/");
+            //var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/");
             var listRoles = JsonConvert.DeserializeObject<ApiResponse<List<RoleReturn>>>(jsonUser);
             ViewBag.Roles = listRoles.Data;
-            var crear = JsonConvert.DeserializeObject<UserCreate>(json);
+            var crear = JsonConvert.DeserializeObject<UserCreate>(json2);
             return View(crear);
         }
 
         [HttpPost]
-        public IActionResult Create(UserCreate userCreate, int[] role)
+        public async Task <IActionResult> Create(UserCreate userCreate, int[] role)
         {
             HttpClient httpClient = new HttpClient();
+
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
 
 
             List<UserRole> listaRoles = new List<UserRole>();
@@ -105,7 +160,7 @@ namespace AppUTM.Client.Controllers
             userCreate.UserRoles = listaRoles;
 
 
-            var CrearCliente = httpClient.PostAsJsonAsync<UserCreate>("http://localhost:59131/api/Users", userCreate);
+            var CrearCliente = httpClient.PostAsJsonAsync<UserCreate>(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users", userCreate);
             CrearCliente.Wait();
 
             var CreaResult = CrearCliente.Result;
@@ -120,10 +175,16 @@ namespace AppUTM.Client.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             HttpClient httpClient = new HttpClient();
-            var json = await httpClient.GetStringAsync("http://localhost:59131/api/Users/" + id);
-            var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/");
+
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
+
+
+            var json2 = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users/" + id);
+            var jsonUser = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Roles");
             var listRoles = JsonConvert.DeserializeObject<ApiResponse<List<RoleReturn>>>(jsonUser);
-            var crear = JsonConvert.DeserializeObject<ApiResponse<UserForUpdateDto>>(json);
+            var crear = JsonConvert.DeserializeObject<ApiResponse<UserForUpdateDto>>(json2);
 
             foreach (var rol in crear.Data.UserRoles)
             {
@@ -162,7 +223,7 @@ namespace AppUTM.Client.Controllers
                 }
 
             }
-            var updateClient = await httpClient.PutAsJsonAsync<UserForUpdateDto>("http://localhost:59131/api/Users/" + userForUpdateDto.Id, userForUpdateDto);
+            var updateClient = await httpClient.PutAsJsonAsync<UserForUpdateDto>(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users/" + userForUpdateDto.Id, userForUpdateDto);
             if (updateClient.IsSuccessStatusCode)
                 return RedirectToAction("Index");
             else
@@ -172,9 +233,16 @@ namespace AppUTM.Client.Controllers
         // GET: UsuarioController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
+
+
             HttpClient httpClient = new HttpClient();
-            var json = await httpClient.GetStringAsync("http://localhost:59131/api/Users/" + id);
-            var permisos = JsonConvert.DeserializeObject<ApiResponse<UserDelete>>(json);
+
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
+
+            var json2 = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users/" + id);
+            var permisos = JsonConvert.DeserializeObject<ApiResponse<UserDelete>>(json2);
             return View(permisos.Data);
         }
 
@@ -187,7 +255,7 @@ namespace AppUTM.Client.Controllers
 
             HttpClient httpClient = new HttpClient();
 
-            var putTask = httpClient.DeleteAsync("http://localhost:59131/api/Users/" + id); ;
+            var putTask = httpClient.DeleteAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users/" + id); 
             putTask.Wait();
             var result = putTask.Result;
             if (result.IsSuccessStatusCode)
@@ -196,5 +264,30 @@ namespace AppUTM.Client.Controllers
                 return this.BadRequest();
 
         }
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        private async Task PrepareAuthenticatedClient()
+        {
+            var accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(new[] { _scope });
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        }
+
+        private async Task<string> GetPhoto(HttpClient client)
+        {
+            var resp = await client.GetAsync(_configuration["photouser"]);
+            var buffer = await resp.Content.ReadAsByteArrayAsync();
+            var byteArray = buffer.ToArray();
+
+            string base64String = Convert.ToBase64String(byteArray);
+
+            return base64String;
+        }
+
     }
 }

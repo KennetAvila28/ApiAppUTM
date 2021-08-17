@@ -7,7 +7,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Actualizar datos</h1>
+<h1>Actualizar módulo</h1>
 
 @*<h4>A</h4>*@
 <hr />
@@ -19,14 +19,14 @@
 
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" required/>
+                <input asp-for="Nombre" class="form-control" required />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div><br /><br />
 
 
             <div class="form-group">
                 <a class="btn btn-dark btn-sm" asp-action="Index">Regresar</a>
-                <input type="submit" value="Save" class="btn btn-success btn-sm" />
+                <input type="submit" value="Guardar" class="btn btn-success btn-sm" />
             </div>
         </form>
     </div>

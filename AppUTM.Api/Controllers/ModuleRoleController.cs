@@ -117,24 +117,16 @@ namespace AppUTM.Api.Controllers
         //}
 
 
+
         [HttpDelete("{ModuleId:int}/{RoleId:int}")]
         public async Task<ActionResult> Delete(int ModuleId, int RoleId)
         {
-            try
-            {
-                var moduleRoleToBeDelete = await _Moduleservice.GetModuleRoleById(ModuleId, RoleId);
-               // var moduleRoleDeleted = _mapper.Map<ModuleRoleReturn, ModuleRole>(moduleToBeDelete);
-                if (moduleRoleToBeDelete == null)
-                    return NotFound();
-                await _Moduleservice.DeleteModuleRole(moduleRoleToBeDelete);
-                var result = new ApiResponse<bool>(true);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            var module = await _Moduleservice.GetModuleRoleById(ModuleId, RoleId);
+            if (module == null) return NotFound();
+            await _Moduleservice.DeleteModuleRole(module);
+            return Ok(true);
         }
+
 
 
 
