@@ -1,13 +1,17 @@
 ﻿using AppUTM.Client.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -15,27 +19,34 @@ namespace AppUTM.Client.Controllers
 {
     [Authorize]
     public class EmpresasController : Controller
-    {   
+    {
+        private readonly ILogger<EmpresasController> _logger;
+        private readonly IWebHostEnvironment _environment;
         private readonly IConfiguration _configuration;
         private readonly ITokenAcquisition _tokenAcquisition;
+        private readonly HttpClient _httpClient;
+        private readonly string _scope;
 
-
-        public EmpresasController(IConfiguration configuration, ITokenAcquisition tokenAcquisition)
+        public EmpresasController(ILogger<EmpresasController> logger, IConfiguration configuration, ITokenAcquisition tokenAcquisition, HttpClient httpClient, IWebHostEnvironment environment)
         {
+            _logger = logger;
             _configuration = configuration;
-            _tokenAcquisition = tokenAcquisition;        
+            _tokenAcquisition = tokenAcquisition;
+            _httpClient = httpClient;
+            _environment = environment;
+            _scope = "user.read";
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            HttpClient httpClient = new HttpClient();
-            //http://api.utmetropolitana.edu.mx/api/Empresas/Get
-            //http://localhost:59131/api/Empresas
-            //Muestra las empresas registradas
+            HttpClient httpClient = new HttpClient();            
             ListEmpresas listEmpresas = new ListEmpresas();
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
             var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/all");
-            listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
+            listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas).OrderByDescending(e => e.EmpresaId);
             //Muestra las empresas que proporciona la API de la UTM
             var jsonEmpresasUTM = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/empresasUTM");
             listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<EmpresasUTM>>(jsonEmpresasUTM);
@@ -43,8 +54,7 @@ namespace AppUTM.Client.Controllers
         }
 
         public IActionResult Create(string RFC, string Nombre, string Direccion, string Telefono)
-        {
-            HttpClient httpClient = new HttpClient();
+        {   
             Empresa empresa = new Empresa();          
             empresa.RFC = RFC;
             empresa.Nombre = Nombre;
@@ -64,6 +74,15 @@ namespace AppUTM.Client.Controllers
                     await empresa.Foto.CopyToAsync(sm);
                     var fileBytes = sm.ToArray();
                     empresa.ImagenEmpresa = Convert.ToBase64String(fileBytes);
+                }
+            }
+            else
+            {
+                using (var sm = new MemoryStream())
+                {
+                    var path = _environment.WebRootPath + "/img/xcompany.jpg";
+                    Byte[] bytes = System.IO.File.ReadAllBytes(path);
+                    empresa.ImagenEmpresa = Convert.ToBase64String(bytes);                
                 }
             }
             var json = await httpClient.PostAsJsonAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas", empresa);
@@ -129,55 +148,23 @@ namespace AppUTM.Client.Controllers
                 return RedirectToAction("Error", "Home");
         }
 
-
-
-
-
-        /*
-        private string UploadImage(Empresa empresa)
+        private async Task PrepareAuthenticatedClient()
         {
-            string fileName = null, filePath = null;
-            if (empresa.Foto != null)
-            {
-                string path = empresa.Domain + @"\wwwroot\Empresas\";
-                fileName = Guid.NewGuid().ToString() + "-" + empresa.Foto.FileName;
-                filePath = Path.Combine(path, fileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    empresa.Foto.CopyTo(fileStream);
-                }
-            }
-            return fileName;
-        }
-        */
-
-
-        //It doesn't work well
-        /*
-        [HttpPost]
-        private async Task<string> SendImage(IFormFile imagen)
-        {
-            HttpClient httpClient = new HttpClient();
-            var fileName = imagen.FileName;
-            var nombreArchivo = $"{Guid.NewGuid()}-{fileName}";
-            string url =  _configuration["CouponAdmin:CouponAdminBaseAddress"]  + "Empresas/agregarFoto";
-            using (var memoryStream = new MemoryStream())
-            {
-                var path = Path.GetTempPath();           
-                var ruta = Path.Combine(path, fileName);                
-                await imagen.CopyToAsync(memoryStream);
-                var contenido = memoryStream.ToArray();
-
-                var archivo = Path.GetFileName(ruta);
-                await System.IO.File.WriteAllBytesAsync(ruta, contenido);
-                using var requestContent = new MultipartFormDataContent();
-                using var fileStream = System.IO.File.OpenRead(ruta);
-                requestContent.Add(new StreamContent(fileStream), "imagen", archivo);
-                await httpClient.PostAsync(url, requestContent);
-            }
-            return fileName;
+            var accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(new[] { _scope });
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        */
+
+        private async Task<string> GetPhoto(HttpClient client)
+        {
+            var resp = await client.GetAsync(_configuration["photouser"]);
+            var buffer = await resp.Content.ReadAsByteArrayAsync();
+            var byteArray = buffer.ToArray();
+
+            string base64String = Convert.ToBase64String(byteArray);
+
+            return base64String;
+        }
     }
 }

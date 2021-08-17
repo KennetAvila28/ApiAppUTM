@@ -32,7 +32,7 @@ namespace AppUTM.Api.Controllers
             this._cuponImagenService = cuponImagen;
         }
 
-        //EliminarEmpresa
+        //Eliminar empresa
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -74,11 +74,9 @@ namespace AppUTM.Api.Controllers
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Empresa>> Details(int id)
-        {
-            string startupPath = Environment.CurrentDirectory;
+        {      
             var empresa = await _service.GetEmpresa(id);
-            var empresaDto = _mapper.Map<Empresa, EmpresaReturn>(empresa);
-            if (empresa != null) empresaDto.Domain = startupPath;
+            var empresaDto = _mapper.Map<Empresa, EmpresaReturn>(empresa);     
             return Ok(empresaDto);
         }     
 

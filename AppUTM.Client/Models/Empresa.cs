@@ -13,8 +13,7 @@ namespace AppUTM.Client.Models
         public bool Activa { get; set; }
         public string Telefono { get; set; }
         public string ImagenEmpresa { get; set; }
-        public IFormFile Foto { get; set; }
-        public string Domain { get; set; }
+        public IFormFile Foto { get; set; }    
         public bool Cupones { get; set; } = false;
     }
 }

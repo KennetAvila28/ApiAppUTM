@@ -13,8 +13,7 @@ namespace AppUTM.Api.DTOS.Empresas
         public string Direccion { get; set; }
         public bool Activa { get; set; }
         public string Telefono { get; set; }
-        public string ImagenEmpresa { get; set; }    
-        public string Domain { get; set; }
+        public string ImagenEmpresa { get; set; }
     }
 
     public class EmpresasUTM

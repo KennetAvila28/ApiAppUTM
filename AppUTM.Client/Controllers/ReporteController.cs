@@ -90,13 +90,7 @@ namespace AppUTM.Client.Controllers
         [HttpPost]
         public IActionResult Update(int id, Empresa empresa)
         {
-            HttpClient httpClient = new HttpClient();
-
-            if (empresa.Foto != null)
-            {
-                string imagen = UploadImage(empresa);
-                empresa.ImagenEmpresa = imagen;
-            }
+            HttpClient httpClient = new HttpClient();         
             httpClient.BaseAddress = new Uri(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/");
             var putTask = httpClient.PutAsJsonAsync<Empresa>("?id=" + id, empresa);
             putTask.Wait();
@@ -105,22 +99,6 @@ namespace AppUTM.Client.Controllers
                 return View(empresa);
             else
                 return RedirectToAction("Error", "Home");
-        }
-
-        private string UploadImage(Empresa empresa)
-        {
-            string fileName = null, filePath = null;
-            if (empresa.Foto != null)
-            {
-                string path = empresa.Domain + @"\wwwroot\Empresas\";
-                fileName = Guid.NewGuid().ToString() + "-" + empresa.Foto.FileName;
-                filePath = Path.Combine(path, fileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    empresa.Foto.CopyTo(fileStream);
-                }
-            }
-            return fileName;
         }
 
         public IActionResult Privacy()

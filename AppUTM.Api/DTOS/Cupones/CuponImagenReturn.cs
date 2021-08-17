@@ -11,8 +11,7 @@ namespace AppUTM.Api.DTOS.Cupones
         public int CuponesVisitados { get; set; }
         public string Descripcion { get; set; }
         public string Imagen { get; set; }
-        public int EmpresaId { get; set; }
-        public string Domain { get; set; }
+        public int EmpresaId { get; set; }  
     }
 
     public class CuponImagenCreate

@@ -49,10 +49,8 @@ namespace AppUTM.Api.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<CuponImagen>> Details(int id)
         {
-            string startupPath = Environment.CurrentDirectory;
             var cupon = await _service.GetCuponImagen(id);
-            var cuponDto = _mapper.Map<CuponImagen, CuponImagenReturn>(cupon);
-            if (cupon != null) cuponDto.Domain = startupPath;
+            var cuponDto = _mapper.Map<CuponImagen, CuponImagenReturn>(cupon);  
             return Ok(cuponDto);
         }       
 
@@ -70,10 +68,6 @@ namespace AppUTM.Api.Controllers
         {
             var cuponData = await _service.GetCuponImagen(id);
             if (cuponData == null) return NotFound();
-
-            if (cuponData.Imagen != cuponDto.Imagen)
-                await _almacenarImagen.BorraArchivo(cuponData.Imagen, contenedor);
-
             var cupon = _mapper.Map(cuponDto, cuponData);   
             await _service.UpdateCuponImagen(cupon);
             return Ok(cupon);
@@ -83,11 +77,7 @@ namespace AppUTM.Api.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var cuponData = await _service.GetCuponImagen(id);
-            if (cuponData == null) return NotFound();
-
-            if (cuponData.Imagen != null)
-                await _almacenarImagen.BorraArchivo(cuponData.Imagen, contenedor);
-
+            if (cuponData == null) return NotFound();        
             await _service.DeleteCuponImagen(cuponData);
             return NoContent();
         }
