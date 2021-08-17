@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Reporte";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 1;
 }
 <html>
 <head>
@@ -17,6 +18,7 @@
             <thead>
 
                 <tr>
+                    <th scope="col">#</th>
                     <th scope="col">Nombre de empresa</th>
                     <th scope="col">Dirección</th>
                     <th scope="col">Teléfono</th>
@@ -25,25 +27,29 @@
 
             </thead>
             <tbody id="myTable">
-                @foreach (var item in Model.empresasRegistradas)
+                @foreach (var item in Model.empresasUTM)
                 {
 
-                if (item.Activa == false)
-                {
-                <tr>
-                    <td>@item.Nombre</td>
-                    <td>@item.Direccion</td>
-                    <td>@item.Telefono</td>
+                    if (item.RFC != null)
+                    {
+                        <tr>
+                            <th scope="row">
+                                @(i++)
+                            </th>
+                            <td>@item.NombreEmpresa</td>
+                            <td>@item.Direccion</td>
+                            <td>@item.Telefono</td>
 
-                </tr>
-                }
+                        </tr>
+                    }
 
-                }
+                 }
             </tbody>
         </table>
 
 
     </div>
+    <p style="display:none">@(i=1)</p>
     <div>
         <a class="btn btn-danger myButton" target="_blank" asp-controller="CrearPDF" asp-action="EmpresasSinCupones">Crear PDF</a>
 

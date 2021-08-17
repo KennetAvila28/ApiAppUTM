@@ -74,7 +74,8 @@ namespace AppUTM.Client.Controllers
             var jsonEmpresasUTM = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/empresasUTM");
             listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<EmpresasUTM>>(jsonEmpresasUTM);
 
-
+            //listEmpresas.empresasRegistradas = listEmpresas;
+            //    + listEmpresas.empresasUTM
 
             return View(listEmpresas);
         }

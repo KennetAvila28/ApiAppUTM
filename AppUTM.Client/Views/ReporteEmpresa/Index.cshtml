@@ -3,10 +3,10 @@
 @{
     ViewData["Title"] = "Información de la empresa";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 1;
 }
 <html>
 <head>
-
      @*links para exportar a excel*@ 
     <script src="https://unpkg.com/xlsx@0.16.9/dist/xlsx.full.min.js"></script>
     <script src="https://unpkg.com/file-saverjs@latest/FileSaver.min.js"></script>
@@ -29,6 +29,7 @@
 
                         <thead>
                             <tr>
+                                <th scope="col">#</th>
                                 <th scope="col">Descripción</th>
                                 <th scope="col">Vencimiento</th>
                                 <th scope="col">Descuento</th>
@@ -42,6 +43,9 @@
                             @foreach (var item in Model.cuponesGenericos)
                             {
                                 <tr>
+                                    <th scope="row">
+                                        @(i++)
+                                    </th>
                                     <td>
                                         @Html.DisplayFor(x => item.Descripcion)
                                     </td>
@@ -74,6 +78,7 @@
                 </div>
 
             </div>
+            <p style="display:none">@(i=1)</p>
             <div>
                 <div class="col">
                     <div class="d-flex">
@@ -82,6 +87,7 @@
                     <table id="tabla2" style="text-align: center" class="table mt-3">
                         <thead>
                             <tr>
+                                <th scope="col">#</th>
                                 <th scope="col">Descripción</th>
                                 <th scope="col">Vencimiento</th>
                                 <th scope="col">Cupones usados</th>
@@ -96,7 +102,9 @@
                             @foreach (var item in Model.cuponesImagen)
                             {
                                 <tr>
-
+                                    <th scope="row">
+                                        @(i++)
+                                    </th>
                                     <td>
                                         @Html.DisplayFor(x => item.Descripcion)
                                     </td>
