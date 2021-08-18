@@ -40,7 +40,7 @@ namespace AppUTM.Client.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            HttpClient httpClient = new HttpClient();            
+            HttpClient httpClient = new HttpClient();
             ListEmpresas listEmpresas = new ListEmpresas();
             await PrepareAuthenticatedClient();
             string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
@@ -49,7 +49,14 @@ namespace AppUTM.Client.Controllers
             listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas).OrderByDescending(e => e.EmpresaId);
             //Muestra las empresas que proporciona la API de la UTM
             var jsonEmpresasUTM = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/empresasUTM");
-            listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<EmpresasUTM>>(jsonEmpresasUTM);
+            listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<List<EmpresasUTM>>(jsonEmpresasUTM);
+            List<EmpresasUTM> empresasUTM = new List<EmpresasUTM>();
+            foreach (var item in listEmpresas.empresasUTM)
+            {
+                if (!listEmpresas.empresasRegistradas.Any(e => e.RFC == item.RFC))
+                    empresasUTM.Add(item);
+            }
+            listEmpresas.empresasUTM = empresasUTM;
             return View(listEmpresas);
         }
 
