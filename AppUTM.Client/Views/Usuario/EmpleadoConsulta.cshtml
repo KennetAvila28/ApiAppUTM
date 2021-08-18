@@ -1,31 +1,80 @@
 ﻿@model IEnumerable<AppUTM.Client.Models.Users.EmpleadoUTM>
 
 @{
-    ViewBag.listemp = "item";
+    var userbd = (List<AppUTM.Client.Models.Users.UserReturn>)ViewBag.listuser;
+    bool validar = false;
     ViewData["Title"] = "Create";
 }
 
-
-
 <table class="table table-bordered">
+    <a class="btn btn-secondary btn-sm" asp-action="Empleados">Regresar</a>
+    <br />
     <tbody id="myModalTable">
         @foreach (var item in Model)
         {
-            <tr>
-                <td>@item.PrimerNombre @item.SegundoNombre @item.PrimerApellido </td>
-                <td>
 
-                    <a class="button-a" asp-controller="Usuario" asp-action="Create"
-                       asp-route-ClaveEmpleado="@item.ClaveEmpleado" 
-                       asp-route-Nombres="@item.PrimerNombre @item.SegundoNombre"
-                       asp-route-ApellidoPaterno="@item.PrimerApellido"
-                       asp-route-ApellidoMaterno="@item.SegundoApellido"
-                       asp-route-Correo="@item.CorreoInstitucional">
-                        Registrar
-                    </a>
-                </td>
-            </tr>
+            
+        <tr>
+            <td id="Nombres">@item.PrimerNombre @item.SegundoNombre </td>
+            <td id="ApellidoPaterno">@item.PrimerApellido</td>
+            <td id="ClaveEmpleado" hidden> @item.ClaveEmpleado</td>
+            <td id="ApellidoMaterno" hidden>@item.SegundoApellido</td>
+            <td id="Correo" hidden>@item.CorreoInstitucional</td>
+            @*@foreach (var bd in userbd)
+        {
+
+
+            @if (bd.Correo == item.CorreoInstitucional)
+            {
+                validar = true;
+            }
+            else
+            {
+                validar = false;
+            }
+        }
+        @if (validar != true)
+        {*@
+
+        <td>
+            @if (userbd.Any(bd => bd.ClaveEmpleado == int.Parse(item.ClaveEmpleado)))
+            {
+
+            }
+            else
+            {
+                <button class="btn btn-green" id="registrar" onclick="EmpleadoConsulta()">
+                    Registrar
+                </button>
+            }
+        </td>
+
+
+
+        </tr>
         }
     </tbody>
 </table>
+<h2>@ViewBag.error</h2>
+
+
+<script>
+    function EmpleadoConsulta() {
+        let Nombres = document.getElementById('Nombres').innerHTML;
+        let ClaveEmpleado = document.getElementById('ClaveEmpleado').innerHTML;
+        let ApellidoPaterno = document.getElementById('ApellidoPaterno').innerHTML;
+        let ApellidoMaterno = document.getElementById('ApellidoMaterno').innerHTML;
+        let Correo = document.getElementById('Correo').innerHTML;
+
+        let jsondata = {
+            'Nombres': Nombres,
+            'ClaveEmpleado': ClaveEmpleado,
+            'ApellidoPaterno': ApellidoPaterno,
+            'ApellidoMaterno': ApellidoMaterno,
+            'Correo': Correo
+        }
+        sessionStorage.setItem('Data', JSON.stringify(jsondata));
+        window.location.href = '/Usuario/Create/';
+    }
+</script>
 

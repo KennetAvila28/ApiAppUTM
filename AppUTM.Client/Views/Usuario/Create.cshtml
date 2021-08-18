@@ -8,7 +8,11 @@
     ViewData["Title"] = "Create";
 
 }
-
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        EmpleadoData();
+    }, false);
+</script>
 <h1>Crear Usuario</h1>
 
 <hr />
@@ -18,27 +22,27 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ClaveEmpleado" class="control-label"></label>
-                <input asp-for="ClaveEmpleado" class="form-control" required />
+                <input asp-for="ClaveEmpleado" class="form-control" required id="ClaveEmpleado" />
                 <span asp-validation-for="ClaveEmpleado" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Nombres" class="control-label"></label>
-                <input asp-for="Nombres" class="form-control" required />
+                <input asp-for="Nombres" class="form-control" required id="Nombres"/>
                 <span asp-validation-for="Nombres" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ApellidoPaterno" class="control-label"></label>
-                <input asp-for="ApellidoPaterno" class="form-control" required />
+                <input asp-for="ApellidoPaterno" class="form-control" required id="ApellidoPaterno"/>
                 <span asp-validation-for="ApellidoPaterno" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ApellidoMaterno" class="control-label"></label>
-                <input asp-for="ApellidoMaterno" class="form-control" required />
+                <input asp-for="ApellidoMaterno" class="form-control" required id="ApellidoMaterno"/>
                 <span asp-validation-for="ApellidoMaterno" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" required />
+                <input asp-for="Correo" class="form-control" required id="Correo"/>
                 <span asp-validation-for="Correo" class="text-danger"></span>
 
             </div><br />
@@ -64,3 +68,21 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script>
+    function EmpleadoData() {
+        const DataR = JSON.parse(sessionStorage.getItem('Data'));
+        console.log(DataR);
+
+        let Nombres = DataR.Nombres;
+        let ClaveEmpleado = parseInt(DataR.ClaveEmpleado);
+        let ApellidoPaterno = DataR.ApellidoPaterno;
+        let ApellidoMaterno = DataR.ApellidoMaterno;
+        let Correo = DataR.Correo;
+
+        document.getElementById('Nombres').value = Nombres;
+        document.getElementById('ClaveEmpleado').value = ClaveEmpleado;
+        document.getElementById('ApellidoPaterno').value = ApellidoPaterno;
+        document.getElementById('ApellidoMaterno').value = ApellidoMaterno;
+        document.getElementById('Correo').value = Correo;
+    }
+</script>

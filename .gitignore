@@ -35,3 +35,11 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+*.cshtml
+AppUTM.Client/Views/Shared/_Layout.cshtml
+AppUTM.Client/Views/Usuario/Index.cshtml
+*.cshtml
+*.cshtml
+AppUTM.Client/Controllers/UsuarioController.cs
+*.cs
+AppUTM.Client/Views/Shared/_Layout.cshtml

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -63,9 +64,12 @@ namespace AppUTM.Client.Controllers
         }
 
         [HttpGet] //Vista para busqueda
-        public IActionResult Empleados()
+        public async Task<IActionResult> EmpleadosAsync()
         {
-
+            HttpClient httpClient = new HttpClient();
+            await PrepareAuthenticatedClient();
+            string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
+            ViewBag.image = await GetPhoto(_httpClient);
             return View();
         }
 
@@ -80,16 +84,25 @@ namespace AppUTM.Client.Controllers
             ViewBag.image = await GetPhoto(_httpClient);
 
             List<EmpleadoUTM> listemp = new List<EmpleadoUTM>();
-            //string extension = "@utmetropolitana.edu.mx";
-            //Muestra las empresas que proporciona la API de la UTM
+            //Busqueda BD LOCAL
+            var jsonemp = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users");
+            var listUsuario = JsonConvert.DeserializeObject<ApiResponse<List<UserReturn>>>(jsonemp);
+            ViewBag.listuser = listUsuario.Data;
 
+            //Muestra los empleados que proporciona la API de la UTM
             var jsonEmpleado = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users/" + "empleado/" + correo);
-
-
             // var jsonEmpleado = await httpClient.GetStringAsync("http://localhost:59131/api/Users/empleado/" + correo);
             var jsonlist = JsonConvert.DeserializeObject<List<EmpleadoUTM>>(jsonEmpleado);
-            ViewBag.listemp = jsonlist;
-            return View(jsonlist);
+            if (jsonlist.Count == 0)
+            {
+                ViewBag.error = "El correo que introdujo no existe";
+                return View(jsonlist);
+            }
+            else
+            {
+                ViewBag.listemp = jsonlist;
+                return View(jsonlist);
+            }
         }
         // GET: UsuarioController
 
@@ -101,11 +114,7 @@ namespace AppUTM.Client.Controllers
             await PrepareAuthenticatedClient();
             string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
             ViewBag.image = await GetPhoto(_httpClient);
-
-
             var jsonUser = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users/" + id);
-
-
             //var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Users/" + id);
             var listUsuario = JsonConvert.DeserializeObject<ApiResponse<UserReturn>>(jsonUser);
             return View(listUsuario.Data);
@@ -118,23 +127,18 @@ namespace AppUTM.Client.Controllers
             await PrepareAuthenticatedClient();
             string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
             ViewBag.image = await GetPhoto(_httpClient);
-
             User empleado = new User();
             empleado.ClaveEmpleado = ClaveEmpleado;
             empleado.Nombres = Nombres;
             empleado.ApellidoPaterno = ApellidoPaterno;
             empleado.ApellidoMaterno = ApellidoMaterno;
             empleado.Correo = Correo;
-
             var json2 = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users");
-
             var jsonUser = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Roles");
-
-
-
             //var json = await httpClient.GetStringAsync("http://localhost:59131/api/Users/");
             //var jsonUser = await httpClient.GetStringAsync("http://localhost:59131/api/Roles/");
             var listRoles = JsonConvert.DeserializeObject<ApiResponse<List<RoleReturn>>>(jsonUser);
+            
             ViewBag.Roles = listRoles.Data;
             var crear = JsonConvert.DeserializeObject<UserCreate>(json2);
             return View(crear);
@@ -149,7 +153,6 @@ namespace AppUTM.Client.Controllers
             string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
             ViewBag.image = await GetPhoto(_httpClient);
 
-
             List<UserRole> listaRoles = new List<UserRole>();
             foreach (var item in role)
             {
@@ -158,7 +161,6 @@ namespace AppUTM.Client.Controllers
                 listaRoles.Add(roleUser);
             }
             userCreate.UserRoles = listaRoles;
-
 
             var CrearCliente = httpClient.PostAsJsonAsync<UserCreate>(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Users", userCreate);
             CrearCliente.Wait();
