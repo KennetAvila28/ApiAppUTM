@@ -115,6 +115,7 @@ namespace AppUTM.Api.Controllers
             return Ok(empresasUTM);         
         }
 
+
         /*
         //Regresa la imagen de la empresa
         [HttpGet]

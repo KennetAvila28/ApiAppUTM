@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Empresas inactivas";
     Layout = null;
+    int i = 1;
 }
 
 <head>
@@ -14,6 +15,7 @@
     <table style="text-align: center" class="table mt-3">
         <thead>
             <tr>
+                <th scope="col">#</th>
                 <th scope="col">Nombre de empresa</th>
                 <th scope="col">Dirección</th>
                 <th scope="col">Teléfono</th>
@@ -24,15 +26,16 @@
             @foreach (var item in Model.empresasRegistradas)
             {
 
-                if (item.Activa == false)
-                {
-                    <tr>
-                        <td>@item.Nombre</td>
-                        <td>@item.Direccion</td>
-                        <td>@item.Telefono</td>
+            <tr>
+                <th scope="row">
+                    @(i++)
+                </th>
+                <td>@item.Nombre</td>
+                <td>@item.Direccion</td>
+                <td>@item.Telefono</td>
 
-                    </tr>
-                }
+            </tr>
+         
 
             }
         </tbody>

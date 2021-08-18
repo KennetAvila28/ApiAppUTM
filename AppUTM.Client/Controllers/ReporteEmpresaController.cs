@@ -40,7 +40,7 @@ namespace AppUTM.Client.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int id, string sortOrder)
+        public async Task<IActionResult> Index(int id)
         {
             await PrepareAuthenticatedClient();
             string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
@@ -53,10 +53,10 @@ namespace AppUTM.Client.Controllers
             var empresa = JsonConvert.DeserializeObject<Empresa>(jsonEmpresa);
             cupones.Empresa = empresa;
             var jsonCuponesGenerico = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/empresa/" + id);
-            var listCupones = JsonConvert.DeserializeObject<List<CuponGenerico>>(jsonCuponesGenerico);
+            var listCupones = JsonConvert.DeserializeObject<List<CuponGenerico>>(jsonCuponesGenerico).OrderByDescending(e => e.FechaExpiracion);
             cupones.cuponesGenericos = listCupones;
             var jsonCuponesImagen = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/empresa/" + id);
-            var listCuponesImagen = JsonConvert.DeserializeObject<List<CuponImagen>>(jsonCuponesImagen);
+            var listCuponesImagen = JsonConvert.DeserializeObject<List<CuponImagen>>(jsonCuponesImagen).OrderByDescending(e => e.FechaExpiracion);
             cupones.cuponesImagen = listCuponesImagen;
 
             CuponG.CuponesDisponibles = CuponG.NumeroPorPersona - CuponG.CuponesUsados;

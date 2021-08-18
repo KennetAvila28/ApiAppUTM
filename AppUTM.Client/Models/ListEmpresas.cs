@@ -12,6 +12,5 @@ namespace AppUTM.Client.Models
 
         public IEnumerable<CuponGenerico> cuponesGenericos { get; set; }
         public IEnumerable<CuponImagen> cuponesImagen { get; set; }
-        public int EmpresasSinRFCsinCupones { get; set; }
     }
 }

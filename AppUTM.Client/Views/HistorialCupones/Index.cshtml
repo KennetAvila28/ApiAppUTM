@@ -4,6 +4,10 @@
     ViewData["Title"] = "Index";
     int i = 1;
     int i2 = 1;
+    int i3 = 1;
+    int i4 = 1;
+    int i5 = 1;
+    int i6 = 1;
 }
 
 <h1>Usos por divisiones</h1>
@@ -67,4 +71,125 @@
     </table>
 
 </div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th>
+                    Departamento
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.Departamento == "DIVISIÓN TECNOLOGIAS DE LA INFORMACION Y COMUNICACIÓN")
+                {
+                    <tr>
+                        <th scope="row">
+                            @(i3++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departamento)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th>
+                    Departamento
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.Departamento == "TSU")
+                {
+                    <tr>
+                        <th scope="row">
+                            @(i4++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departamento)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th>
+                    Departamento
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.Departamento == "TICS")
+                {
+                    <tr>
+                        <th scope="row">
+                            @(i5++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departamento)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th>
+                    Departamento
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.Departamento == null)
+                {
+                    <tr>
+                        <th scope="row">
+                            @(i6++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departamento)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+</div>
+
 

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -60,23 +61,23 @@ namespace AppUTM.Client.Controllers
         [HttpGet]
         public async Task<IActionResult> EmpresasDesactivadas()
         {
+            HttpClient httpClient = new HttpClient();
+            ListEmpresas listEmpresas = new ListEmpresas();
             await PrepareAuthenticatedClient();
             string json = await _httpClient.GetStringAsync(_configuration["getuseraddress"]);
             ViewBag.image = await GetPhoto(_httpClient);
-
-            HttpClient httpClient = new HttpClient();
-            //http://api.utmetropolitana.edu.mx/api/Empresas/Get
-            //http://localhost:59131/api/Empresas
-
-            ListEmpresas listEmpresas = new ListEmpresas();
-            var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas");
-            listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
+            var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/all");
+            listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas).OrderByDescending(e => e.EmpresaId);
+            //Muestra las empresas que proporciona la API de la UTM
             var jsonEmpresasUTM = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/empresasUTM");
-            listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<EmpresasUTM>>(jsonEmpresasUTM);
-
-            //listEmpresas.empresasRegistradas = listEmpresas;
-            //    + listEmpresas.empresasUTM
-
+            listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<List<EmpresasUTM>>(jsonEmpresasUTM).Where(e => e.RFC != null);
+            List<EmpresasUTM> empresasUTM = new List<EmpresasUTM>();
+            foreach (var item in listEmpresas.empresasUTM)
+            {
+                if (!listEmpresas.empresasRegistradas.Any(e => e.RFC == item.RFC))
+                    empresasUTM.Add(item);
+            }
+            listEmpresas.empresasUTM = empresasUTM;
             return View(listEmpresas);
         }
 

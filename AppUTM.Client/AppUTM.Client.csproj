@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.15.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0-beta" />
+    <PackageReference Include="System.Collections.NonGeneric" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

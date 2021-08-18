@@ -15,5 +15,7 @@ namespace AppUTM.Client.Models
         public string CorreoEmpresa { get; set; }
         public string RFC { get; set; }
         public string PersonaResponsable { get; set; }
+
+        public IList<Empresa> empresas { get; set; }
     }
 }
