@@ -8,6 +8,10 @@
     int i4 = 1;
     int i5 = 1;
     int i6 = 1;
+    int i7 = 1;
+    int i8 = 1;
+    int i9 = 1;
+    int i10 = 1;
 }
 
 <h1>Usos por divisiones</h1>
@@ -24,7 +28,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                if (item.Departamento == "Tecnologías de la Información")
+                if (item.Departamento == "Tecnologías de la Información" || item.Departamento == "TSU" || item.Departamento == "TICS" || item.Departamento == "DIVISIÓN TECNOLOGIAS DE LA INFORMACION Y COMUNICACIÓN" || item.Departamento == "COORDINACION DE SERVICIOS DE TECNOLOGIAS DE LA INFORMACIÓN Y COMUNICACIÓN")
                 {
                     <tr>
                         <th scope="row">
@@ -54,7 +58,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                if (item.Departamento == "Gastronomía 2018")
+                if (item.Departamento == "DEPARTAMENTO DE CONTROL ESCOLAR" || item.Departamento == "DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS")
                 {
                     <tr>
                         <th scope="row">
@@ -84,7 +88,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                if (item.Departamento == "DIVISIÓN TECNOLOGIAS DE LA INFORMACION Y COMUNICACIÓN")
+                if (item.Departamento == "SECRETARIA TÉCNICA DE LA RECTORÍA" || item.Departamento == "RECTORIA" || item.Departamento == "COORDINACIÓN JURÍDICA" || item.Departamento == "SERVICIOS GENERALES" || item.Departamento == "COORDINACIÓN DE ASUNTOS ACADEMICOS Y PLANEACIÓN" || item.Departamento == "COORDINACIÓN DE SERVICIOS DE APOYO AL ESTUDIANTE" || item.Departamento == "COORDINACIÓN DE IDIOMAS EXTRANJEROS")
                 {
                     <tr>
                         <th scope="row">
@@ -114,7 +118,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                if (item.Departamento == "TSU")
+                if (item.Departamento == "COORDINACIÓN DEL CENTRO DE PRODUCCIÓN" || item.Departamento == "DIVISIÓN ADMINISTRACIÓN (DIDE)" || item.Departamento == "DIVISIÓN ADMINISTRACIÓN")
                 {
                     <tr>
                         <th scope="row">
@@ -129,7 +133,6 @@
 
         </tbody>
     </table>
-
 </div>
 <div>
     <table class="table">
@@ -144,7 +147,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                if (item.Departamento == "TICS")
+                if (item.Departamento == "DEPARTAMENTO DE CONTROL PRESUPUESTAL" || item.Departamento == "DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS" || item.Departamento == "DEPARTAMENTO DE RECURSOS HUMANOS" || item.Departamento == "DEPARTAMENTO DE CONTABILIDAD GUBERNAMENTAL" || item.Departamento == "DEPARTAMENTO DE NÓMINA")
                 {
                     <tr>
                         <th scope="row">
@@ -159,7 +162,6 @@
 
         </tbody>
     </table>
-
 </div>
 <div>
     <table class="table">
@@ -174,7 +176,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                if (item.Departamento == null)
+                if (item.Departamento == "DEPARTAMENTO DE VINCULACIÓN ACADÉMICA" || item.Departamento == "DIRECCIÓN DE VINCULACIÓN" || item.Departamento == "DEPARTAMENTO DE COMUNICACIÓN Y DIFUSIÓN" || item.Departamento == "DEPARTAMENTO DE ESTUDIOS ESTRATÉGICOS")
                 {
                     <tr>
                         <th scope="row">
@@ -189,7 +191,126 @@
 
         </tbody>
     </table>
-
 </div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th>
+                    Departamento
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.Departamento == "DIVISIÓN INDUSTRIAL")
+                {
+                    <tr>
+                        <th scope="row">
+                            @(i7++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departamento)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th>
+                    Departamento
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.Departamento == "COORDINACIÓN DE SERVICIOS EMPRESARIALES" || item.Departamento == "DIRECCIÓN DE LA UNIDAD EMPRESARIAL" || item.Departamento == "DEPARTAMENTO DE GESTIÓN Y SEGUIMIENTO" || item.Departamento == "AREA DE ACTIVOS FIJOS")
+                {
+                    <tr>
+                        <th scope="row">
+                            @(i8++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departamento)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th>
+                    Departamento
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.Departamento == "CONTRALORIA INTERNA")
+                {
+                    <tr>
+                        <th scope="row">
+                            @(i9++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departamento)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th>
+                    Departamento
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.Departamento == "AREA DE COMPRAS")
+                {
+                    <tr>
+                        <th scope="row">
+                            @(i10++)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departamento)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+    
+</div>
+
+
+
 
 
