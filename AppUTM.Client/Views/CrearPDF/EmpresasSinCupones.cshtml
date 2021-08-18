@@ -1,45 +1,54 @@
 ﻿@model AppUTM.Client.Models.ListEmpresas;
-
 @{
-    ViewData["Title"] = "Empresas inactivas";
+    ViewData["Title"] = "Reporte";
     Layout = null;
     int i = 1;
+
+
 }
-
+<html>
 <head>
-    <title>Empresas inactivas</title>
+    <title>Reporte</title>
+    <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="~/js/filter.js"></script>
 </head>
+<body>
+    <div class="container mt-3">
+        <div>
+            <table style="text-align: center" class="table mt-3">
+                <thead>
 
-<div class="container mt-3">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre de empresa</th>
+                        <th scope="col">Dirección</th>
+                        <th scope="col">Teléfono</th>
 
-    <table style="text-align: center" class="table mt-3">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nombre de empresa</th>
-                <th scope="col">Dirección</th>
-                <th scope="col">Teléfono</th>
+                    </tr>
 
-            </tr>
-        </thead>
-        <tbody id="myTable">
-            @foreach (var item in Model.empresasRegistradas)
-            {
-
-            <tr>
-                <th scope="row">
-                    @(i++)
-                </th>
-                <td>@item.Nombre</td>
-                <td>@item.Direccion</td>
-                <td>@item.Telefono</td>
-
-            </tr>
-         
-
-            }
-        </tbody>
-    </table>
+                </thead>
+                <tbody id="myTable">
+                    @foreach (var item in Model.empresasUTM)
+                    {
+                        <tr>
+                            <th scope="row">
+                                @(i++)
+                            </th>
+                            <td>@item.NombreEmpresa</td>
+                            <td>@item.Direccion</td>
+                            <td>@item.Telefono</td>
 
 
-</div>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</body>
+</html>
+
+

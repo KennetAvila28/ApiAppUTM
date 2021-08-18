@@ -74,7 +74,11 @@ namespace AppUTM.Client.Controllers
         {
             return View("HeaderPDFEmpresas");
         }
-
+        [AllowAnonymous]
+        public ActionResult HeaderPDFHistorial()
+        {
+            return View("HeaderPDFHistorial");
+        }
         [HttpGet]
         public async Task<IActionResult> EmpresasSinCupones()
         {
@@ -84,15 +88,21 @@ namespace AppUTM.Client.Controllers
             string _footerUrl = Url.Action("FooterPDF", "CrearPDF", null, "https");
 
 
-
             HttpClient httpClient = new HttpClient();
-            //Muestra las empresas registradas
             ListEmpresas listEmpresas = new ListEmpresas();
-            var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas");
-            listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas);
+
+            var jsonEmpresas = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/all");
+            listEmpresas.empresasRegistradas = JsonConvert.DeserializeObject<List<Empresa>>(jsonEmpresas).OrderByDescending(e => e.EmpresaId);
             //Muestra las empresas que proporciona la API de la UTM
             var jsonEmpresasUTM = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "Empresas/empresasUTM");
-            listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<EmpresasUTM>>(jsonEmpresasUTM);
+            listEmpresas.empresasUTM = System.Text.Json.JsonSerializer.Deserialize<List<EmpresasUTM>>(jsonEmpresasUTM).Where(e => e.RFC != null);
+            List<EmpresasUTM> empresasUTM = new List<EmpresasUTM>();
+            foreach (var item in listEmpresas.empresasUTM)
+            {
+                if (!listEmpresas.empresasRegistradas.Any(e => e.RFC == item.RFC))
+                    empresasUTM.Add(item);
+            }
+            listEmpresas.empresasUTM = empresasUTM;
             return new ViewAsPdf("EmpresasSinCupones", listEmpresas)
             {
                 //    // Establece la Cabecera y el Pie de página
@@ -117,10 +127,10 @@ namespace AppUTM.Client.Controllers
             var empresa = JsonConvert.DeserializeObject<Empresa>(jsonEmpresa);
             cupones.Empresa = empresa;
             var jsonCuponesGenerico = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesGenericos/empresa/" + id);
-            var listCupones = JsonConvert.DeserializeObject<IEnumerable<CuponGenerico>>(jsonCuponesGenerico);
+            var listCupones = JsonConvert.DeserializeObject<IEnumerable<CuponGenerico>>(jsonCuponesGenerico).OrderByDescending(e => e.FechaExpiracion);
             cupones.cuponesGenericos = listCupones;
             var jsonCuponesImagen = await httpClient.GetStringAsync(_configuration["CouponAdmin:CouponAdminBaseAddress"] + "CuponesImagen/empresa/" + id);
-            var listCuponesImagen = JsonConvert.DeserializeObject<IEnumerable<CuponImagen>>(jsonCuponesImagen);
+            var listCuponesImagen = JsonConvert.DeserializeObject<IEnumerable<CuponImagen>>(jsonCuponesImagen).OrderByDescending(e => e.FechaExpiracion);
             cupones.cuponesImagen = listCuponesImagen;
 
             return new ViewAsPdf("Prueba", cupones)
@@ -136,6 +146,32 @@ namespace AppUTM.Client.Controllers
 
 
         }
+        [HttpGet]
+        public async Task<IActionResult> HistorialCupon()
+        {
+            //// Define la URL de la Cabecera 
+            string _headerUrl = Url.Action("HeaderPDFHistorial", "CrearPDF", null, "https");
+            //////// Define la URL del Pie de página
+            string _footerUrl = Url.Action("FooterPDF", "CrearPDF", null, "https");
+            HttpClient httpClient = new HttpClient();
 
+            Dashboard listempresa = new Dashboard();
+
+            Historial historial = new Historial();
+            var jsonEmpresas = await httpClient.GetStringAsync("http://localhost:59131/api/HistorialCupon");
+            var jsonResult = JsonConvert.DeserializeObject(jsonEmpresas).ToString();
+            var result = JsonConvert.DeserializeObject<IEnumerable<Historial>>(jsonResult);
+
+            return new ViewAsPdf("HistorialCupon", result)
+            {
+                //    // Establece la Cabecera y el Pie de página
+                CustomSwitches = "--header-html " + _headerUrl + " --header-spacing 0 " +
+                             "--footer-html " + _footerUrl + " --footer-spacing 0"
+                //,
+                //    PageMargins = new Margins(50, 10, 12, 10)
+
+            };
+
+        }
     }
 }
