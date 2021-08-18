@@ -112,13 +112,9 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        var stream = await _graphServiceClient.Me.Photo.Content
-            .Request()
-            .GetAsync();
 
         var user = await _graphServiceClient.Me.Request().GetAsync();
         await _localStorage.SetValue(ValueKeys.UserGraph, user);
-        await _localStorage.SetValue(ValueKeys.Avatar, await GraphClientExtensions.ImageToBase64(GraphClientExtensions.ReadToEnd(stream)));
         var isUser = await _http.GetAsync("Users/Authorize/" + user.Mail);
         if (isUser.StatusCode != HttpStatusCode.Unauthorized)
         {

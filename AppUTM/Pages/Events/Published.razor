@@ -50,6 +50,11 @@ else
                             <RadzenCheckBox @bind-Value="@data.IsActivity" TValue="bool" Disabled="true" />
                         </Template>
                     </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="EventReturn" Property="IsPublished" Title="Publicado">
+                        <Template Context="data">
+                            <RadzenCheckBox @bind-Value="@data.IsPublished" Change="@((args) => UnPublish(args,data.Id,data))" TValue="bool" Disabled="!Write" />
+                        </Template>
+                    </RadzenDataGridColumn>
                 </Columns>
             </RadzenDataGrid>
         </div>
@@ -64,6 +69,7 @@ else
 {
     IEnumerable<EventReturn> _events;
     public bool Authorize;
+    public bool Write;
     protected override async Task OnInitializedAsync()
     {
         var userDb = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<UserReturn>(ValueKeys.User));
@@ -71,6 +77,17 @@ else
         {
             Authorize = true;
         }
+        if (userDb.UserRoles.Any(x => x.Role.RoleModules.Any(x => x.ModuleId == 3 && x.Read)))
+        {
+            Write = true;
+        }
+        _events = await GetExtensions.GetAllEventsPublished(_http);
+    }
+    async Task UnPublish(bool value, int id, EventReturn eventReturn)
+    {
+        eventReturn.IsPublished = value;
+        var eventMessage = await _http.PutAsJsonAsync("Event/" + id, eventReturn);
+        NotificationExtensions.ShowNotification(_notificationService, eventMessage.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Evento despublicado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo despublicar el evento", Duration = 3000 });
         _events = await GetExtensions.GetAllEventsPublished(_http);
     }
 }

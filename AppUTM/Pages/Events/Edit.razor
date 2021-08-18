@@ -41,6 +41,7 @@
             <div class="form-group mt-4">
                 <div>
                     <RadzenButton ButtonStyle="ButtonStyle.Success" ButtonType="ButtonType.Submit" Text="Actualizar evento" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" ButtonType="ButtonType.Button" Click="Delete" Text="Eliminar evento" />
                     <RadzenButton Text="Cancelar" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Light" Click="@(Cancel)" />
                 </div>
             </div>
@@ -76,7 +77,7 @@ else
 
         try
         {
-            string imageType = e.File.ContentType;
+            var imageType = e.File.ContentType;
             _imgUrl = $"data:{imageType};base64,{await ImageHelper.ImageToBase64(e)}";
             _oEventForUpdateDto.Image = await ImageHelper.ImageToBase64(e);
         }
@@ -85,6 +86,14 @@ else
             NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo cargar la imagen", Detail = $"{ex.Message}", Duration = 3000 });
         }
     }
+
+    async Task Delete()
+    {
+        var eventMessage = await Http.DeleteAsync("Event/" + Id);
+        navigation.NavigateTo("/Events");
+        NotificationExtensions.ShowNotification(NotificationService, eventMessage.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Evento eliminado con exito", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo eliminar el evento", Duration = 3000 });
+    }
+
     void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
     {
         NotificationExtensions.ShowNotification(NotificationService, new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Completa los campos requeridos", Duration = 3000 });

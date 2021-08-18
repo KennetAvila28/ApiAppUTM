@@ -18,10 +18,12 @@
     string _name;
     protected override async Task OnInitializedAsync()
     {
-
+        var stream = await _graphServiceClient.Me.Photo.Content
+            .Request()
+            .GetAsync();
         var user = IsDataNull.CreateInstanceIfIsNull(await _localStorage.GetValue<User>(ValueKeys.UserGraph));
         _name = user.DisplayName;
-        _imgUrl = await _localStorage.GetValue<string>(ValueKeys.Avatar);
+        _imgUrl = await GraphClientExtensions.ImageToBase64(GraphClientExtensions.ReadToEnd(stream));
     }
 
 }
