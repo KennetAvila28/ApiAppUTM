@@ -21,7 +21,7 @@ namespace AppUTM.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Event>> GetAllEvents() => await _context.Events.Include(x => x.Author).Where(x => x.IsPublished == false & x.IsRechazed == false & x.IsRevised == false).ToListAsync();
+        public async Task<IEnumerable<Event>> GetAllEvents() => await _context.Events.Include(x => x.Author).Where(x => x.IsPublished == false & x.IsRechazed == false & x.IsRevised == false).OrderByDescending(e => e.StartDate).ToListAsync();
 
         public async Task<Event> GetEventById(int id)
         {
@@ -104,18 +104,18 @@ namespace AppUTM.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public IEnumerable<Event> GetRechazedEvents() => _context.Events.OrderBy(x => x.StartDate).Include(x => x.Author).Where(x => x.IsPassed == false & x.IsRechazed).ToList();
+        public IEnumerable<Event> GetRechazedEvents() => _context.Events.OrderByDescending(x => x.StartDate).Include(x => x.Author).Where(x => x.IsPassed == false & x.IsRechazed).ToList();
 
-        public IEnumerable<Event> GetPassedEvents() => _context.Events.OrderBy(x => x.StartDate).Include(x => x.Author).Where(x => x.IsPassed & x.IsRechazed == false).ToList();
+        public IEnumerable<Event> GetPassedEvents() => _context.Events.OrderByDescending(x => x.StartDate).Include(x => x.Author).Where(x => x.IsPassed & x.IsRechazed == false).ToList();
 
-        public IEnumerable<Event> GetPublishedEvents() => _context.Events.OrderBy(x => x.StartDate).Include(p => p.Favorites).Include(x => x.Author).Where(x => x.IsPassed == false && x.IsPublished && x.IsRechazed == false).ToList();
+        public IEnumerable<Event> GetPublishedEvents() => _context.Events.OrderByDescending(x => x.StartDate).Include(p => p.Favorites).Include(x => x.Author).Where(x => x.IsPassed == false && x.IsPublished && x.IsRechazed == false).ToList();
 
-        public IEnumerable<Event> GetRevisedEvents() => _context.Events.OrderBy(x => x.StartDate).Include(x => x.Author).Where(x => x.IsRevised & x.IsRechazed == false).ToList();
+        public IEnumerable<Event> GetRevisedEvents() => _context.Events.OrderByDescending(x => x.StartDate).Include(x => x.Author).Where(x => x.IsRevised & x.IsRechazed == false).ToList();
 
         public async Task<IEnumerable<Event>> GetAllEventsToday()
         {
             await Task.Delay(1000);
-            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.IsPublished && x.StartDate == DateTime.Today).OrderBy(x => x.StartDate).ToList();
+            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.IsPublished && x.StartDate.Day == DateTime.Now.Day).OrderByDescending(x => x.StartDate).ToList();
         }
 
         public async Task<IEnumerable<Event>> GetAllEventsWeek()
@@ -123,19 +123,19 @@ namespace AppUTM.Services
             var sunday = DayOfWeek.Sunday - DateTime.Now.DayOfWeek;
             var saturday = DayOfWeek.Saturday - DateTime.Now.DayOfWeek;
             await Task.Delay(1000);
-            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.StartDate.Date >= DateTime.Now.AddDays(sunday) && x.StartDate <= DateTime.Now.AddDays(saturday) && x.IsPublished == true).ToList();
+            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.StartDate.Date >= DateTime.Now.AddDays(sunday) && x.StartDate <= DateTime.Now.AddDays(saturday) && x.IsPublished == true).OrderByDescending(x => x.StartDate).ToList();
         }
 
         public async Task<IEnumerable<Event>> GetAllEventsQuarter()
         {
             await Task.Delay(1000);
-            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.StartDate.Month >= DateTime.Now.Month && x.StartDate.Month <= DateTime.Now.Month + 3 && x.IsPublished).OrderBy(x => x.StartDate).ToList();
+            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.StartDate.Month >= DateTime.Now.Month && x.StartDate.Month <= DateTime.Now.Month + 3 && x.IsPublished).OrderByDescending(x => x.StartDate).ToList();
         }
 
         public async Task<IEnumerable<Event>> GetAllEventsYear()
         {
             await Task.Delay(1000);
-            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.StartDate.Year == DateTime.Now.Year && x.IsPublished).OrderBy(x => x.StartDate).ToList();
+            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.StartDate.Year == DateTime.Now.Year && x.IsPublished).OrderByDescending(x => x.StartDate).ToList();
         }
     }
 }
