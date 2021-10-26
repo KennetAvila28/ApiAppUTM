@@ -42,8 +42,8 @@ else
     {
         if (!string.IsNullOrEmpty(_oModuleUpdateDto.Name))
         {
-            var Module = await Http.PutAsJsonAsync("Modules", _oModuleUpdateDto);
-            NotificationExtensions.ShowNotification(NotificationService, Module.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Permiso creado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear el permiso", Duration = 3000 });
+            var Module = await Http.PutAsJsonAsync("Module/"+Id, _oModuleUpdateDto);
+            NotificationExtensions.ShowNotification(NotificationService, Module.IsSuccessStatusCode ? new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Permiso actualizado", Duration = 3000 } : new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se pudo crear el permiso", Duration = 3000 });
             navigation.NavigateTo("/Modules");
         }
         else
