@@ -115,7 +115,7 @@ namespace AppUTM.Services
         public async Task<IEnumerable<Event>> GetAllEventsToday()
         {
             await Task.Delay(1000);
-            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.IsPublished && x.StartDate.Day == DateTime.Now.Day).OrderByDescending(x => x.StartDate).ToList();
+            return _context.Events.Include(p => p.Favorites).Include(x => x.Author).Where(x => x.IsPublished && x.StartDate.Day == DateTime.Now.Day && x.StartDate.Year ==DateTime.Now.Year && x.StartDate.Month ==DateTime.Now.Month ).OrderByDescending(x => x.StartDate).ToList();
         }
 
         public async Task<IEnumerable<Event>> GetAllEventsWeek()
